@@ -150079,37 +150079,6 @@ Index: linux-2.6.28/mm/Makefile
  obj-$(CONFIG_TMPFS_POSIX_ACL) += shmem_acl.o
  obj-$(CONFIG_TINY_SHMEM) += tiny-shmem.o
  obj-$(CONFIG_SLOB) += slob.o
-Index: linux-2.6.28/mm/shmem.c
-===================================================================
---- linux-2.6.28.orig/mm/shmem.c	2008-12-25 00:26:37.000000000 +0100
-+++ linux-2.6.28/mm/shmem.c	2009-01-02 00:01:57.000000000 +0100
-@@ -2587,6 +2587,14 @@ put_memory:
- }
- EXPORT_SYMBOL_GPL(shmem_file_setup);
- 
-+void shmem_set_file(struct vm_area_struct *vma, struct file *file)
-+{
-+	if (vma->vm_file)
-+		fput(vma->vm_file);
-+	vma->vm_file = file;
-+	vma->vm_ops = &shmem_vm_ops;
-+}
-+
- /**
-  * shmem_zero_setup - setup a shared anonymous mapping
-  * @vma: the vma to be mmapped is prepared by do_mmap_pgoff
-@@ -2600,9 +2608,7 @@ int shmem_zero_setup(struct vm_area_stru
- 	if (IS_ERR(file))
- 		return PTR_ERR(file);
- 
--	if (vma->vm_file)
--		fput(vma->vm_file);
--	vma->vm_file = file;
--	vma->vm_ops = &shmem_vm_ops;
-+	shmem_set_file(vma, file);
-+
- 	return 0;
- }
 Index: linux-2.6.28/mm/tiny-shmem.c
 ===================================================================
 --- linux-2.6.28.orig/mm/tiny-shmem.c	2008-12-25 00:26:37.000000000 +0100
