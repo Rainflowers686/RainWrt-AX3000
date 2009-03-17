@@ -7,7 +7,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 
 --- a/arch/arm/common/vic.c
 +++ b/arch/arm/common/vic.c
-@@ -69,12 +69,12 @@ void __init vic_init(void __iomem *base,
+@@ -69,12 +69,12 @@
  	/*
  	 * Make sure we clear all existing interrupts
  	 */
@@ -23,7 +23,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	}
  
  	for (i = 0; i < 16; i++) {
-@@ -82,7 +82,7 @@ void __init vic_init(void __iomem *base,
+@@ -82,7 +82,7 @@
  		writel(VIC_VECT_CNTL_ENABLE | i, reg);
  	}
  
@@ -6657,7 +6657,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +CONFIG_HAS_DMA=y
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -498,6 +498,13 @@ config ARCH_S3C2410
+@@ -498,6 +498,13 @@
  	  BAST (<http://www.simtec.co.uk/products/EB110ITX/>), the IPAQ 1940 or
  	  the Samsung SMDK2410 development board (and derivatives).
  
@@ -6671,7 +6671,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config ARCH_SHARK
  	bool "Shark"
  	select ISA
-@@ -590,6 +597,7 @@ source "arch/arm/mach-orion5x/Kconfig"
+@@ -590,6 +597,7 @@
  source "arch/arm/mach-kirkwood/Kconfig"
  
  source "arch/arm/plat-s3c24xx/Kconfig"
@@ -6679,7 +6679,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  source "arch/arm/plat-s3c/Kconfig"
  
  if ARCH_S3C2410
-@@ -601,6 +609,11 @@ source "arch/arm/mach-s3c2442/Kconfig"
+@@ -601,6 +609,11 @@
  source "arch/arm/mach-s3c2443/Kconfig"
  endif
  
@@ -6691,7 +6691,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  source "arch/arm/mach-lh7a40x/Kconfig"
  
  source "arch/arm/mach-imx/Kconfig"
-@@ -1256,6 +1269,8 @@ source "drivers/usb/Kconfig"
+@@ -1256,6 +1269,8 @@
  
  source "drivers/uwb/Kconfig"
  
@@ -6700,7 +6700,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  source "drivers/mmc/Kconfig"
  
  source "drivers/memstick/Kconfig"
-@@ -1268,6 +1283,8 @@ source "drivers/rtc/Kconfig"
+@@ -1268,6 +1283,8 @@
  
  source "drivers/dma/Kconfig"
  
@@ -6711,7 +6711,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  source "drivers/auxdisplay/Kconfig"
 --- a/arch/arm/kernel/vmlinux.lds.S
 +++ b/arch/arm/kernel/vmlinux.lds.S
-@@ -106,6 +106,8 @@ SECTIONS
+@@ -106,6 +106,8 @@
  		*(.got)			/* Global offset table		*/
  	}
  
@@ -7757,7 +7757,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +					     resume_dependency, int uart_index);
 --- a/arch/arm/mach-s3c2410/include/mach/spi-gpio.h
 +++ b/arch/arm/mach-s3c2410/include/mach/spi-gpio.h
-@@ -21,7 +21,15 @@ struct s3c2410_spigpio_info {
+@@ -21,7 +21,15 @@
  	int			 num_chipselect;
  	int			 bus_num;
  
@@ -7776,7 +7776,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/arch/arm/mach-s3c2410/include/mach/spi.h
 +++ b/arch/arm/mach-s3c2410/include/mach/spi.h
-@@ -22,5 +22,12 @@ struct s3c2410_spi_info {
+@@ -22,5 +22,12 @@
  	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
  };
  
@@ -7917,7 +7917,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 -#endif /* __ASM_ARCH_VMALLOC_H */
 --- a/arch/arm/mach-s3c2410/Kconfig
 +++ b/arch/arm/mach-s3c2410/Kconfig
-@@ -9,6 +9,7 @@ config CPU_S3C2410
+@@ -9,6 +9,7 @@
  	depends on ARCH_S3C2410
  	select S3C2410_CLOCK
  	select S3C2410_GPIO
@@ -7925,7 +7925,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select CPU_LLSERIAL_S3C2410
  	select S3C2410_PM if PM
  	help
-@@ -32,11 +33,6 @@ config S3C2410_GPIO
+@@ -32,11 +33,6 @@
  	help
  	  GPIO code for S3C2410 and similar processors
  
@@ -7937,7 +7937,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config SIMTEC_NOR
  	bool
  	help
-@@ -49,6 +45,12 @@ config MACH_BAST_IDE
+@@ -49,6 +45,12 @@
  	  Internal node for machines with an BAST style IDE
  	  interface
  
@@ -7950,7 +7950,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  menu "S3C2410 Machines"
  
  config ARCH_SMDK2410
-@@ -84,6 +86,7 @@ config ARCH_BAST
+@@ -84,6 +86,7 @@
  	select PM_SIMTEC if PM
  	select SIMTEC_NOR
  	select MACH_BAST_IDE
@@ -7958,7 +7958,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select ISA
  	help
  	  Say Y here if you are using the Simtec Electronics EB2410ITX
-@@ -121,6 +124,7 @@ config MACH_TCT_HAMMER
+@@ -121,6 +124,7 @@
  config MACH_VR1000
  	bool "Thorcom VR1000"
  	select PM_SIMTEC if PM
@@ -7966,7 +7966,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select SIMTEC_NOR
  	select MACH_BAST_IDE
  	select CPU_S3C2410
-@@ -130,7 +134,16 @@ config MACH_VR1000
+@@ -130,7 +134,16 @@
  config MACH_QT2410
  	bool "QT2410"
  	select CPU_S3C2410
@@ -7993,7 +7993,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <plat/devs.h>
  #include <plat/cpu.h>
  
-@@ -150,7 +151,7 @@ static struct platform_device *amlm5900_
+@@ -150,7 +151,7 @@
  #endif
  	&s3c_device_adc,
  	&s3c_device_wdt,
@@ -8002,7 +8002,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_usb,
   	&s3c_device_rtc,
  	&s3c_device_usbgadget,
-@@ -233,6 +234,7 @@ static void __init amlm5900_init(void)
+@@ -233,6 +234,7 @@
  #ifdef CONFIG_FB_S3C2410
  	s3c24xx_fb_set_platdata(&amlm5900_fb_info);
  #endif
@@ -8023,7 +8023,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <mach/fb.h>
  
  #include <linux/mtd/mtd.h>
-@@ -406,7 +406,7 @@ static struct platform_device bast_sio =
+@@ -406,7 +406,7 @@
   * standard 100KHz i2c bus frequency
  */
  
@@ -8032,7 +8032,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	.flags		= 0,
  	.slave_addr	= 0x10,
  	.bus_freq	= 100*1000,
-@@ -553,7 +553,7 @@ static struct platform_device *bast_devi
+@@ -553,7 +553,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -8041,7 +8041,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
   	&s3c_device_rtc,
  	&s3c_device_nand,
  	&bast_device_dm9k,
-@@ -588,7 +588,8 @@ static void __init bast_map_io(void)
+@@ -588,7 +588,8 @@
  	s3c24xx_register_clocks(bast_clocks, ARRAY_SIZE(bast_clocks));
  
  	s3c_device_nand.dev.platform_data = &bast_nand_info;
@@ -8857,7 +8857,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <plat/pm.h>
  
  static struct map_desc h1940_iodesc[] __initdata = {
-@@ -129,6 +131,11 @@ static struct s3c2410_udc_mach_info h194
+@@ -129,6 +131,11 @@
  	.vbus_pin_inverted	= 1,
  };
  
@@ -8869,7 +8869,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /**
   * Set lcd on or off
-@@ -183,9 +190,10 @@ static struct platform_device *h1940_dev
+@@ -183,9 +190,10 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -8881,7 +8881,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_leds,
  	&s3c_device_bluetooth,
  };
-@@ -201,7 +209,7 @@ static void __init h1940_map_io(void)
+@@ -201,7 +209,7 @@
  #ifdef CONFIG_PM_H1940
  	memcpy(phys_to_virt(H1940_SUSPEND_RESUMEAT), h1940_pm_return, 1024);
  #endif
@@ -8890,7 +8890,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static void __init h1940_init_irq(void)
-@@ -214,7 +222,9 @@ static void __init h1940_init(void)
+@@ -214,7 +222,9 @@
  	u32 tmp;
  
  	s3c24xx_fb_set_platdata(&h1940_fb_info);
@@ -8900,7 +8900,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/* Turn off suspend on both USB ports, and switch the
  	 * selectable USB port to USB device mode. */
-@@ -223,10 +233,9 @@ static void __init h1940_init(void)
+@@ -223,10 +233,9 @@
  			      S3C2410_MISCCR_USBSUSPND0 |
  			      S3C2410_MISCCR_USBSUSPND1, 0x0);
  
@@ -8933,7 +8933,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static struct map_desc n30_iodesc[] __initdata = {
  	/* nothing here yet */
-@@ -320,7 +320,7 @@ static struct s3c2410fb_mach_info n30_fb
+@@ -320,7 +320,7 @@
  static struct platform_device *n30_devices[] __initdata = {
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -8942,7 +8942,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_usb,
  	&s3c_device_usbgadget,
-@@ -332,7 +332,7 @@ static struct platform_device *n30_devic
+@@ -332,7 +332,7 @@
  static struct platform_device *n35_devices[] __initdata = {
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -8951,7 +8951,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_usbgadget,
  	&n35_button_device,
-@@ -501,7 +501,7 @@ static void __init n30_init_irq(void)
+@@ -501,7 +501,7 @@
  static void __init n30_init(void)
  {
  	s3c24xx_fb_set_platdata(&n30_fb_info);
@@ -8970,7 +8970,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <plat/cpu.h>
  
  static struct map_desc otom11_iodesc[] __initdata = {
-@@ -94,7 +95,7 @@ static struct platform_device *otom11_de
+@@ -94,7 +95,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -8979,7 +8979,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
   	&s3c_device_rtc,
  	&otom_device_nor,
-@@ -109,6 +110,7 @@ static void __init otom11_map_io(void)
+@@ -109,6 +110,7 @@
  
  static void __init otom11_init(void)
  {
@@ -9011,7 +9011,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/common-smdk.h>
  #include <plat/devs.h>
-@@ -213,7 +214,7 @@ static struct platform_device qt2410_led
+@@ -213,7 +214,7 @@
  
  /* SPI */
  
@@ -9020,7 +9020,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	switch (cs) {
  	case BITBANG_CS_ACTIVE:
-@@ -247,7 +248,7 @@ static struct platform_device *qt2410_de
+@@ -247,7 +248,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -9029,7 +9029,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_sdi,
  	&s3c_device_usbgadget,
-@@ -320,6 +321,24 @@ static int __init qt2410_tft_setup(char 
+@@ -320,6 +321,24 @@
  
  __setup("tft=", qt2410_tft_setup);
  
@@ -9054,7 +9054,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static void __init qt2410_map_io(void)
  {
  	s3c24xx_init_io(qt2410_iodesc, ARRAY_SIZE(qt2410_iodesc));
-@@ -349,11 +368,12 @@ static void __init qt2410_machine_init(v
+@@ -349,11 +368,12 @@
  	s3c2410_gpio_setpin(S3C2410_GPB0, 1);
  
  	s3c24xx_udc_set_platdata(&qt2410_udc_cfg);
@@ -9078,7 +9078,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/devs.h>
  #include <plat/cpu.h>
-@@ -89,7 +90,7 @@ static struct platform_device *smdk2410_
+@@ -89,7 +90,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -9087,7 +9087,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  };
  
-@@ -102,6 +103,7 @@ static void __init smdk2410_map_io(void)
+@@ -102,6 +103,7 @@
  
  static void __init smdk2410_init(void)
  {
@@ -9105,7 +9105,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <plat/devs.h>
  #include <plat/cpu.h>
  
-@@ -127,7 +128,7 @@ static struct s3c2410_uartcfg tct_hammer
+@@ -127,7 +128,7 @@
  static struct platform_device *tct_hammer_devices[] __initdata = {
  	&s3c_device_adc,
  	&s3c_device_wdt,
@@ -9114,7 +9114,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_usb,
  	&s3c_device_rtc,
  	&s3c_device_usbgadget,
-@@ -146,6 +147,7 @@ static void __init tct_hammer_map_io(voi
+@@ -146,6 +147,7 @@
  
  static void __init tct_hammer_init(void)
  {
@@ -9132,7 +9132,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include "usb-simtec.h"
  #include "nor-simtec.h"
-@@ -334,7 +335,7 @@ static struct platform_device *vr1000_de
+@@ -334,7 +335,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -9141,7 +9141,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_adc,
  	&serial_device,
  	&vr1000_dm9k0,
-@@ -384,6 +385,7 @@ static void __init vr1000_map_io(void)
+@@ -384,6 +385,7 @@
  
  static void __init vr1000_init(void)
  {
@@ -9151,7 +9151,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	i2c_register_board_info(0, vr1000_i2c_devs,
 --- a/arch/arm/mach-s3c2410/Makefile
 +++ b/arch/arm/mach-s3c2410/Makefile
-@@ -15,7 +15,8 @@ obj-$(CONFIG_CPU_S3C2410_DMA)	+= dma.o
+@@ -15,7 +15,8 @@
  obj-$(CONFIG_CPU_S3C2410_DMA)	+= dma.o
  obj-$(CONFIG_S3C2410_PM)	+= pm.o sleep.o
  obj-$(CONFIG_S3C2410_GPIO)	+= gpio.o
@@ -9161,7 +9161,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  # Machine support
  
-@@ -38,3 +39,5 @@ obj-$(CONFIG_SIMTEC_NOR)	+= nor-simtec.o
+@@ -38,3 +39,5 @@
  # machine additions
  
  obj-$(CONFIG_MACH_BAST_IDE)	+= bast-ide.o
@@ -9512,7 +9512,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* Initial IO mappings */
  
-@@ -59,25 +63,28 @@ void __init s3c2410_init_uarts(struct s3
+@@ -59,25 +63,28 @@
   * machine specific initialisation.
  */
  
@@ -9547,7 +9547,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	tmp = __raw_readl(S3C2410_CLKDIVN);
  
-@@ -95,7 +102,13 @@ void __init s3c2410_init_clocks(int xtal
+@@ -95,7 +102,13 @@
  	 * console to use them
  	 */
  
@@ -9564,7 +9564,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/arch/arm/mach-s3c2412/clock.c
 +++ b/arch/arm/mach-s3c2412/clock.c
-@@ -93,12 +93,6 @@ static int s3c2412_upll_enable(struct cl
+@@ -93,12 +93,6 @@
  
  /* clock selections */
  
@@ -9577,7 +9577,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static struct clk clk_erefclk = {
  	.name		= "erefclk",
  	.id		= -1,
-@@ -773,5 +767,6 @@ int __init s3c2412_baseclk_add(void)
+@@ -773,5 +767,6 @@
  		s3c2412_clkcon_enable(clkp, 0);
  	}
  
@@ -9625,7 +9625,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static struct map_desc jive_iodesc[] __initdata = {
  };
-@@ -450,14 +451,14 @@ static struct spi_board_info __initdata 
+@@ -450,14 +451,14 @@
  
  /* I2C bus and device configuration. */
  
@@ -9642,7 +9642,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	[0] = {
  		I2C_BOARD_INFO("lis302dl", 0x1c),
  		.irq	= IRQ_EINT14,
-@@ -470,7 +471,7 @@ static struct platform_device *jive_devi
+@@ -470,7 +471,7 @@
  	&s3c_device_usb,
  	&s3c_device_rtc,
  	&s3c_device_wdt,
@@ -9651,7 +9651,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_lcd,
  	&jive_device_lcdspi,
  	&jive_device_wm8750,
-@@ -492,7 +493,7 @@ static int jive_pm_suspend(struct sys_de
+@@ -492,7 +493,7 @@
  	 * correct address to resume from. */
  
  	__raw_writel(0x2BED, S3C2412_INFORM0);
@@ -9660,7 +9660,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	return 0;
  }
-@@ -628,7 +629,7 @@ static void __init jive_machine_init(voi
+@@ -628,7 +629,7 @@
  
  	/* initialise the power management now we've setup everything. */
  
@@ -9669,7 +9669,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	s3c_device_nand.dev.platform_data = &jive_nand_info;
  
-@@ -663,7 +664,7 @@ static void __init jive_machine_init(voi
+@@ -663,7 +664,7 @@
  
  	spi_register_board_info(jive_spi_devs, ARRAY_SIZE(jive_spi_devs));
  
@@ -9690,7 +9690,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <mach/fb.h>
  
  #include <plat/s3c2410.h>
-@@ -105,7 +106,7 @@ static struct platform_device *smdk2413_
+@@ -105,7 +106,7 @@
  	&s3c_device_usb,
  	//&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -9699,7 +9699,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_usbgadget,
  };
-@@ -142,6 +143,7 @@ static void __init smdk2413_machine_init
+@@ -142,6 +143,7 @@
  
  
   	s3c24xx_udc_set_platdata(&smdk2413_udc_cfg);
@@ -9719,7 +9719,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/s3c2410.h>
  #include <plat/s3c2412.h>
-@@ -122,7 +123,7 @@ static struct s3c2410_platform_nand vstm
+@@ -122,7 +123,7 @@
  static struct platform_device *vstms_devices[] __initdata = {
  	&s3c_device_usb,
  	&s3c_device_wdt,
@@ -9728,7 +9728,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_rtc,
  	&s3c_device_nand,
-@@ -151,6 +152,7 @@ static void __init vstms_map_io(void)
+@@ -151,6 +152,7 @@
  
  static void __init vstms_init(void)
  {
@@ -9738,7 +9738,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/arch/arm/mach-s3c2412/pm.c
 +++ b/arch/arm/mach-s3c2412/pm.c
-@@ -85,7 +85,7 @@ static struct sleep_save s3c2412_sleep[]
+@@ -85,7 +85,7 @@
  
  static int s3c2412_pm_suspend(struct sys_device *dev, pm_message_t state)
  {
@@ -9747,7 +9747,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return 0;
  }
  
-@@ -98,7 +98,7 @@ static int s3c2412_pm_resume(struct sys_
+@@ -98,7 +98,7 @@
  	tmp |=  S3C2412_PWRCFG_STANDBYWFI_IDLE;
  	__raw_writel(tmp, S3C2412_PWRCFG);
  
@@ -9791,7 +9791,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #ifndef CONFIG_CPU_S3C2412_ONLY
  void __iomem *s3c24xx_va_gpio2 = S3C24XX_VA_GPIO;
-@@ -136,7 +140,7 @@ static void s3c2412_hard_reset(void)
+@@ -136,7 +140,7 @@
   * machine specific initialisation.
  */
  
@@ -9800,7 +9800,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	/* move base of IO */
  
-@@ -153,20 +157,25 @@ void __init s3c2412_map_io(struct map_de
+@@ -153,20 +157,25 @@
  	/* register our io-tables */
  
  	iotable_init(s3c2412_iodesc, ARRAY_SIZE(s3c2412_iodesc));
@@ -9829,7 +9829,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	clk_mpll.rate = fclk;
  
-@@ -183,11 +192,17 @@ void __init s3c2412_init_clocks(int xtal
+@@ -183,11 +192,17 @@
  	printk("S3C2412: core %ld.%03ld MHz, memory %ld.%03ld MHz, peripheral %ld.%03ld MHz\n",
  	       print_mhz(fclk), print_mhz(hclk), print_mhz(pclk));
  
@@ -9848,7 +9848,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	s3c2412_baseclk_add();
  }
  
-@@ -216,5 +231,8 @@ int __init s3c2412_init(void)
+@@ -216,5 +231,8 @@
  {
  	printk("S3C2412: Initialising architecture\n");
  
@@ -16112,7 +16112,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif /* _LINUX_FIQ_C_ISR_H */
 --- a/arch/arm/mach-s3c2440/Kconfig
 +++ b/arch/arm/mach-s3c2440/Kconfig
-@@ -22,12 +22,20 @@ config S3C2440_DMA
+@@ -22,12 +22,20 @@
  	help
  	  Support for S3C2440 specific DMA code5A
  
@@ -16133,7 +16133,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select PM_SIMTEC if PM
  	select HAVE_PATA_PLATFORM
  	help
-@@ -37,6 +45,7 @@ config MACH_ANUBIS
+@@ -37,6 +45,7 @@
  config MACH_OSIRIS
  	bool "Simtec IM2440D20 (OSIRIS) module"
  	select CPU_S3C2440
@@ -16141,7 +16141,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select PM_SIMTEC if PM
  	help
  	  Say Y here if you are using the Simtec IM2440D20 module, also
-@@ -74,5 +83,30 @@ config MACH_AT2440EVB
+@@ -74,5 +83,30 @@
  	help
  	  Say Y here if you are using the AT2440EVB development board
  
@@ -16184,7 +16184,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <linux/mtd/mtd.h>
  #include <linux/mtd/nand.h>
-@@ -404,7 +405,7 @@ static struct platform_device *anubis_de
+@@ -404,7 +405,7 @@
  	&s3c_device_usb,
  	&s3c_device_wdt,
  	&s3c_device_adc,
@@ -16193,7 +16193,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
   	&s3c_device_rtc,
  	&s3c_device_nand,
  	&anubis_device_ide0,
-@@ -468,6 +469,7 @@ static void __init anubis_map_io(void)
+@@ -468,6 +469,7 @@
  
  static void __init anubis_init(void)
  {
@@ -16213,7 +16213,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <linux/mtd/mtd.h>
  #include <linux/mtd/nand.h>
-@@ -166,7 +167,7 @@ static struct platform_device *at2440evb
+@@ -166,7 +167,7 @@
  	&s3c_device_usb,
  	&s3c_device_wdt,
  	&s3c_device_adc,
@@ -16222,7 +16222,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_rtc,
  	&s3c_device_nand,
  	&at2440evb_device_eth,
-@@ -183,6 +184,7 @@ static void __init at2440evb_map_io(void
+@@ -183,6 +184,7 @@
  
  static void __init at2440evb_init(void)
  {
@@ -18021,7 +18021,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/s3c2410.h>
  #include <plat/s3c2440.h>
-@@ -107,7 +108,7 @@ static struct platform_device *nexcoder_
+@@ -107,7 +108,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -18030,7 +18030,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
   	&s3c_device_rtc,
  	&s3c_device_camif,
-@@ -142,6 +143,7 @@ static void __init nexcoder_map_io(void)
+@@ -142,6 +143,7 @@
  
  static void __init nexcoder_init(void)
  {
@@ -18050,7 +18050,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <linux/mtd/mtd.h>
  #include <linux/mtd/nand.h>
-@@ -335,7 +336,7 @@ static struct i2c_board_info osiris_i2c_
+@@ -335,7 +336,7 @@
  /* Standard Osiris devices */
  
  static struct platform_device *osiris_devices[] __initdata = {
@@ -18059,7 +18059,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_wdt,
  	&s3c_device_nand,
  	&osiris_pcmcia,
-@@ -398,6 +399,8 @@ static void __init osiris_init(void)
+@@ -398,6 +399,8 @@
  	sysdev_class_register(&osiris_pm_sysclass);
  	sysdev_register(&osiris_pm_sysdev);
  
@@ -18079,7 +18079,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <mach/fb.h>
  
  #include <plat/clock.h>
-@@ -179,7 +179,7 @@ static struct platform_device *rx3715_de
+@@ -179,7 +179,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -18088,7 +18088,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  	&s3c_device_nand,
  };
-@@ -203,7 +203,7 @@ static void __init rx3715_init_machine(v
+@@ -203,7 +203,7 @@
  #ifdef CONFIG_PM_H1940
  	memcpy(phys_to_virt(H1940_SUSPEND_RESUMEAT), h1940_pm_return, 1024);
  #endif
@@ -18107,7 +18107,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/s3c2410.h>
  #include <plat/s3c2440.h>
-@@ -152,7 +153,7 @@ static struct platform_device *smdk2440_
+@@ -152,7 +153,7 @@
  	&s3c_device_usb,
  	&s3c_device_lcd,
  	&s3c_device_wdt,
@@ -18116,7 +18116,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	&s3c_device_iis,
  };
  
-@@ -166,6 +167,7 @@ static void __init smdk2440_map_io(void)
+@@ -166,6 +167,7 @@
  static void __init smdk2440_machine_init(void)
  {
  	s3c24xx_fb_set_platdata(&smdk2440_fb_info);
@@ -18126,7 +18126,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	smdk_machine_init();
 --- a/arch/arm/mach-s3c2440/Makefile
 +++ b/arch/arm/mach-s3c2440/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_CPU_S3C2440)	+= s3c2440.o d
+@@ -13,6 +13,7 @@
  obj-$(CONFIG_CPU_S3C2440)	+= irq.o
  obj-$(CONFIG_CPU_S3C2440)	+= clock.o
  obj-$(CONFIG_S3C2440_DMA)	+= dma.o
@@ -18134,7 +18134,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  # Machine support
  
-@@ -22,3 +23,6 @@ obj-$(CONFIG_MACH_RX3715)	+= mach-rx3715
+@@ -22,3 +23,6 @@
  obj-$(CONFIG_ARCH_S3C2440)	+= mach-smdk2440.o
  obj-$(CONFIG_MACH_NEXCODER_2440) += mach-nexcoder.o
  obj-$(CONFIG_MACH_AT2440EVB) += mach-at2440evb.o
@@ -18143,7 +18143,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/arch/arm/mach-s3c2440/s3c2440.c
 +++ b/arch/arm/mach-s3c2440/s3c2440.c
-@@ -46,6 +46,9 @@ int __init s3c2440_init(void)
+@@ -46,6 +46,9 @@
  	s3c_device_wdt.resource[1].start = IRQ_S3C2440_WDT;
  	s3c_device_wdt.resource[1].end   = IRQ_S3C2440_WDT;
  
@@ -18178,7 +18178,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static struct sys_device s3c2442_sysdev = {
  	.cls		= &s3c2442_sysclass,
-@@ -30,5 +31,8 @@ int __init s3c2442_init(void)
+@@ -30,5 +31,8 @@
  {
  	printk("S3C2442: Initialising architecture\n");
  
@@ -18198,7 +18198,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <plat/s3c2443.h>
  #include <plat/clock.h>
  #include <plat/cpu.h>
-@@ -145,12 +147,6 @@ static unsigned long s3c2443_roundrate_c
+@@ -145,12 +147,6 @@
  
  /* clock selections */
  
@@ -18211,7 +18211,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static struct clk clk_mpllref = {
  	.name		= "mpllref",
  	.parent		= &clk_xtal,
-@@ -165,14 +161,6 @@ static struct clk clk_mpll = {
+@@ -165,14 +161,6 @@
  };
  #endif
  
@@ -18226,7 +18226,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static struct clk clk_i2s_ext = {
  	.name		= "i2s-ext",
  	.id		= -1,
-@@ -1011,22 +999,20 @@ static struct clk *clks[] __initdata = {
+@@ -1011,22 +999,20 @@
  	&clk_prediv,
  };
  
@@ -18255,7 +18255,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	pll = s3c2443_get_mpll(mpllcon, xtal);
  	clk_msysclk.rate = pll;
-@@ -1036,13 +1022,29 @@ void __init s3c2443_init_clocks(int xtal
+@@ -1036,13 +1022,29 @@
  	hclk /= s3c2443_get_hdiv(clkdiv0);
   	pclk = hclk / ((clkdiv0 & S3C2443_CLKDIV0_HALF_PCLK) ? 2 : 1);
  
@@ -18286,7 +18286,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	s3c2443_clk_initparents();
  
  	for (ptr = 0; ptr < ARRAY_SIZE(clks); ptr++) {
-@@ -1056,7 +1058,7 @@ void __init s3c2443_init_clocks(int xtal
+@@ -1056,7 +1058,7 @@
  	}
  
  	clk_epll.rate = s3c2443_get_epll(epllcon, xtal);
@@ -18295,7 +18295,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	clk_usb_bus.parent = &clk_usb_bus_host;
  
  	/* ensure usb bus clock is within correct rate of 48MHz */
-@@ -1105,4 +1107,6 @@ void __init s3c2443_init_clocks(int xtal
+@@ -1105,4 +1107,6 @@
  
  		(clkp->enable)(clkp, 0);
  	}
@@ -18321,7 +18321,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		[0]	= (x) | DMA_CH_VALID,	\
 --- a/arch/arm/mach-s3c2443/Kconfig
 +++ b/arch/arm/mach-s3c2443/Kconfig
-@@ -24,6 +24,7 @@ config MACH_SMDK2443
+@@ -24,6 +24,7 @@
  	bool "SMDK2443"
  	select CPU_S3C2443
  	select MACH_SMDK
@@ -18339,7 +18339,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/s3c2410.h>
  #include <plat/s3c2440.h>
-@@ -103,8 +104,8 @@ static struct s3c2410_uartcfg smdk2443_u
+@@ -103,8 +104,8 @@
  
  static struct platform_device *smdk2443_devices[] __initdata = {
  	&s3c_device_wdt,
@@ -18350,7 +18350,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  static void __init smdk2443_map_io(void)
-@@ -116,6 +117,7 @@ static void __init smdk2443_map_io(void)
+@@ -116,6 +117,7 @@
  
  static void __init smdk2443_machine_init(void)
  {
@@ -18360,7 +18360,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
 --- a/arch/arm/mach-s3c2443/s3c2443.c
 +++ b/arch/arm/mach-s3c2443/s3c2443.c
-@@ -81,10 +81,9 @@ void __init s3c2443_init_uarts(struct s3
+@@ -81,10 +81,9 @@
   * machine specific initialisation.
   */
  
@@ -21366,7 +21366,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +}
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -121,7 +121,10 @@ endif
+@@ -121,7 +121,10 @@
   machine-$(CONFIG_ARCH_OMAP3)	   := omap2
      plat-$(CONFIG_ARCH_OMAP)	   := omap
   machine-$(CONFIG_ARCH_S3C2410)	   := s3c2410 s3c2400 s3c2412 s3c2440 s3c2442 s3c2443
@@ -21379,7 +21379,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
   machine-$(CONFIG_ARCH_IMX)	   := imx
 --- a/arch/arm/mm/Kconfig
 +++ b/arch/arm/mm/Kconfig
-@@ -183,14 +183,14 @@ config CPU_ARM926T
+@@ -183,14 +183,14 @@
  	depends on ARCH_INTEGRATOR || ARCH_VERSATILE_PB || \
  		MACH_VERSATILE_AB || ARCH_OMAP730 || \
  		ARCH_OMAP16XX || MACH_REALVIEW_EB || \
@@ -21396,7 +21396,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		ARCH_AT91SAM9260 || ARCH_AT91SAM9261 || \
  		ARCH_AT91SAM9263 || ARCH_AT91SAM9RL || \
  		ARCH_AT91SAM9G20 || ARCH_AT91CAP9 || \
-@@ -400,9 +400,10 @@ config CPU_FEROCEON_OLD_ID
+@@ -400,9 +400,10 @@
  # ARMv6
  config CPU_V6
  	bool "Support ARM V6 processor"
@@ -24626,7 +24626,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #ifndef __ASSEMBLY__
  
  /* struct s3c24xx_uart_clksrc
-@@ -224,7 +243,7 @@ struct s3c2410_uartcfg {
+@@ -224,7 +243,7 @@
   * or platform_add_device() before the console_initcall()
  */
  
@@ -24830,7 +24830,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif /* __PLAT_S3C_SDHCI_H */
 --- a/arch/arm/plat-s3c/include/plat/uncompress.h
 +++ b/arch/arm/plat-s3c/include/plat/uncompress.h
-@@ -28,7 +28,7 @@ static void arch_detect_cpu(void);
+@@ -28,7 +28,7 @@
  /* defines for UART registers */
  
  #include <plat/regs-serial.h>
@@ -24839,7 +24839,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* working in physical space... */
  #undef S3C2410_WDOGREG
-@@ -37,7 +37,7 @@ static void arch_detect_cpu(void);
+@@ -37,7 +37,7 @@
  /* how many bytes we allow into the FIFO at a time in FIFO mode */
  #define FIFO_MAX	 (14)
  
@@ -24848,7 +24848,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static __inline__ void
  uart_wr(unsigned int reg, unsigned int val)
-@@ -139,6 +139,28 @@ static void arch_decomp_error(const char
+@@ -139,6 +139,28 @@
  
  static void error(char *err);
  
@@ -24877,7 +24877,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static void
  arch_decomp_setup(void)
  {
-@@ -149,6 +171,12 @@ arch_decomp_setup(void)
+@@ -149,6 +171,12 @@
  
  	arch_detect_cpu();
  	arch_decomp_wdog_start();
@@ -25067,7 +25067,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select NO_IOPORT
  	help
  	  Base platform code for any Samsung S3C device
-@@ -16,24 +16,24 @@ config PLAT_S3C
+@@ -16,24 +16,24 @@
  
  config CPU_LLSERIAL_S3C2410_ONLY
  	bool
@@ -25096,7 +25096,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	help
  	  Selected if there is an S3C2440 (or register compatible) serial
  	  low-level implementation needed
-@@ -57,6 +57,14 @@ config S3C_BOOT_ERROR_RESET
+@@ -57,6 +57,14 @@
  	  Say y here to use the watchdog to reset the system if the
  	  kernel decompressor detects an error during decompression.
  
@@ -25111,7 +25111,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  comment "Power management"
  
  config S3C2410_PM_DEBUG
-@@ -67,6 +75,15 @@ config S3C2410_PM_DEBUG
+@@ -67,6 +75,15 @@
  	  Resume code. See <file:Documentation/arm/Samsung-S3C24XX/Suspend.txt>
  	  for more information.
  
@@ -25127,7 +25127,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config S3C2410_PM_CHECK
  	bool "S3C2410 PM Suspend Memory CRC"
  	depends on PLAT_S3C && PM && CRC32
-@@ -102,3 +119,73 @@ config S3C_LOWLEVEL_UART_PORT
+@@ -102,3 +119,73 @@
  	  such as the `Uncompressing...` at start time. The value of
  	  this configuration should be between zero and two. The port
  	  must have been initialised by the boot-loader before use.
@@ -27737,7 +27737,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include <plat/common-smdk.h>
  #include <plat/devs.h>
-@@ -201,5 +201,5 @@ void __init smdk_machine_init(void)
+@@ -201,5 +201,5 @@
  
  	platform_add_devices(smdk_devs, ARRAY_SIZE(smdk_devs));
  
@@ -27763,7 +27763,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* table of supported CPUs */
  
  static const char name_s3c2400[]  = "S3C2400";
-@@ -72,6 +62,7 @@ static const char name_s3c2410[]  = "S3C
+@@ -72,6 +62,7 @@
  static const char name_s3c2412[]  = "S3C2412";
  static const char name_s3c2440[]  = "S3C2440";
  static const char name_s3c2442[]  = "S3C2442";
@@ -27771,7 +27771,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static const char name_s3c2443[]  = "S3C2443";
  static const char name_s3c2410a[] = "S3C2410A";
  static const char name_s3c2440a[] = "S3C2440A";
-@@ -123,6 +114,15 @@ static struct cpu_table cpu_ids[] __init
+@@ -123,6 +114,15 @@
  		.name		= name_s3c2442
  	},
  	{
@@ -27787,7 +27787,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		.idcode		= 0x32412001,
  		.idmask		= 0xffffffff,
  		.map_io		= s3c2412_map_io,
-@@ -169,23 +169,7 @@ static struct map_desc s3c_iodesc[] __in
+@@ -169,23 +169,7 @@
  	IODESC_ENT(UART)
  };
  
@@ -27812,7 +27812,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static unsigned long s3c24xx_read_idcode_v5(void)
  {
-@@ -231,6 +215,7 @@ void __init s3c24xx_init_io(struct map_d
+@@ -231,6 +215,7 @@
  	unsigned long idcode = 0x0;
  
  	/* initialise the io descriptors we need for initialisation */
@@ -27820,7 +27820,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	iotable_init(s3c_iodesc, ARRAY_SIZE(s3c_iodesc));
  
  	if (cpu_architecture() >= CPU_ARCH_ARMv5) {
-@@ -239,117 +224,7 @@ void __init s3c24xx_init_io(struct map_d
+@@ -239,117 +224,7 @@
  		idcode = s3c24xx_read_idcode_v4();
  	}
  
@@ -27960,7 +27960,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* Serial port registrations */
  
-@@ -76,6 +78,19 @@ static struct resource s3c2410_uart2_res
+@@ -76,6 +78,19 @@
  	}
  };
  
@@ -27980,7 +27980,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  struct s3c24xx_uart_resources s3c2410_uart_resources[] __initdata = {
  	[0] = {
  		.resources	= s3c2410_uart0_resource,
-@@ -89,6 +104,10 @@ struct s3c24xx_uart_resources s3c2410_ua
+@@ -89,6 +104,10 @@
  		.resources	= s3c2410_uart2_resource,
  		.nr_resources	= ARRAY_SIZE(s3c2410_uart2_resource),
  	},
@@ -27991,7 +27991,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  /* yart devices */
-@@ -105,13 +124,18 @@ static struct platform_device s3c24xx_ua
+@@ -105,13 +124,18 @@
  	.id		= 2,
  };
  
@@ -28012,7 +28012,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  /* USB Host Controller */
-@@ -192,8 +216,8 @@ void __init s3c24xx_fb_set_platdata(stru
+@@ -192,8 +216,8 @@
  
  static struct resource s3c_nand_resource[] = {
  	[0] = {
@@ -28023,7 +28023,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		.flags = IORESOURCE_MEM,
  	}
  };
-@@ -207,6 +231,23 @@ struct platform_device s3c_device_nand =
+@@ -207,6 +231,23 @@
  
  EXPORT_SYMBOL(s3c_device_nand);
  
@@ -28047,7 +28047,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* USB Device (Gadget)*/
  
  static struct resource s3c_usbgadget_resource[] = {
-@@ -271,31 +312,6 @@ struct platform_device s3c_device_wdt = 
+@@ -271,31 +312,6 @@
  
  EXPORT_SYMBOL(s3c_device_wdt);
  
@@ -28079,7 +28079,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* IIS */
  
  static struct resource s3c_iis_resource[] = {
-@@ -382,8 +398,8 @@ struct platform_device s3c_device_adc = 
+@@ -382,8 +398,8 @@
  
  static struct resource s3c_sdi_resource[] = {
  	[0] = {
@@ -28090,7 +28090,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		.flags = IORESOURCE_MEM,
  	},
  	[1] = {
-@@ -403,36 +419,6 @@ struct platform_device s3c_device_sdi = 
+@@ -403,36 +419,6 @@
  
  EXPORT_SYMBOL(s3c_device_sdi);
  
@@ -28137,7 +28137,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  void s3c2410_gpio_cfgpin(unsigned int pin, unsigned int function)
  {
-@@ -215,3 +216,423 @@ int s3c2410_gpio_irq2pin(unsigned int ir
+@@ -215,3 +216,423 @@
  }
  
  EXPORT_SYMBOL(s3c2410_gpio_irq2pin);
@@ -28670,7 +28670,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static int s3c24xx_gpiolib_banka_input(struct gpio_chip *chip, unsigned offset)
  {
  	return -EINVAL;
-@@ -125,7 +34,7 @@ static int s3c24xx_gpiolib_banka_input(s
+@@ -125,7 +34,7 @@
  static int s3c24xx_gpiolib_banka_output(struct gpio_chip *chip,
  					unsigned offset, int value)
  {
@@ -28679,7 +28679,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	void __iomem *base = ourchip->base;
  	unsigned long flags;
  	unsigned long dat;
-@@ -151,9 +60,10 @@ static int s3c24xx_gpiolib_banka_output(
+@@ -151,9 +60,10 @@
  	return 0;
  }
  
@@ -28691,7 +28691,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		.chip	= {
  			.base			= S3C2410_GPA0,
  			.owner			= THIS_MODULE,
-@@ -161,97 +71,87 @@ static struct s3c24xx_gpio_chip gpios[] 
+@@ -161,97 +71,87 @@
  			.ngpio			= 24,
  			.direction_input	= s3c24xx_gpiolib_banka_input,
  			.direction_output	= s3c24xx_gpiolib_banka_output,
@@ -29222,7 +29222,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #define irqdbf(x...)
  #define irqdbf2(x...)
  
-@@ -25,8 +31,15 @@ s3c_irqsub_mask(unsigned int irqno, unsi
+@@ -25,8 +31,15 @@
  {
  	unsigned long mask;
  	unsigned long submask;
@@ -29238,7 +29238,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	mask = __raw_readl(S3C2410_INTMSK);
  
  	submask |= (1UL << (irqno - IRQ_S3CUART_RX0));
-@@ -39,6 +52,9 @@ s3c_irqsub_mask(unsigned int irqno, unsi
+@@ -39,6 +52,9 @@
  
  	/* write back masks */
  	__raw_writel(submask, S3C2410_INTSUBMSK);
@@ -29248,7 +29248,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  }
  
-@@ -47,8 +63,15 @@ s3c_irqsub_unmask(unsigned int irqno, un
+@@ -47,8 +63,15 @@
  {
  	unsigned long mask;
  	unsigned long submask;
@@ -29264,7 +29264,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	mask = __raw_readl(S3C2410_INTMSK);
  
  	submask &= ~(1UL << (irqno - IRQ_S3CUART_RX0));
-@@ -57,6 +80,9 @@ s3c_irqsub_unmask(unsigned int irqno, un
+@@ -57,6 +80,9 @@
  	/* write back masks */
  	__raw_writel(submask, S3C2410_INTSUBMSK);
  	__raw_writel(mask, S3C2410_INTMSK);
@@ -29855,7 +29855,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/arch/arm/plat-s3c24xx/include/plat/s3c2443.h
 +++ b/arch/arm/plat-s3c24xx/include/plat/s3c2443.h
-@@ -16,7 +16,7 @@ struct s3c2410_uartcfg;
+@@ -16,7 +16,7 @@
  
  extern  int s3c2443_init(void);
  
@@ -30054,7 +30054,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static inline void
-@@ -155,9 +67,19 @@ s3c_irq_maskack(unsigned int irqno)
+@@ -155,9 +67,19 @@
  {
  	unsigned long bitval = 1UL << (irqno - IRQ_EINT0);
  	unsigned long mask;
@@ -30074,7 +30074,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	__raw_writel(bitval, S3C2410_SRCPND);
  	__raw_writel(bitval, S3C2410_INTPND);
-@@ -168,15 +90,25 @@ static void
+@@ -168,15 +90,25 @@
  s3c_irq_unmask(unsigned int irqno)
  {
  	unsigned long mask;
@@ -30100,7 +30100,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  struct irq_chip s3c_irq_level_chip = {
-@@ -589,59 +521,6 @@ s3c_irq_demux_extint4t7(unsigned int irq
+@@ -589,59 +521,6 @@
  	}
  }
  
@@ -30160,7 +30160,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* s3c24xx_init_irq
   *
   * Initialise S3C2410 IRQ system
-@@ -672,26 +551,26 @@ void __init s3c24xx_init_irq(void)
+@@ -672,26 +551,26 @@
  
  	last = 0;
  	for (i = 0; i < 4; i++) {
@@ -30353,7 +30353,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	help
  	  Support for S3C2440 and S3C2442 Samsung Mobile CPU based systems.
  
-@@ -49,9 +63,31 @@ config S3C2410_DMA_DEBUG
+@@ -49,9 +63,31 @@
  	  Enable debugging output for the DMA code. This option sends info
  	  to the kernel log, at priority KERN_DEBUG.
  
@@ -30387,7 +30387,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  endif
 --- a/arch/arm/plat-s3c24xx/Makefile
 +++ b/arch/arm/plat-s3c24xx/Makefile
-@@ -17,9 +17,8 @@ obj-y				+= irq.o
+@@ -17,9 +17,8 @@
  obj-y				+= devs.o
  obj-y				+= gpio.o
  obj-y				+= gpiolib.o
@@ -30398,7 +30398,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  # Architecture dependant builds
  
-@@ -28,7 +27,26 @@ obj-$(CONFIG_CPU_S3C244X)	+= s3c244x-irq
+@@ -28,7 +27,26 @@
  obj-$(CONFIG_CPU_S3C244X)	+= s3c244x-clock.o
  obj-$(CONFIG_PM_SIMTEC)		+= pm-simtec.o
  obj-$(CONFIG_PM)		+= pm.o
@@ -31940,7 +31940,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #define PFX "s3c24xx-pm: "
  
  static struct sleep_save core_save[] = {
-@@ -76,371 +67,26 @@ static struct sleep_save core_save[] = {
+@@ -76,371 +67,26 @@
  	SAVE_ITEM(S3C2410_BANKCON4),
  	SAVE_ITEM(S3C2410_BANKCON5),
  
@@ -32317,7 +32317,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	unsigned long irqstate;
  	unsigned long pinstate;
-@@ -455,21 +101,21 @@ static void s3c2410_pm_check_resume_pin(
+@@ -455,21 +101,21 @@
  
  	if (!irqstate) {
  		if (pinstate == S3C2410_GPIO_IRQ)
@@ -32343,7 +32343,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	int pin;
  
-@@ -479,336 +125,24 @@ static void s3c2410_pm_configure_extint(
+@@ -479,336 +125,24 @@
  	*/
  
  	for (pin = S3C2410_GPF0; pin <= S3C2410_GPF7; pin++) {
@@ -32690,7 +32690,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 -}
 --- a/arch/arm/plat-s3c24xx/pm-simtec.c
 +++ b/arch/arm/plat-s3c24xx/pm-simtec.c
-@@ -61,7 +61,7 @@ static __init int pm_simtec_init(void)
+@@ -61,7 +61,7 @@
  
  	__raw_writel(gstatus4, S3C2410_GSTATUS4);
  
@@ -33014,7 +33014,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static struct map_desc s3c244x_iodesc[] __initdata = {
  	IODESC_ENT(CLKPWR),
-@@ -56,32 +59,37 @@ void __init s3c244x_init_uarts(struct s3
+@@ -56,32 +59,37 @@
  	s3c24xx_init_uartdevs("s3c2440-uart", s3c2410_uart_resources, cfg, no);
  }
  
@@ -33059,7 +33059,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	clkdiv = __raw_readl(S3C2410_CLKDIVN);
  	camdiv = __raw_readl(S3C2440_CAMDIVN);
-@@ -107,18 +115,24 @@ void __init s3c244x_init_clocks(int xtal
+@@ -107,18 +115,24 @@
  	}
  
  	hclk = fclk / hdiv;
@@ -33086,7 +33086,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	s3c2410_baseclk_add();
  }
  
-@@ -134,13 +148,13 @@ static struct sleep_save s3c244x_sleep[]
+@@ -134,13 +148,13 @@
  
  static int s3c244x_suspend(struct sys_device *dev, pm_message_t state)
  {
@@ -33112,7 +33112,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <linux/clk.h>
  #include <linux/io.h>
  
-@@ -102,13 +101,13 @@ static int s3c244x_clk_add(struct sys_de
+@@ -102,13 +101,13 @@
  	if (clk_get_rate(clock_upll) > (94 * MHZ)) {
  		clk_usb_bus.rate = clk_get_rate(clock_upll) / 2;
  
@@ -33187,7 +33187,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	stmfd	sp!, { r4 - r12, lr }
  
  	@@ store co-processor registers
-@@ -84,7 +84,7 @@ resume_with_mmu:
+@@ -84,7 +84,7 @@
  	.ltorg
  
  	@@ the next bits sit in the .data segment, even though they
@@ -33196,7 +33196,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	@@ accessed by the resume code before it can restore the MMU.
  	@@ This means that the variable has to be close enough for the
  	@@ code to read it... since the .text segment needs to be RO,
-@@ -92,19 +92,19 @@ resume_with_mmu:
+@@ -92,19 +92,19 @@
  
  	.data
  
@@ -33220,7 +33220,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	 *
  	 * resume code entry for bootloader to call
  	 *
-@@ -113,7 +113,7 @@ s3c2410_sleep_save_phys:
+@@ -113,7 +113,7 @@
  	 * must not write to the code segment (code is read-only)
  	*/
  
@@ -33229,7 +33229,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	mov	r0, #PSR_I_BIT | PSR_F_BIT | SVC_MODE
  	msr	cpsr_c, r0
  
-@@ -145,7 +145,7 @@ ENTRY(s3c2410_cpu_resume)
+@@ -145,7 +145,7 @@
  	mcr	p15, 0, r1, c8, c7, 0		@@ invalidate I & D TLBs
  	mcr	p15, 0, r1, c7, c7, 0		@@ invalidate I & D caches
  
@@ -33361,7 +33361,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #define TIMER_USEC_SHIFT 16
  
-@@ -177,11 +183,7 @@ static void s3c2410_timer_setup (void)
+@@ -177,11 +183,7 @@
  		tcfg1 &= ~S3C2410_TCFG1_MUX4_MASK;
  		tcfg1 |= S3C2410_TCFG1_MUX4_TCLK1;
  	} else {
@@ -33374,7 +33374,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		 * 70MHz are not values we can directly generate the timer
  		 * value from, we need to pre-scale and divide before using it.
  		 *
-@@ -189,19 +191,9 @@ static void s3c2410_timer_setup (void)
+@@ -189,19 +191,9 @@
  		 * (8.45 ticks per usec)
  		 */
  
@@ -33395,7 +33395,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  		tcfg1 &= ~S3C2410_TCFG1_MUX4_MASK;
  		tcfg1 |= S3C2410_TCFG1_MUX4_DIV2;
-@@ -245,16 +237,244 @@ static void s3c2410_timer_setup (void)
+@@ -245,16 +237,244 @@
  	tcon |= S3C2410_TCON_T4START;
  	tcon &= ~S3C2410_TCON_T4MANUALUPD;
  	__raw_writel(tcon, S3C2410_TCON);
@@ -38455,7 +38455,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/Documentation/arm/Samsung-S3C24XX/Suspend.txt
 +++ b/Documentation/arm/Samsung-S3C24XX/Suspend.txt
-@@ -40,13 +40,13 @@ Resuming
+@@ -40,13 +40,13 @@
  Machine Support
  ---------------
  
@@ -38472,7 +38472,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
    needs to setup anything else for power management support.
  
    There is currently no support for over-riding the default method of
-@@ -74,7 +74,7 @@ statuc void __init machine_init(void)
+@@ -74,7 +74,7 @@
  
  	enable_irq_wake(IRQ_EINT0);
  
@@ -78733,7 +78733,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif /* _WMI_HOST_H_ */
 --- a/drivers/base/bus.c
 +++ b/drivers/base/bus.c
-@@ -141,6 +141,29 @@ void bus_remove_file(struct bus_type *bu
+@@ -141,6 +141,29 @@
  }
  EXPORT_SYMBOL_GPL(bus_remove_file);
  
@@ -78765,7 +78765,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -55,6 +55,11 @@ static inline int device_is_not_partitio
+@@ -55,6 +55,11 @@
   */
  const char *dev_driver_string(const struct device *dev)
  {
@@ -78779,7 +78779,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  			(dev->class ? dev->class->name : ""));
 --- a/drivers/base/power/main.c
 +++ b/drivers/base/power/main.c
-@@ -69,9 +69,9 @@ void device_pm_unlock(void)
+@@ -69,9 +69,9 @@
   */
  void device_pm_add(struct device *dev)
  {
@@ -78793,7 +78793,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		if (dev->parent->power.status >= DPM_SUSPENDING)
 --- a/drivers/char/Kconfig
 +++ b/drivers/char/Kconfig
-@@ -66,6 +66,18 @@ config VT_CONSOLE
+@@ -66,6 +66,18 @@
  
  	  If unsure, say Y.
  
@@ -78844,7 +78844,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* i2c controller state */
  
-@@ -64,6 +62,7 @@ struct s3c24xx_i2c {
+@@ -64,6 +62,7 @@
  	unsigned int		msg_ptr;
  
  	unsigned int		tx_setup;
@@ -78852,7 +78852,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	enum s3c24xx_i2c_state	state;
  	unsigned long		clkrate;
-@@ -71,7 +70,6 @@ struct s3c24xx_i2c {
+@@ -71,7 +70,6 @@
  	void __iomem		*regs;
  	struct clk		*clk;
  	struct device		*dev;
@@ -78860,7 +78860,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	struct resource		*ioarea;
  	struct i2c_adapter	adap;
  
-@@ -80,16 +78,7 @@ struct s3c24xx_i2c {
+@@ -80,16 +78,7 @@
  #endif
  };
  
@@ -78878,7 +78878,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* s3c24xx_i2c_is2440()
   *
-@@ -103,21 +92,6 @@ static inline int s3c24xx_i2c_is2440(str
+@@ -103,21 +92,6 @@
  	return !strcmp(pdev->name, "s3c2440-i2c");
  }
  
@@ -78900,7 +78900,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* s3c24xx_i2c_master_complete
   *
   * complete the message and wake up the caller, using the given return code,
-@@ -130,7 +104,7 @@ static inline void s3c24xx_i2c_master_co
+@@ -130,7 +104,7 @@
  
  	i2c->msg_ptr = 0;
  	i2c->msg = NULL;
@@ -78909,7 +78909,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	i2c->msg_num = 0;
  	if (ret)
  		i2c->msg_idx = ret;
-@@ -141,19 +115,17 @@ static inline void s3c24xx_i2c_master_co
+@@ -141,19 +115,17 @@
  static inline void s3c24xx_i2c_disable_ack(struct s3c24xx_i2c *i2c)
  {
  	unsigned long tmp;
@@ -78931,7 +78931,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  /* irq enable/disable functions */
-@@ -161,15 +133,23 @@ static inline void s3c24xx_i2c_enable_ac
+@@ -161,15 +133,23 @@
  static inline void s3c24xx_i2c_disable_irq(struct s3c24xx_i2c *i2c)
  {
  	unsigned long tmp;
@@ -78957,7 +78957,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	tmp = readl(i2c->regs + S3C2410_IICCON);
  	writel(tmp | S3C2410_IICCON_IRQEN, i2c->regs + S3C2410_IICCON);
  }
-@@ -177,10 +157,10 @@ static inline void s3c24xx_i2c_enable_ir
+@@ -177,10 +157,10 @@
  
  /* s3c24xx_i2c_message_start
   *
@@ -78970,7 +78970,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  				      struct i2c_msg *msg)
  {
  	unsigned int addr = (msg->addr & 0x7f) << 1;
-@@ -199,15 +179,15 @@ static void s3c24xx_i2c_message_start(st
+@@ -199,15 +179,15 @@
  	if (msg->flags & I2C_M_REV_DIR_ADDR)
  		addr ^= 1;
  
@@ -78989,7 +78989,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* delay here to ensure the data byte has gotten onto the bus
  	 * before the transaction is started */
  
-@@ -215,8 +195,8 @@ static void s3c24xx_i2c_message_start(st
+@@ -215,8 +195,8 @@
  
  	dev_dbg(i2c->dev, "iiccon, %08lx\n", iiccon);
  	writel(iiccon, i2c->regs + S3C2410_IICCON);
@@ -79000,7 +79000,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	writel(stat, i2c->regs + S3C2410_IICSTAT);
  }
  
-@@ -227,11 +207,11 @@ static inline void s3c24xx_i2c_stop(stru
+@@ -227,11 +207,11 @@
  	dev_dbg(i2c->dev, "STOP\n");
  
  	/* stop the transfer */
@@ -79015,7 +79015,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	s3c24xx_i2c_master_complete(i2c, ret);
  	s3c24xx_i2c_disable_irq(i2c);
  }
-@@ -241,7 +221,7 @@ static inline void s3c24xx_i2c_stop(stru
+@@ -241,7 +221,7 @@
  
  /* is_lastmsg()
   *
@@ -79024,7 +79024,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  */
  
  static inline int is_lastmsg(struct s3c24xx_i2c *i2c)
-@@ -289,14 +269,14 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -289,14 +269,14 @@
  
  	case STATE_STOP:
  		dev_err(i2c->dev, "%s: called in STATE_STOP\n", __func__);
@@ -79041,7 +79041,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		if (iicstat & S3C2410_IICSTAT_LASTBIT &&
  		    !(i2c->msg->flags & I2C_M_IGNORE_NAK)) {
  			/* ack was not received... */
-@@ -322,7 +302,7 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -322,7 +302,7 @@
  		if (i2c->state == STATE_READ)
  			goto prepare_read;
  
@@ -79050,7 +79050,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		 * send a byte as well */
  
  	case STATE_WRITE:
-@@ -339,7 +319,7 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -339,7 +319,7 @@
  			}
  		}
  
@@ -79059,7 +79059,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  		if (!is_msgend(i2c)) {
  			byte = i2c->msg->buf[i2c->msg_ptr++];
-@@ -359,9 +339,9 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -359,9 +339,9 @@
  			dev_dbg(i2c->dev, "WRITE: Next Message\n");
  
  			i2c->msg_ptr = 0;
@@ -79071,7 +79071,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  			/* check to see if we need to do another message */
  			if (i2c->msg->flags & I2C_M_NOSTART) {
  
-@@ -375,7 +355,6 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -375,7 +355,6 @@
  
  				goto retry_write;
  			} else {
@@ -79079,7 +79079,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  				/* send the new start */
  				s3c24xx_i2c_message_start(i2c, i2c->msg);
  				i2c->state = STATE_START;
-@@ -389,7 +368,7 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -389,7 +368,7 @@
  		break;
  
  	case STATE_READ:
@@ -79088,7 +79088,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		 * something with it, and then work out wether we are
  		 * going to do any more read/write
  		 */
-@@ -397,13 +376,13 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -397,13 +376,13 @@
  		byte = readb(i2c->regs + S3C2410_IICDS);
  		i2c->msg->buf[i2c->msg_ptr++] = byte;
  
@@ -79104,7 +79104,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		} else if (is_msgend(i2c)) {
  			/* ok, we've read the entire buffer, see if there
  			 * is anything else we need to do */
-@@ -429,7 +408,7 @@ static int i2s_s3c_irq_nextbyte(struct s
+@@ -429,7 +408,7 @@
  	/* acknowlegde the IRQ and get back on with the work */
  
   out_ack:
@@ -79113,7 +79113,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	tmp &= ~S3C2410_IICCON_IRQPEND;
  	writel(tmp, i2c->regs + S3C2410_IICCON);
   out:
-@@ -450,19 +429,19 @@ static irqreturn_t s3c24xx_i2c_irq(int i
+@@ -450,19 +429,19 @@
  	status = readl(i2c->regs + S3C2410_IICSTAT);
  
  	if (status & S3C2410_IICSTAT_ARBITR) {
@@ -79136,7 +79136,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* pretty much this leaves us with the fact that we've
  	 * transmitted or received whatever byte we last sent */
  
-@@ -485,16 +464,13 @@ static int s3c24xx_i2c_set_master(struct
+@@ -485,16 +464,13 @@
  
  	while (timeout-- > 0) {
  		iicstat = readl(i2c->regs + S3C2410_IICSTAT);
@@ -79154,7 +79154,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return -ETIMEDOUT;
  }
  
-@@ -503,7 +479,8 @@ static int s3c24xx_i2c_set_master(struct
+@@ -503,7 +479,8 @@
   * this starts an i2c transfer
  */
  
@@ -79164,7 +79164,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	unsigned long timeout;
  	int ret;
-@@ -511,6 +488,15 @@ static int s3c24xx_i2c_doxfer(struct s3c
+@@ -511,6 +488,15 @@
  	if (i2c->suspended)
  		return -EIO;
  
@@ -79180,7 +79180,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	ret = s3c24xx_i2c_set_master(i2c);
  	if (ret != 0) {
  		dev_err(i2c->dev, "cannot get bus (error %d)\n", ret);
-@@ -529,12 +515,12 @@ static int s3c24xx_i2c_doxfer(struct s3c
+@@ -529,12 +515,12 @@
  	s3c24xx_i2c_enable_irq(i2c);
  	s3c24xx_i2c_message_start(i2c, msgs);
  	spin_unlock_irq(&i2c->lock);
@@ -79195,7 +79195,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	 * noisy when doing an i2cdetect */
  
  	if (timeout == 0)
-@@ -591,19 +577,6 @@ static const struct i2c_algorithm s3c24x
+@@ -591,19 +577,6 @@
  	.functionality		= s3c24xx_i2c_func,
  };
  
@@ -79215,7 +79215,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* s3c24xx_i2c_calcdivisor
   *
   * return the divisor settings for a given frequency
-@@ -643,7 +616,7 @@ static inline int freq_acceptable(unsign
+@@ -643,7 +616,7 @@
  {
  	int diff = freq - wanted;
  
@@ -79224,7 +79224,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  /* s3c24xx_i2c_clockrate
-@@ -655,7 +628,7 @@ static inline int freq_acceptable(unsign
+@@ -655,7 +628,7 @@
  
  static int s3c24xx_i2c_clockrate(struct s3c24xx_i2c *i2c, unsigned int *got)
  {
@@ -79233,7 +79233,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	unsigned long clkin = clk_get_rate(i2c->clk);
  	unsigned int divs, div1;
  	u32 iiccon;
-@@ -663,10 +636,8 @@ static int s3c24xx_i2c_clockrate(struct 
+@@ -663,10 +636,8 @@
  	int start, end;
  
  	i2c->clkrate = clkin;
@@ -79245,7 +79245,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	dev_dbg(i2c->dev, "pdata %p, freq %lu %lu..%lu\n",
  		 pdata, pdata->bus_freq, pdata->min_freq, pdata->max_freq);
  
-@@ -774,7 +745,7 @@ static inline void s3c24xx_i2c_deregiste
+@@ -774,7 +745,7 @@
  
  /* s3c24xx_i2c_init
   *
@@ -79254,7 +79254,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  */
  
  static int s3c24xx_i2c_init(struct s3c24xx_i2c *i2c)
-@@ -785,15 +756,15 @@ static int s3c24xx_i2c_init(struct s3c24
+@@ -785,15 +756,15 @@
  
  	/* get the plafrom data */
  
@@ -79274,7 +79274,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	writeb(pdata->slave_addr, i2c->regs + S3C2410_IICADD);
  
  	dev_info(i2c->dev, "slave address 0x%02x\n", pdata->slave_addr);
-@@ -831,12 +802,32 @@ static int s3c24xx_i2c_init(struct s3c24
+@@ -831,12 +802,32 @@
  
  static int s3c24xx_i2c_probe(struct platform_device *pdev)
  {
@@ -79309,7 +79309,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/* find the clock and enable it */
  
-@@ -878,7 +869,8 @@ static int s3c24xx_i2c_probe(struct plat
+@@ -878,7 +869,8 @@
  		goto err_ioarea;
  	}
  
@@ -79319,7 +79319,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/* setup info block for the i2c core */
  
-@@ -892,29 +884,23 @@ static int s3c24xx_i2c_probe(struct plat
+@@ -892,29 +884,23 @@
  		goto err_iomap;
  
  	/* find the IRQ for this unit (note, this relies on the init call to
@@ -79355,7 +79355,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	ret = s3c24xx_i2c_register_cpufreq(i2c);
  	if (ret < 0) {
  		dev_err(&pdev->dev, "failed to register cpufreq notifier\n");
-@@ -944,7 +930,7 @@ static int s3c24xx_i2c_probe(struct plat
+@@ -944,7 +930,7 @@
  	s3c24xx_i2c_deregister_cpufreq(i2c);
  
   err_irq:
@@ -79364,7 +79364,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
   err_iomap:
  	iounmap(i2c->regs);
-@@ -958,6 +944,7 @@ static int s3c24xx_i2c_probe(struct plat
+@@ -958,6 +944,7 @@
  	clk_put(i2c->clk);
  
   err_noclk:
@@ -79372,7 +79372,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return ret;
  }
  
-@@ -973,7 +960,7 @@ static int s3c24xx_i2c_remove(struct pla
+@@ -973,7 +960,7 @@
  	s3c24xx_i2c_deregister_cpufreq(i2c);
  
  	i2c_del_adapter(&i2c->adap);
@@ -79381,7 +79381,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	clk_disable(i2c->clk);
  	clk_put(i2c->clk);
-@@ -982,6 +969,7 @@ static int s3c24xx_i2c_remove(struct pla
+@@ -982,6 +969,7 @@
  
  	release_resource(i2c->ioarea);
  	kfree(i2c->ioarea);
@@ -79391,7 +79391,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
 --- a/drivers/i2c/busses/Kconfig
 +++ b/drivers/i2c/busses/Kconfig
-@@ -455,11 +455,12 @@ config I2C_PXA_SLAVE
+@@ -455,11 +455,12 @@
  	  I2C bus.
  
  config I2C_S3C2410
@@ -79409,7 +79409,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	tristate "Renesas SH7760 I2C Controller"
 --- a/drivers/i2c/chips/Kconfig
 +++ b/drivers/i2c/chips/Kconfig
-@@ -53,6 +53,26 @@ config SENSORS_EEPROM
+@@ -53,6 +53,26 @@
  	  This driver can also be built as a module.  If so, the module
  	  will be called eeprom.
  
@@ -79436,7 +79436,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config SENSORS_PCF8574
  	tristate "Philips PCF8574 and PCF8574A (DEPRECATED)"
  	depends on EXPERIMENTAL && GPIO_PCF857X = "n"
-@@ -185,4 +205,23 @@ config MCU_MPC8349EMITX
+@@ -185,4 +205,23 @@
  	  also register MCU GPIOs with the generic GPIO API, so you'll able
  	  to use MCU pins as GPIOs.
  
@@ -79462,7 +79462,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  endmenu
 --- a/drivers/i2c/chips/Makefile
 +++ b/drivers/i2c/chips/Makefile
-@@ -15,6 +15,8 @@ obj-$(CONFIG_AT24)		+= at24.o
+@@ -15,6 +15,8 @@
  obj-$(CONFIG_SENSORS_EEPROM)	+= eeprom.o
  obj-$(CONFIG_SENSORS_MAX6875)	+= max6875.o
  obj-$(CONFIG_SENSORS_PCA9539)	+= pca9539.o
@@ -79471,7 +79471,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_SENSORS_PCF8574)	+= pcf8574.o
  obj-$(CONFIG_PCF8575)		+= pcf8575.o
  obj-$(CONFIG_SENSORS_PCF8591)	+= pcf8591.o
-@@ -23,6 +25,8 @@ obj-$(CONFIG_TPS65010)		+= tps65010.o
+@@ -23,6 +25,8 @@
  obj-$(CONFIG_MENELAUS)		+= menelaus.o
  obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
  obj-$(CONFIG_MCU_MPC8349EMITX)	+= mcu_mpc8349emitx.o
@@ -84455,7 +84455,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* ------------------------------------------------------------------------- */
  /*   Copyright (C) 1995-99 Simon G. Vogl
  
-@@ -158,10 +157,16 @@ static int i2c_device_suspend(struct dev
+@@ -158,10 +157,16 @@
  
  	if (!dev->driver)
  		return 0;
@@ -84472,7 +84472,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static int i2c_device_resume(struct device * dev)
-@@ -170,10 +175,16 @@ static int i2c_device_resume(struct devi
+@@ -170,10 +175,16 @@
  
  	if (!dev->driver)
  		return 0;
@@ -84489,7 +84489,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static void i2c_client_release(struct device *dev)
-@@ -1129,11 +1140,11 @@ static int i2c_probe_address(struct i2c_
+@@ -1129,11 +1140,11 @@
  	int err;
  
  	/* Make sure the address is valid */
@@ -84516,7 +84516,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	struct gpio_keys_button *button;
 --- a/drivers/input/keyboard/Kconfig
 +++ b/drivers/input/keyboard/Kconfig
-@@ -323,4 +323,21 @@ config KEYBOARD_SH_KEYSC
+@@ -323,4 +323,21 @@
  
  	  To compile this driver as a module, choose M here: the
  	  module will be called sh_keysc.
@@ -84540,7 +84540,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  endif
 --- a/drivers/input/keyboard/Makefile
 +++ b/drivers/input/keyboard/Makefile
-@@ -14,6 +14,8 @@ obj-$(CONFIG_KEYBOARD_LOCOMO)		+= locomo
+@@ -14,6 +14,8 @@
  obj-$(CONFIG_KEYBOARD_NEWTON)		+= newtonkbd.o
  obj-$(CONFIG_KEYBOARD_STOWAWAY)		+= stowaway.o
  obj-$(CONFIG_KEYBOARD_CORGI)		+= corgikbd.o
@@ -85253,7 +85253,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/drivers/input/misc/Kconfig
 +++ b/drivers/input/misc/Kconfig
-@@ -236,4 +236,25 @@ config INPUT_GPIO_BUTTONS
+@@ -236,4 +236,25 @@
  	  To compile this driver as a module, choose M here: the
  	  module will be called gpio-buttons.
  
@@ -86158,7 +86158,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +module_exit(lis302dl_exit);
 --- a/drivers/input/misc/Makefile
 +++ b/drivers/input/misc/Makefile
-@@ -22,3 +22,6 @@ obj-$(CONFIG_INPUT_UINPUT)		+= uinput.o
+@@ -22,3 +22,6 @@
  obj-$(CONFIG_INPUT_APANEL)		+= apanel.o
  obj-$(CONFIG_INPUT_SGI_BTNS)		+= sgi_btns.o
  obj-$(CONFIG_INPUT_GPIO_BUTTONS)	+= gpio_buttons.o
@@ -86419,7 +86419,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_ALIAS("platform:pcf50633-input");
 --- a/drivers/input/mousedev.c
 +++ b/drivers/input/mousedev.c
-@@ -1016,6 +1016,7 @@ static const struct input_device_id mous
+@@ -1016,6 +1016,7 @@
  		.evbit = { BIT_MASK(EV_KEY) | BIT_MASK(EV_REL) },
  		.relbit = { BIT_MASK(REL_WHEEL) },
  	},	/* A separate scrollwheel */
@@ -86427,7 +86427,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	{
  		.flags = INPUT_DEVICE_ID_MATCH_EVBIT |
  				INPUT_DEVICE_ID_MATCH_KEYBIT |
-@@ -1025,6 +1026,7 @@ static const struct input_device_id mous
+@@ -1025,6 +1026,7 @@
  		.absbit = { BIT_MASK(ABS_X) | BIT_MASK(ABS_Y) },
  	},	/* A tablet like device, at least touch detection,
  		   two absolute axes */
@@ -86437,7 +86437,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  				INPUT_DEVICE_ID_MATCH_KEYBIT |
 --- a/drivers/input/touchscreen/Kconfig
 +++ b/drivers/input/touchscreen/Kconfig
-@@ -11,6 +11,50 @@ menuconfig INPUT_TOUCHSCREEN
+@@ -11,6 +11,50 @@
  
  if INPUT_TOUCHSCREEN
  
@@ -86488,7 +86488,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config TOUCHSCREEN_ADS7846
  	tristate "ADS7846/TSC2046 and ADS7843 based touchscreens"
  	depends on SPI_MASTER
-@@ -71,6 +115,25 @@ config TOUCHSCREEN_FUJITSU
+@@ -71,6 +115,25 @@
  	  To compile this driver as a module, choose M here: the
  	  module will be called fujitsu-ts.
  
@@ -86514,7 +86514,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config TOUCHSCREEN_GUNZE
  	tristate "Gunze AHL-51S touchscreen"
  	select SERIO
-@@ -376,4 +439,15 @@ config TOUCHSCREEN_TOUCHIT213
+@@ -376,4 +439,15 @@
  	  To compile this driver as a module, choose M here: the
  	  module will be called touchit213.
  
@@ -86532,7 +86532,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/drivers/input/touchscreen/Makefile
 +++ b/drivers/input/touchscreen/Makefile
-@@ -31,3 +31,10 @@ wm97xx-ts-$(CONFIG_TOUCHSCREEN_WM9705)	+
+@@ -31,3 +31,10 @@
  wm97xx-ts-$(CONFIG_TOUCHSCREEN_WM9712)	+= wm9712.o
  wm97xx-ts-$(CONFIG_TOUCHSCREEN_WM9713)	+= wm9713.o
  obj-$(CONFIG_TOUCHSCREEN_WM97XX_MAINSTONE)	+= mainstone-wm97xx.o
@@ -88029,7 +88029,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +};
 --- a/drivers/Kconfig
 +++ b/drivers/Kconfig
-@@ -107,4 +107,6 @@ source "drivers/uio/Kconfig"
+@@ -107,4 +107,6 @@
  source "drivers/xen/Kconfig"
  
  source "drivers/staging/Kconfig"
@@ -88038,7 +88038,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  endmenu
 --- a/drivers/leds/Kconfig
 +++ b/drivers/leds/Kconfig
-@@ -33,7 +33,7 @@ config LEDS_LOCOMO
+@@ -33,7 +33,7 @@
  
  config LEDS_S3C24XX
  	tristate "LED Support for Samsung S3C24XX GPIO LEDs"
@@ -88047,7 +88047,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	help
  	  This option enables support for LEDs connected to GPIO lines
  	  on Samsung S3C24XX series CPUs, such as the S3C2410 and S3C2440.
-@@ -171,6 +171,18 @@ config LEDS_DA903X
+@@ -171,6 +171,18 @@
  	  This option enables support for on-chip LED drivers found
  	  on Dialog Semiconductor DA9030/DA9034 PMICs.
  
@@ -88068,7 +88068,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config LEDS_TRIGGERS
 --- a/drivers/leds/led-class.c
 +++ b/drivers/leds/led-class.c
-@@ -56,8 +56,10 @@ static ssize_t led_brightness_store(stru
+@@ -56,8 +56,10 @@
  	if (count == size) {
  		ret = count;
  
@@ -88475,7 +88475,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/drivers/leds/Makefile
 +++ b/drivers/leds/Makefile
-@@ -24,6 +24,8 @@ obj-$(CONFIG_LEDS_FSG)			+= leds-fsg.o
+@@ -24,6 +24,8 @@
  obj-$(CONFIG_LEDS_PCA955X)		+= leds-pca955x.o
  obj-$(CONFIG_LEDS_DA903X)		+= leds-da903x.o
  obj-$(CONFIG_LEDS_HP_DISK)		+= leds-hp-disk.o
@@ -88486,7 +88486,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_LEDS_TRIGGER_TIMER)	+= ledtrig-timer.o
 --- a/drivers/Makefile
 +++ b/drivers/Makefile
-@@ -86,6 +86,7 @@ obj-$(CONFIG_CPU_IDLE)		+= cpuidle/
+@@ -86,6 +86,7 @@
  obj-y				+= idle/
  obj-$(CONFIG_MMC)		+= mmc/
  obj-$(CONFIG_MEMSTICK)		+= memstick/
@@ -88494,7 +88494,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_NEW_LEDS)		+= leds/
  obj-$(CONFIG_INFINIBAND)	+= infiniband/
  obj-$(CONFIG_SGI_SN)		+= sn/
-@@ -98,6 +99,7 @@ obj-$(CONFIG_DCA)		+= dca/
+@@ -98,6 +99,7 @@
  obj-$(CONFIG_HID)		+= hid/
  obj-$(CONFIG_PPC_PS3)		+= ps3/
  obj-$(CONFIG_OF)		+= of/
@@ -93571,7 +93571,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/drivers/mfd/Kconfig
 +++ b/drivers/mfd/Kconfig
-@@ -153,6 +153,55 @@ config MFD_WM8350_I2C
+@@ -153,6 +153,55 @@
  	  I2C as the control interface.  Additional options must be
  	  selected to enable support for the functionality of the chip.
  
@@ -93637,7 +93637,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  obj-$(CONFIG_HTC_EGPIO)		+= htc-egpio.o
  obj-$(CONFIG_HTC_PASIC3)	+= htc-pasic3.o
-@@ -31,4 +32,13 @@ obj-$(CONFIG_MCP_UCB1200)	+= ucb1x00-ass
+@@ -31,4 +32,13 @@
  endif
  obj-$(CONFIG_UCB1400_CORE)	+= ucb1400_core.o
  
@@ -95605,7 +95605,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -401,6 +401,11 @@ config THINKPAD_ACPI_HOTKEY_POLL
+@@ -401,6 +401,11 @@
  	  If you are not sure, say Y here.  The driver enables polling only if
  	  it is strictly necessary to do so.
  
@@ -95617,7 +95617,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config ATMEL_SSC
  	tristate "Device driver for Atmel SSC peripheral"
  	depends on AVR32 || ARCH_AT91
-@@ -500,4 +505,9 @@ config SGI_GRU_DEBUG
+@@ -500,4 +505,9 @@
  
  source "drivers/misc/c2port/Kconfig"
  
@@ -95751,7 +95751,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
-@@ -33,3 +33,8 @@ obj-$(CONFIG_SGI_XP)		+= sgi-xp/
+@@ -33,3 +33,8 @@
  obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
  obj-$(CONFIG_HP_ILO)		+= hpilo.o
  obj-$(CONFIG_C2PORT)		+= c2port/
@@ -96429,7 +96429,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/drivers/mmc/core/core.c
 +++ b/drivers/mmc/core/core.c
-@@ -57,10 +57,11 @@ static int mmc_schedule_delayed_work(str
+@@ -57,10 +57,11 @@
  /*
   * Internal function. Flush all scheduled work from the MMC work queue.
   */
@@ -96442,7 +96442,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /**
   *	mmc_request_done - finish processing an MMC request
-@@ -495,7 +496,13 @@ void mmc_set_timing(struct mmc_host *hos
+@@ -495,7 +496,13 @@
   */
  static void mmc_power_up(struct mmc_host *host)
  {
@@ -96459,7 +96459,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (mmc_host_is_spi(host)) {
 --- a/drivers/mmc/host/Kconfig
 +++ b/drivers/mmc/host/Kconfig
-@@ -48,6 +48,18 @@ config MMC_SDHCI_PCI
+@@ -48,6 +48,18 @@
  
  	  If unsure, say N.
  
@@ -96480,7 +96480,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	depends on MMC_SDHCI_PCI
 --- a/drivers/mmc/host/Makefile
 +++ b/drivers/mmc/host/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_MMC_PXA)		+= pxamci.o
+@@ -11,6 +11,7 @@
  obj-$(CONFIG_MMC_IMX)		+= imxmmc.o
  obj-$(CONFIG_MMC_SDHCI)		+= sdhci.o
  obj-$(CONFIG_MMC_SDHCI_PCI)	+= sdhci-pci.o
@@ -96515,7 +96515,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #include "s3cmci.h"
  
-@@ -47,6 +56,9 @@ static const int dbgmap_err   = dbg_fail
+@@ -47,6 +56,9 @@
  static const int dbgmap_info  = dbg_info | dbg_conf;
  static const int dbgmap_debug = dbg_err | dbg_debug;
  
@@ -96525,7 +96525,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #define dbg(host, channels, args...)		  \
  	do {					  \
  	if (dbgmap_err & channels) 		  \
-@@ -280,8 +292,11 @@ static void do_pio_read(struct s3cmci_ho
+@@ -280,8 +292,11 @@
  		 * an even multiple of 4. */
  		if (fifo >= host->pio_bytes)
  			fifo = host->pio_bytes;
@@ -96538,7 +96538,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  		host->pio_bytes -= fifo;
  		host->pio_count += fifo;
-@@ -353,8 +368,11 @@ static void do_pio_write(struct s3cmci_h
+@@ -353,8 +368,11 @@
  		 * words, so round down to an even multiple of 4. */
  		if (fifo >= host->pio_bytes)
  			fifo = host->pio_bytes;
@@ -96551,7 +96551,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  		host->pio_bytes -= fifo;
  		host->pio_count += fifo;
-@@ -373,7 +391,6 @@ static void pio_tasklet(unsigned long da
+@@ -373,7 +391,6 @@
  {
  	struct s3cmci_host *host = (struct s3cmci_host *) data;
  
@@ -96559,7 +96559,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	disable_irq(host->irq);
  
  	if (host->pio_active == XFER_WRITE)
-@@ -614,7 +631,6 @@ irq_out:
+@@ -614,7 +631,6 @@
  
  	spin_unlock_irqrestore(&host->complete_lock, iflags);
  	return IRQ_HANDLED;
@@ -96567,7 +96567,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  /*
-@@ -1027,6 +1043,7 @@ static void s3cmci_send_request(struct m
+@@ -1026,6 +1042,7 @@
  			dbg(host, dbg_err, "data prepare error %d\n", res);
  			cmd->error = res;
  			cmd->data->error = res;
@@ -96575,7 +96575,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  			mmc_request_done(mmc, mrq);
  			return;
-@@ -1264,10 +1281,8 @@ static int __devinit s3cmci_probe(struct
+@@ -1263,10 +1280,8 @@
  	host->is2440	= is2440;
  
  	host->pdata = pdev->dev.platform_data;
@@ -96587,7 +96587,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	spin_lock_init(&host->complete_lock);
  	tasklet_init(&host->pio_tasklet, pio_tasklet, (unsigned long) host);
-@@ -1380,6 +1395,18 @@ static int __devinit s3cmci_probe(struct
+@@ -1379,6 +1394,18 @@
  	mmc->f_min 	= host->clk_rate / (host->clk_div * 256);
  	mmc->f_max 	= host->clk_rate / host->clk_div;
  
@@ -96606,7 +96606,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (host->pdata->ocr_avail)
  		mmc->ocr_avail = host->pdata->ocr_avail;
  
-@@ -1492,18 +1519,60 @@ static int __devinit s3cmci_2440_probe(s
+@@ -1491,18 +1518,60 @@
  
  #ifdef CONFIG_PM
  
@@ -96669,7 +96669,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  #else /* CONFIG_PM */
-@@ -1561,9 +1630,13 @@ static void __exit s3cmci_exit(void)
+@@ -1560,9 +1629,13 @@
  module_init(s3cmci_init);
  module_exit(s3cmci_exit);
  
@@ -96695,7 +96695,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* FIXME: DMA Resource management ?! */
  #define S3CMCI_DMA 0
  
-@@ -68,6 +71,13 @@ struct s3cmci_host {
+@@ -68,6 +71,13 @@
  	unsigned int		ccnt, dcnt;
  	struct tasklet_struct	pio_tasklet;
  
@@ -96711,7 +96711,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #endif
 --- a/drivers/mmc/host/sdhci.c
 +++ b/drivers/mmc/host/sdhci.c
-@@ -73,6 +73,11 @@ static void sdhci_dumpregs(struct sdhci_
+@@ -73,6 +73,11 @@
  		readl(host->ioaddr + SDHCI_CAPABILITIES),
  		readl(host->ioaddr + SDHCI_MAX_CURRENT));
  
@@ -96723,7 +96723,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	printk(KERN_DEBUG DRIVER_NAME ": ===========================================\n");
  }
  
-@@ -731,6 +736,23 @@ static void sdhci_set_transfer_mode(stru
+@@ -731,6 +736,23 @@
  	writew(mode, host->ioaddr + SDHCI_TRANSFER_MODE);
  }
  
@@ -96747,7 +96747,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static void sdhci_finish_data(struct sdhci_host *host)
  {
  	struct mmc_data *data;
-@@ -744,6 +766,8 @@ static void sdhci_finish_data(struct sdh
+@@ -744,6 +766,8 @@
  		if (host->flags & SDHCI_USE_ADMA)
  			sdhci_adma_table_post(host, data);
  		else {
@@ -96756,7 +96756,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  			dma_unmap_sg(mmc_dev(host->mmc), data->sg,
  				data->sg_len, (data->flags & MMC_DATA_READ) ?
  					DMA_FROM_DEVICE : DMA_TO_DEVICE);
-@@ -883,13 +907,18 @@ static void sdhci_finish_command(struct 
+@@ -883,13 +907,18 @@
  
  static void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
  {
@@ -96778,7 +96778,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	writew(0, host->ioaddr + SDHCI_CLOCK_CONTROL);
  
  	if (clock == 0)
-@@ -926,6 +955,8 @@ out:
+@@ -926,6 +955,8 @@
  	host->clock = clock;
  }
  
@@ -96787,7 +96787,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static void sdhci_set_power(struct sdhci_host *host, unsigned short power)
  {
  	u8 pwr;
-@@ -999,12 +1030,13 @@ static void sdhci_request(struct mmc_hos
+@@ -999,12 +1030,13 @@
  #endif
  
  	host->mrq = mrq;
@@ -96802,7 +96802,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		sdhci_send_command(host, mrq->cmd);
  
  	mmiowb();
-@@ -1033,6 +1065,9 @@ static void sdhci_set_ios(struct mmc_hos
+@@ -1033,6 +1065,9 @@
  		sdhci_init(host);
  	}
  
@@ -96812,7 +96812,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	sdhci_set_clock(host, ios->clock);
  
  	if (ios->power_mode == MMC_POWER_OFF)
-@@ -1136,7 +1171,7 @@ static void sdhci_tasklet_card(unsigned 
+@@ -1136,7 +1171,7 @@
  	host = (struct sdhci_host*)param;
  
  	spin_lock_irqsave(&host->lock, flags);
@@ -96821,7 +96821,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (!(readl(host->ioaddr + SDHCI_PRESENT_STATE) & SDHCI_CARD_PRESENT)) {
  		if (host->mrq) {
  			printk(KERN_ERR "%s: Card removed during transfer!\n",
-@@ -1151,7 +1186,7 @@ static void sdhci_tasklet_card(unsigned 
+@@ -1151,7 +1186,7 @@
  			tasklet_schedule(&host->finish_tasklet);
  		}
  	}
@@ -96830,33 +96830,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	spin_unlock_irqrestore(&host->lock, flags);
  
  	mmc_detect_change(host->mmc, msecs_to_jiffies(200));
-@@ -1283,11 +1318,24 @@ static void sdhci_cmd_irq(struct sdhci_h
- 	 *       controllers.
- 	 */
- 	if (host->cmd->flags & MMC_RSP_BUSY) {
-+		u32 present;
-+
- 		if (host->cmd->data)
- 			DBG("Cannot wait for busy signal when also "
- 				"doing a data transfer");
--		else
-+		else if (!(host->quirks & SDHCI_QUIRK_NO_TCIRQ_ON_NOT_BUSY))
- 			return;
-+
-+		/* The Samsung SDHCI does not seem to provide an INT_DATA_END
-+		 * when the system goes non-busy, so check the state of the
-+		 * transfer by reading SDHCI_PRESENT_STATE to see if the
-+		 * controller is ready
-+		 */
-+
-+		present = readl(host->ioaddr + SDHCI_PRESENT_STATE);
-+		DBG("busy? present %08x, intstat %08x\n", present, intmask);
-+
-+		/* fall through and take the SDHCI_INT_RESPONSE */
- 	}
- 
- 	if (intmask & SDHCI_INT_RESPONSE)
-@@ -1604,17 +1652,23 @@ int sdhci_add_host(struct sdhci_host *ho
+@@ -1607,17 +1642,23 @@
  		mmc_dev(host->mmc)->dma_mask = &host->dma_mask;
  	}
  
@@ -96895,16 +96869,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #define SDHCI_HOST_CONTROL 	0x28
  #define  SDHCI_CTRL_LED		0x01
-@@ -210,6 +211,8 @@ struct sdhci_host {
- #define SDHCI_QUIRK_BROKEN_SMALL_PIO			(1<<13)
- /* Controller supports high speed but doesn't have the caps bit set */
- #define SDHCI_QUIRK_FORCE_HIGHSPEED			(1<<14)
-+/* Controller does not provide transfer-complete interrupt when not busy */
-+#define SDHCI_QUIRK_NO_TCIRQ_ON_NOT_BUSY		(1<<15)
- 
- 	int			irq;		/* Device IRQ */
- 	void __iomem *		ioaddr;		/* Mapped address */
-@@ -267,6 +270,14 @@ struct sdhci_host {
+@@ -270,6 +271,14 @@
  
  struct sdhci_ops {
  	int		(*enable_dma)(struct sdhci_host *host);
@@ -96919,7 +96884,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  
-@@ -274,6 +285,8 @@ extern struct sdhci_host *sdhci_alloc_ho
+@@ -277,6 +286,8 @@
  	size_t priv_size);
  extern void sdhci_free_host(struct sdhci_host *host);
  
@@ -96930,7 +96895,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return (void *)host->private;
 --- a/drivers/mmc/host/sdhci-pci.c
 +++ b/drivers/mmc/host/sdhci-pci.c
-@@ -391,6 +391,7 @@ static int sdhci_pci_enable_dma(struct s
+@@ -392,6 +392,7 @@
  
  static struct sdhci_ops sdhci_pci_ops = {
  	.enable_dma	= sdhci_pci_enable_dma,
@@ -97271,7 +97236,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +	/* It seems we do not get an DATA transfer complete on non-busy
 +	 * transfers, not sure if this is a problem with this specific
 +	 * SDHCI block, or a missing configuration that needs to be set. */
-+	host->quirks |= SDHCI_QUIRK_NO_TCIRQ_ON_NOT_BUSY;
++	host->quirks |= SDHCI_QUIRK_NO_BUSY_IRQ;
 +
 +	host->quirks |= (SDHCI_QUIRK_32BIT_DMA_ADDR |
 +			 SDHCI_QUIRK_32BIT_DMA_SIZE);
@@ -97373,7 +97338,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #ifdef CONFIG_MTD_NAND_S3C2410_HWECC
  static int hardware_ecc = 1;
-@@ -231,8 +231,6 @@ static int s3c2410_nand_setrate(struct s
+@@ -231,8 +231,6 @@
  		BUG();
  	}
  
@@ -97382,7 +97347,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	local_irq_save(flags);
  
  	cfg = readl(info->regs + S3C2410_NFCONF);
-@@ -240,6 +238,8 @@ static int s3c2410_nand_setrate(struct s
+@@ -240,6 +238,8 @@
  	cfg |= set;
  	writel(cfg, info->regs + S3C2410_NFCONF);
  
@@ -97391,7 +97356,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	local_irq_restore(flags);
  
  	return 0;
-@@ -438,7 +438,7 @@ static int s3c2410_nand_correct_data(str
+@@ -438,7 +438,7 @@
  	if ((diff0 & ~(1<<fls(diff0))) == 0)
  		return 1;
  
@@ -97400,7 +97365,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  /* ECC functions
-@@ -530,7 +530,12 @@ static void s3c2410_nand_read_buf(struct
+@@ -530,7 +530,12 @@
  static void s3c2440_nand_read_buf(struct mtd_info *mtd, u_char *buf, int len)
  {
  	struct s3c2410_nand_info *info = s3c2410_nand_mtd_toinfo(mtd);
@@ -97413,7 +97378,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static void s3c2410_nand_write_buf(struct mtd_info *mtd, const u_char *buf, int len)
-@@ -645,17 +650,31 @@ static int s3c2410_nand_remove(struct pl
+@@ -645,17 +650,31 @@
  }
  
  #ifdef CONFIG_MTD_PARTITIONS
@@ -97447,7 +97412,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return add_mtd_device(&mtd->mtd);
  }
  #else
-@@ -684,9 +703,13 @@ static void s3c2410_nand_init_chip(struc
+@@ -684,9 +703,13 @@
  	chip->select_chip  = s3c2410_nand_select_chip;
  	chip->chip_delay   = 50;
  	chip->priv	   = nmtd;
@@ -97462,7 +97427,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	switch (info->cpu_type) {
  	case TYPE_S3C2410:
  		chip->IO_ADDR_W = regs + S3C2410_NFDATA;
-@@ -726,7 +749,7 @@ static void s3c2410_nand_init_chip(struc
+@@ -726,7 +749,7 @@
  	nmtd->mtd.owner    = THIS_MODULE;
  	nmtd->set	   = set;
  
@@ -97473,7 +97438,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		chip->ecc.mode	    = NAND_ECC_HW;
 --- a/drivers/net/wireless/libertas/if_sdio.c
 +++ b/drivers/net/wireless/libertas/if_sdio.c
-@@ -48,6 +48,7 @@ module_param_named(fw_name, lbs_fw_name,
+@@ -48,6 +48,7 @@
  
  static const struct sdio_device_id if_sdio_ids[] = {
  	{ SDIO_DEVICE(SDIO_VENDOR_ID_MARVELL, SDIO_DEVICE_ID_MARVELL_LIBERTAS) },
@@ -97481,7 +97446,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	{ /* end: all zeroes */						},
  };
  
-@@ -72,7 +73,12 @@ static struct if_sdio_model if_sdio_mode
+@@ -72,7 +73,12 @@
  		.helper = "sd8686_helper.bin",
  		.firmware = "sd8686.bin",
  	},
@@ -97508,7 +97473,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	  peripherals to be configured by software, e.g. assign IRQ's or other
 --- a/drivers/pnp/resource.c
 +++ b/drivers/pnp/resource.c
-@@ -436,6 +436,7 @@ int pnp_check_dma(struct pnp_dev *dev, s
+@@ -436,6 +436,7 @@
  		}
  	}
  
@@ -97516,7 +97481,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* check if the resource is already in use, skip if the
  	 * device is active because it itself may be in use */
  	if (!dev->active) {
-@@ -443,6 +444,7 @@ int pnp_check_dma(struct pnp_dev *dev, s
+@@ -443,6 +444,7 @@
  			return 0;
  		free_dma(*dma);
  	}
@@ -98287,7 +98252,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/drivers/power/Kconfig
 +++ b/drivers/power/Kconfig
-@@ -68,4 +68,24 @@ config BATTERY_BQ27x00
+@@ -68,4 +68,24 @@
  	help
  	  Say Y here to enable support for batteries with BQ27200(I2C) chip.
  
@@ -98314,7 +98279,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/drivers/power/Makefile
 +++ b/drivers/power/Makefile
-@@ -23,3 +23,9 @@ obj-$(CONFIG_BATTERY_OLPC)	+= olpc_batte
+@@ -23,3 +23,9 @@
  obj-$(CONFIG_BATTERY_TOSA)	+= tosa_battery.o
  obj-$(CONFIG_BATTERY_WM97XX)	+= wm97xx_battery.o
  obj-$(CONFIG_BATTERY_BQ27x00)	+= bq27x00_battery.o
@@ -98744,7 +98709,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_ALIAS("platform:pcf50633-mbc");
 --- a/drivers/regulator/core.c
 +++ b/drivers/regulator/core.c
-@@ -1113,6 +1113,7 @@ int regulator_disable(struct regulator *
+@@ -1113,6 +1113,7 @@
  	if (!regulator->enabled) {
  		printk(KERN_ERR "%s: not in use by this consumer\n",
  			__func__);
@@ -98754,7 +98719,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/drivers/regulator/Kconfig
 +++ b/drivers/regulator/Kconfig
-@@ -73,4 +73,10 @@ config REGULATOR_DA903X
+@@ -73,4 +73,10 @@
  	  Say y here to support the BUCKs and LDOs regulators found on
  	  Dialog Semiconductor DA9030/DA9034 PMIC.
  
@@ -98767,7 +98732,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  endif
 --- a/drivers/regulator/Makefile
 +++ b/drivers/regulator/Makefile
-@@ -11,5 +11,6 @@ obj-$(CONFIG_REGULATOR_BQ24022) += bq240
+@@ -11,5 +11,6 @@
  obj-$(CONFIG_REGULATOR_WM8350) += wm8350-regulator.o
  obj-$(CONFIG_REGULATOR_WM8400) += wm8400-regulator.o
  obj-$(CONFIG_REGULATOR_DA903X)	+= da903x.o
@@ -99109,7 +99074,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_ALIAS("platform:pcf50633-regulator");
 --- a/drivers/rtc/Kconfig
 +++ b/drivers/rtc/Kconfig
-@@ -219,6 +219,18 @@ config RTC_DRV_PCF8583
+@@ -219,6 +219,18 @@
  	  This driver can also be built as a module. If so, the module
  	  will be called rtc-pcf8583.
  
@@ -99130,7 +99095,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	help
 --- a/drivers/rtc/Makefile
 +++ b/drivers/rtc/Makefile
-@@ -50,6 +50,8 @@ obj-$(CONFIG_RTC_DRV_MAX6902)	+= rtc-max
+@@ -50,6 +50,8 @@
  obj-$(CONFIG_RTC_DRV_OMAP)	+= rtc-omap.o
  obj-$(CONFIG_RTC_DRV_PCF8563)	+= rtc-pcf8563.o
  obj-$(CONFIG_RTC_DRV_PCF8583)	+= rtc-pcf8583.o
@@ -99758,7 +99723,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
   * of these rtc blocks in */
 --- a/drivers/serial/Kconfig
 +++ b/drivers/serial/Kconfig
-@@ -447,7 +447,7 @@ config SERIAL_CLPS711X_CONSOLE
+@@ -447,7 +447,7 @@
  
  config SERIAL_SAMSUNG
  	tristate "Samsung SoC serial support"
@@ -99767,7 +99732,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	select SERIAL_CORE
  	help
  	  Support for the on-chip UARTs on the Samsung S3C24XX series CPUs,
-@@ -455,6 +455,16 @@ config SERIAL_SAMSUNG
+@@ -455,6 +455,16 @@
  	  provide all of these ports, depending on how the serial port
  	  pins are configured.
  
@@ -99784,7 +99749,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  config SERIAL_SAMSUNG_DEBUG
  	bool "Samsung SoC serial debug"
  	depends on SERIAL_SAMSUNG && DEBUG_LL
-@@ -508,7 +518,20 @@ config SERIAL_S3C2440
+@@ -508,7 +518,20 @@
  	help
  	  Serial port support for the Samsung S3C2440 and S3C2442 SoC
  
@@ -99808,7 +99773,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	bool "DECstation DZ serial driver"
 --- a/drivers/serial/Makefile
 +++ b/drivers/serial/Makefile
-@@ -41,6 +41,8 @@ obj-$(CONFIG_SERIAL_S3C2400) += s3c2400.
+@@ -41,6 +41,8 @@
  obj-$(CONFIG_SERIAL_S3C2410) += s3c2410.o
  obj-$(CONFIG_SERIAL_S3C2412) += s3c2412.o
  obj-$(CONFIG_SERIAL_S3C2440) += s3c2440.o
@@ -100144,7 +100109,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* macros to change one thing to another */
  
  #define tx_enabled(port) ((port)->unused[0])
-@@ -136,8 +128,10 @@ static void s3c24xx_serial_rx_disable(st
+@@ -136,8 +128,10 @@
  
  static void s3c24xx_serial_stop_tx(struct uart_port *port)
  {
@@ -100156,7 +100121,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		tx_enabled(port) = 0;
  		if (port->flags & UPF_CONS_FLOW)
  			s3c24xx_serial_rx_enable(port);
-@@ -146,11 +140,13 @@ static void s3c24xx_serial_stop_tx(struc
+@@ -146,11 +140,13 @@
  
  static void s3c24xx_serial_start_tx(struct uart_port *port)
  {
@@ -100171,7 +100136,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		tx_enabled(port) = 1;
  	}
  }
-@@ -158,9 +154,11 @@ static void s3c24xx_serial_start_tx(stru
+@@ -158,9 +154,11 @@
  
  static void s3c24xx_serial_stop_rx(struct uart_port *port)
  {
@@ -100184,7 +100149,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		rx_enabled(port) = 0;
  	}
  }
-@@ -241,7 +239,7 @@ s3c24xx_serial_rx_chars(int irq, void *d
+@@ -241,7 +239,7 @@
  		port->icount.rx++;
  
  		if (unlikely(uerstat & S3C2410_UERSTAT_ANY)) {
@@ -100193,7 +100158,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  			    ch, uerstat);
  
  			/* check for break */
-@@ -384,13 +382,13 @@ static void s3c24xx_serial_shutdown(stru
+@@ -384,13 +382,13 @@
  	struct s3c24xx_uart_port *ourport = to_ourport(port);
  
  	if (ourport->tx_claimed) {
@@ -100209,7 +100174,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		ourport->rx_claimed = 0;
  		rx_enabled(port) = 0;
  	}
-@@ -407,12 +405,11 @@ static int s3c24xx_serial_startup(struct
+@@ -407,12 +405,11 @@
  
  	rx_enabled(port) = 1;
  
@@ -100224,7 +100189,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		return ret;
  	}
  
-@@ -422,12 +419,11 @@ static int s3c24xx_serial_startup(struct
+@@ -422,12 +419,11 @@
  
  	tx_enabled(port) = 1;
  
@@ -100239,7 +100204,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		goto err;
  	}
  
-@@ -452,6 +448,8 @@ static void s3c24xx_serial_pm(struct uar
+@@ -452,6 +448,8 @@
  {
  	struct s3c24xx_uart_port *ourport = to_ourport(port);
  
@@ -100248,7 +100213,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	switch (level) {
  	case 3:
  		if (!IS_ERR(ourport->baudclk) && ourport->baudclk != NULL)
-@@ -514,6 +512,7 @@ s3c24xx_serial_setsource(struct uart_por
+@@ -514,6 +512,7 @@
  struct baud_calc {
  	struct s3c24xx_uart_clksrc	*clksrc;
  	unsigned int			 calc;
@@ -100256,7 +100221,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	unsigned int			 quot;
  	struct clk			*src;
  };
-@@ -523,6 +522,7 @@ static int s3c24xx_serial_calcbaud(struc
+@@ -523,6 +522,7 @@
  				   struct s3c24xx_uart_clksrc *clksrc,
  				   unsigned int baud)
  {
@@ -100264,7 +100229,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	unsigned long rate;
  
  	calc->src = clk_get(port->dev, clksrc->name);
-@@ -533,8 +533,24 @@ static int s3c24xx_serial_calcbaud(struc
+@@ -533,8 +533,24 @@
  	rate /= clksrc->divisor;
  
  	calc->clksrc = clksrc;
@@ -100291,7 +100256,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	calc->quot--;
  	return 1;
-@@ -617,6 +633,30 @@ static unsigned int s3c24xx_serial_getcl
+@@ -617,6 +633,30 @@
  	return best->quot;
  }
  
@@ -100322,7 +100287,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static void s3c24xx_serial_set_termios(struct uart_port *port,
  				       struct ktermios *termios,
  				       struct ktermios *old)
-@@ -629,6 +669,7 @@ static void s3c24xx_serial_set_termios(s
+@@ -629,6 +669,7 @@
  	unsigned int baud, quot;
  	unsigned int ulcon;
  	unsigned int umcon;
@@ -100330,7 +100295,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/*
  	 * We don't support modem control lines.
-@@ -650,6 +691,7 @@ static void s3c24xx_serial_set_termios(s
+@@ -650,6 +691,7 @@
  	/* check to see if we need  to change clock source */
  
  	if (ourport->clksrc != clksrc || ourport->baudclk != clk) {
@@ -100338,7 +100303,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		s3c24xx_serial_setsource(port, clksrc);
  
  		if (ourport->baudclk != NULL && !IS_ERR(ourport->baudclk)) {
-@@ -661,6 +703,14 @@ static void s3c24xx_serial_set_termios(s
+@@ -661,6 +703,14 @@
  
  		ourport->clksrc = clksrc;
  		ourport->baudclk = clk;
@@ -100353,7 +100318,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	}
  
  	switch (termios->c_cflag & CSIZE) {
-@@ -702,12 +752,16 @@ static void s3c24xx_serial_set_termios(s
+@@ -702,12 +752,16 @@
  
  	spin_lock_irqsave(&port->lock, flags);
  
@@ -100371,7 +100336,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	dbg("uart: ulcon = 0x%08x, ucon = 0x%08x, ufcon = 0x%08x\n",
  	    rd_regl(port, S3C2410_ULCON),
  	    rd_regl(port, S3C2410_UCON),
-@@ -752,6 +806,8 @@ static const char *s3c24xx_serial_type(s
+@@ -752,6 +806,8 @@
  		return "S3C2440";
  	case PORT_S3C2412:
  		return "S3C2412";
@@ -100380,7 +100345,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	default:
  		return NULL;
  	}
-@@ -827,14 +883,14 @@ static struct uart_ops s3c24xx_serial_op
+@@ -827,14 +883,14 @@
  static struct uart_driver s3c24xx_uart_drv = {
  	.owner		= THIS_MODULE,
  	.dev_name	= "s3c2410_serial",
@@ -100397,7 +100362,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	[0] = {
  		.port = {
  			.lock		= __SPIN_LOCK_UNLOCKED(s3c24xx_serial_ports[0].port.lock),
-@@ -859,7 +915,7 @@ static struct s3c24xx_uart_port s3c24xx_
+@@ -859,7 +915,7 @@
  			.line		= 1,
  		}
  	},
@@ -100406,7 +100371,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	[2] = {
  		.port = {
-@@ -872,10 +928,88 @@ static struct s3c24xx_uart_port s3c24xx_
+@@ -872,10 +928,88 @@
  			.flags		= UPF_BOOT_AUTOCONF,
  			.line		= 2,
  		}
@@ -100495,7 +100460,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* s3c24xx_serial_resetport
   *
   * wrapper to call the specific reset for this port (reset the fifos
-@@ -890,6 +1024,93 @@ static inline int s3c24xx_serial_resetpo
+@@ -890,6 +1024,93 @@
  	return (info->reset_port)(port, cfg);
  }
  
@@ -100589,7 +100554,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* s3c24xx_serial_init_port
   *
   * initialise a single serial port from the platform device given
-@@ -914,8 +1135,11 @@ static int s3c24xx_serial_init_port(stru
+@@ -914,8 +1135,11 @@
  	if (port->mapbase != 0)
  		return 0;
  
@@ -100603,7 +100568,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/* setup info for port */
  	port->dev	= &platdev->dev;
-@@ -943,18 +1167,26 @@ static int s3c24xx_serial_init_port(stru
+@@ -943,18 +1167,26 @@
  
  	dbg("resource %p (%lx..%lx)\n", res, res->start, res->end);
  
@@ -100635,7 +100600,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	/* reset the fifos (and setup the uart) */
  	s3c24xx_serial_resetport(port, cfg);
-@@ -987,6 +1219,7 @@ int s3c24xx_serial_probe(struct platform
+@@ -987,6 +1219,7 @@
  
  	ourport = &s3c24xx_serial_ports[probe_index];
  	probe_index++;
@@ -100643,7 +100608,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	dbg("%s: initialising port %p...\n", __func__, ourport);
  
-@@ -1002,6 +1235,10 @@ int s3c24xx_serial_probe(struct platform
+@@ -1002,6 +1235,10 @@
  	if (ret < 0)
  		printk(KERN_ERR "%s: failed to add clksrc attr.\n", __func__);
  
@@ -100654,7 +100619,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return 0;
  
   probe_err:
-@@ -1015,6 +1252,7 @@ int s3c24xx_serial_remove(struct platfor
+@@ -1015,6 +1252,7 @@
  	struct uart_port *port = s3c24xx_dev_to_port(&dev->dev);
  
  	if (port) {
@@ -100662,7 +100627,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		device_remove_file(&dev->dev, &dev_attr_clock_source);
  		uart_remove_one_port(&s3c24xx_uart_drv, port);
  	}
-@@ -1038,6 +1276,16 @@ static int s3c24xx_serial_suspend(struct
+@@ -1038,6 +1276,16 @@
  	return 0;
  }
  
@@ -100679,7 +100644,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static int s3c24xx_serial_resume(struct platform_device *dev)
  {
  	struct uart_port *port = s3c24xx_dev_to_port(&dev->dev);
-@@ -1049,6 +1297,9 @@ static int s3c24xx_serial_resume(struct 
+@@ -1049,6 +1297,9 @@
  		clk_disable(ourport->clk);
  
  		uart_resume_port(&s3c24xx_uart_drv, port);
@@ -100689,7 +100654,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	}
  
  	return 0;
-@@ -1059,6 +1310,12 @@ int s3c24xx_serial_init(struct platform_
+@@ -1059,6 +1310,12 @@
  			struct s3c24xx_uart_info *info)
  {
  	dbg("s3c24xx_serial_init(%p,%p)\n", drv, info);
@@ -100702,7 +100667,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #ifdef CONFIG_PM
  	drv->suspend = s3c24xx_serial_suspend;
-@@ -1098,6 +1355,13 @@ module_exit(s3c24xx_serial_modexit);
+@@ -1098,6 +1355,13 @@
  #ifdef CONFIG_SERIAL_SAMSUNG_CONSOLE
  
  static struct uart_port *cons_uart;
@@ -100716,7 +100681,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static int
  s3c24xx_serial_console_txrdy(struct uart_port *port, unsigned int ufcon)
-@@ -1122,9 +1386,21 @@ static void
+@@ -1122,9 +1386,21 @@
  s3c24xx_serial_console_putchar(struct uart_port *port, int ch)
  {
  	unsigned int ufcon = rd_regl(cons_uart, S3C2410_UFCON);
@@ -100738,7 +100703,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static void
-@@ -1219,7 +1495,7 @@ static int s3c24xx_serial_init_ports(str
+@@ -1219,7 +1495,7 @@
  
  	platdev_ptr = s3c24xx_uart_devs;
  
@@ -100747,7 +100712,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		s3c24xx_serial_init_port(ptr, info, *platdev_ptr);
  	}
  
-@@ -1240,7 +1516,7 @@ s3c24xx_serial_console_setup(struct cons
+@@ -1240,7 +1516,7 @@
  
  	/* is this a valid port */
  
@@ -100767,7 +100732,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  struct s3c24xx_uart_info {
  	char			*name;
  	unsigned int		type;
-@@ -21,6 +23,10 @@ struct s3c24xx_uart_info {
+@@ -21,6 +23,10 @@
  	unsigned long		tx_fifoshift;
  	unsigned long		tx_fifofull;
  
@@ -100778,7 +100743,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* clock source control */
  
  	int (*get_clksrc)(struct uart_port *, struct s3c24xx_uart_clksrc *clk);
-@@ -33,12 +39,23 @@ struct s3c24xx_uart_info {
+@@ -33,12 +39,23 @@
  struct s3c24xx_uart_port {
  	unsigned char			rx_claimed;
  	unsigned char			tx_claimed;
@@ -100815,7 +100780,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  struct s3c24xx_spi {
 --- a/drivers/spi/spi_s3c24xx_gpio.c
 +++ b/drivers/spi/spi_s3c24xx_gpio.c
-@@ -91,7 +91,7 @@ static void s3c2410_spigpio_chipselect(s
+@@ -91,7 +91,7 @@
  	struct s3c2410_spigpio *sg = spidev_to_sg(dev);
  
  	if (sg->info && sg->info->chip_select)
@@ -100824,7 +100789,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
  
  static int s3c2410_spigpio_probe(struct platform_device *dev)
-@@ -100,6 +100,7 @@ static int s3c2410_spigpio_probe(struct 
+@@ -100,6 +100,7 @@
  	struct spi_master	*master;
  	struct s3c2410_spigpio  *sp;
  	int ret;
@@ -100832,7 +100797,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	master = spi_alloc_master(&dev->dev, sizeof(struct s3c2410_spigpio));
  	if (master == NULL) {
-@@ -112,9 +113,11 @@ static int s3c2410_spigpio_probe(struct 
+@@ -112,9 +113,11 @@
  
  	platform_set_drvdata(dev, sp);
  
@@ -100845,7 +100810,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* setup spi bitbang adaptor */
  	sp->bitbang.master = spi_master_get(master);
  	sp->bitbang.master->bus_num = info->bus_num;
-@@ -143,6 +146,22 @@ static int s3c2410_spigpio_probe(struct 
+@@ -143,6 +146,22 @@
  	if (ret)
  		goto err_no_bitbang;
  
@@ -100870,7 +100835,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
   err_no_bitbang:
 --- a/drivers/usb/gadget/composite.c
 +++ b/drivers/usb/gadget/composite.c
-@@ -1045,7 +1045,11 @@ composite_resume(struct usb_gadget *gadg
+@@ -1045,7 +1045,11 @@
  /*-------------------------------------------------------------------------*/
  
  static struct usb_gadget_driver composite_driver = {
@@ -100884,7 +100849,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	.unbind		= __exit_p(composite_unbind),
 --- a/drivers/usb/gadget/ether.c
 +++ b/drivers/usb/gadget/ether.c
-@@ -122,11 +122,16 @@ static inline bool has_rndis(void)
+@@ -122,11 +122,16 @@
   * Instead:  allocate your own, using normal USB-IF procedures.
   */
  
@@ -100901,7 +100866,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* For hardware that can't talk CDC, we use the same vendor ID that
   * ARM Linux has used for ethernet-over-usb, both with sa1100 and
-@@ -147,8 +152,8 @@ static inline bool has_rndis(void)
+@@ -147,8 +152,8 @@
   * used with CDC Ethernet, Linux 2.4 hosts will need updates to choose
   * the non-RNDIS configuration.
   */
@@ -100925,7 +100890,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  
  #include "s3c2410_udc.h"
-@@ -134,6 +134,8 @@ static int dprintk(int level, const char
+@@ -134,6 +134,8 @@
  	return 0;
  }
  #endif
@@ -100934,7 +100899,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  static int s3c2410_udc_debugfs_seq_show(struct seq_file *m, void *p)
  {
  	u32 addr_reg,pwr_reg,ep_int_reg,usb_int_reg;
-@@ -197,6 +199,7 @@ static const struct file_operations s3c2
+@@ -197,6 +199,7 @@
  	.release	= single_release,
  	.owner		= THIS_MODULE,
  };
@@ -100942,7 +100907,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /* io macros */
  
-@@ -843,6 +846,7 @@ static void s3c2410_udc_handle_ep(struct
+@@ -843,6 +846,7 @@
  	u32			ep_csr1;
  	u32			idx;
  
@@ -100950,7 +100915,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (likely (!list_empty(&ep->queue)))
  		req = list_entry(ep->queue.next,
  				struct s3c2410_request, queue);
-@@ -882,6 +886,8 @@ static void s3c2410_udc_handle_ep(struct
+@@ -882,6 +886,8 @@
  
  		if ((ep_csr1 & S3C2410_UDC_OCSR1_PKTRDY) && req) {
  			s3c2410_udc_read_fifo(ep,req);
@@ -100959,7 +100924,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		}
  	}
  }
-@@ -1890,6 +1896,7 @@ static int s3c2410_udc_probe(struct plat
+@@ -1890,6 +1896,7 @@
  		udc->vbus = 1;
  	}
  
@@ -100967,7 +100932,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (s3c2410_udc_debugfs_root) {
  		udc->regs_info = debugfs_create_file("registers", S_IRUGO,
  				s3c2410_udc_debugfs_root,
-@@ -1897,6 +1904,7 @@ static int s3c2410_udc_probe(struct plat
+@@ -1897,6 +1904,7 @@
  		if (!udc->regs_info)
  			dev_warn(dev, "debugfs file creation failed\n");
  	}
@@ -100975,7 +100940,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	dev_dbg(dev, "probe ok\n");
  
-@@ -2003,12 +2011,14 @@ static int __init udc_init(void)
+@@ -2003,12 +2011,14 @@
  
  	dprintk(DEBUG_NORMAL, "%s: version %s\n", gadget_name, DRIVER_VERSION);
  
@@ -101000,7 +100965,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  #define valid_port(idx) ((idx) == 1 || (idx) == 2)
  
-@@ -308,6 +309,42 @@ static void s3c2410_hcd_oc(struct s3c241
+@@ -308,6 +309,42 @@
  	local_irq_restore(flags);
  }
  
@@ -101043,7 +101008,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /* may be called without controller electrically present */
  /* may be called with controller, bus, and devices active */
  
-@@ -325,6 +362,7 @@ static void s3c2410_hcd_oc(struct s3c241
+@@ -325,6 +362,7 @@
  static void
  usb_hcd_s3c2410_remove (struct usb_hcd *hcd, struct platform_device *dev)
  {
@@ -101051,7 +101016,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	usb_remove_hcd(hcd);
  	s3c2410_stop_hc(dev);
  	iounmap(hcd->regs);
-@@ -392,8 +430,15 @@ static int usb_hcd_s3c2410_probe (const 
+@@ -392,8 +430,15 @@
  	if (retval != 0)
  		goto err_ioremap;
  
@@ -101341,7 +101306,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/drivers/video/backlight/Kconfig
 +++ b/drivers/video/backlight/Kconfig
-@@ -152,6 +152,13 @@ config BACKLIGHT_OMAP1
+@@ -152,6 +152,13 @@
  	  the PWL module of OMAP1 processors.  Say Y if your board
  	  uses this hardware.
  
@@ -101357,7 +101322,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	depends on BACKLIGHT_CLASS_DEVICE && SH_HP6XX
 --- a/drivers/video/backlight/Makefile
 +++ b/drivers/video/backlight/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_LCD_TOSA)		   += tosa_lcd.o
+@@ -12,6 +12,7 @@
  obj-$(CONFIG_BACKLIGHT_CLASS_DEVICE) += backlight.o
  obj-$(CONFIG_BACKLIGHT_ATMEL_PWM)    += atmel-pwm-bl.o
  obj-$(CONFIG_BACKLIGHT_CORGI)	+= corgi_bl.o
@@ -101367,7 +101332,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_BACKLIGHT_OMAP1)	+= omap1_bl.o
 --- a/drivers/video/console/fbcon.c
 +++ b/drivers/video/console/fbcon.c
-@@ -401,6 +401,9 @@ static void fb_flashcursor(struct work_s
+@@ -401,6 +401,9 @@
  	int c;
  	int mode;
  
@@ -101377,7 +101342,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	acquire_console_sem();
  	if (ops && ops->currcon != -1)
  		vc = vc_cons[ops->currcon].d;
-@@ -3225,13 +3228,17 @@ static void fbcon_get_requirement(struct
+@@ -3225,13 +3228,17 @@
  static int fbcon_event_notify(struct notifier_block *self, 
  			      unsigned long action, void *data)
  {
@@ -102211,7 +102176,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +module_exit(jbt_exit);
 --- a/drivers/video/display/Kconfig
 +++ b/drivers/video/display/Kconfig
-@@ -21,4 +21,15 @@ config DISPLAY_SUPPORT
+@@ -21,4 +21,15 @@
  comment "Display hardware drivers"
  	depends on DISPLAY_SUPPORT
  
@@ -102237,7 +102202,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/drivers/video/Kconfig
 +++ b/drivers/video/Kconfig
-@@ -1918,6 +1918,30 @@ config FB_TMIO_ACCELL
+@@ -1918,6 +1918,30 @@
  	depends on FB_TMIO
  	default y
  
@@ -102270,7 +102235,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	depends on FB && ARCH_S3C2410
 --- a/drivers/video/logo/Kconfig
 +++ b/drivers/video/logo/Kconfig
-@@ -77,6 +77,11 @@ config LOGO_SUPERH_CLUT224
+@@ -77,6 +77,11 @@
  	depends on SUPERH
  	default y
  
@@ -102284,7 +102249,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	depends on M32R
 --- a/drivers/video/logo/logo.c
 +++ b/drivers/video/logo/logo.c
-@@ -35,6 +35,7 @@ extern const struct linux_logo logo_supe
+@@ -35,6 +35,7 @@
  extern const struct linux_logo logo_superh_vga16;
  extern const struct linux_logo logo_superh_clut224;
  extern const struct linux_logo logo_m32r_clut224;
@@ -102292,7 +102257,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  static int nologo;
  module_param(nologo, bool, 0);
-@@ -115,6 +116,10 @@ const struct linux_logo * __init_refok f
+@@ -115,6 +116,10 @@
  		/* M32R Linux logo */
  		logo = &logo_m32r_clut224;
  #endif
@@ -142311,7 +142276,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +0 0 0  0 0 0  0 0 0  0 0 0  0 0 0  0 0 0
 --- a/drivers/video/logo/Makefile
 +++ b/drivers/video/logo/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_LOGO_SUPERH_MONO)		+= logo_
+@@ -15,6 +15,7 @@
  obj-$(CONFIG_LOGO_SUPERH_VGA16)		+= logo_superh_vga16.o
  obj-$(CONFIG_LOGO_SUPERH_CLUT224)	+= logo_superh_clut224.o
  obj-$(CONFIG_LOGO_M32R_CLUT224)		+= logo_m32r_clut224.o
@@ -142321,7 +142286,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/drivers/video/Makefile
 +++ b/drivers/video/Makefile
-@@ -109,6 +109,7 @@ obj-$(CONFIG_FB_METRONOME)        += met
+@@ -109,6 +109,7 @@
  obj-$(CONFIG_FB_S1D13XXX)	  += s1d13xxxfb.o
  obj-$(CONFIG_FB_SH7760)		  += sh7760fb.o
  obj-$(CONFIG_FB_IMX)              += imxfb.o
@@ -142331,7 +142296,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_FB_COBALT)           += cobalt_lcdfb.o
 --- a/drivers/video/s3c2410fb.c
 +++ b/drivers/video/s3c2410fb.c
-@@ -1017,6 +1017,8 @@ static int s3c2410fb_resume(struct platf
+@@ -1017,6 +1017,8 @@
  
  	s3c2410fb_init_registers(fbinfo);
  
@@ -143381,7 +143346,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_ALIAS("platform:s3c-fb");
 --- a/drivers/watchdog/Kconfig
 +++ b/drivers/watchdog/Kconfig
-@@ -233,6 +233,12 @@ config ORION5X_WATCHDOG
+@@ -233,6 +233,12 @@
  	  To compile this driver as a module, choose M here: the
  	  module will be called orion5x_wdt.
  
@@ -143394,7 +143359,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  # ARM26 Architecture
  
  # AVR32 Architecture
-@@ -784,7 +790,7 @@ config WATCHDOG_RTAS
+@@ -784,7 +790,7 @@
  	tristate "RTAS watchdog"
  	depends on PPC_RTAS
  	help
@@ -143405,7 +143370,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	  will be called wdrtas.
 --- a/drivers/watchdog/Makefile
 +++ b/drivers/watchdog/Makefile
-@@ -41,6 +41,7 @@ obj-$(CONFIG_PNX4008_WATCHDOG) += pnx400
+@@ -41,6 +41,7 @@
  obj-$(CONFIG_IOP_WATCHDOG) += iop_wdt.o
  obj-$(CONFIG_DAVINCI_WATCHDOG) += davinci_wdt.o
  obj-$(CONFIG_ORION5X_WATCHDOG) += orion5x_wdt.o
@@ -143642,7 +143607,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/fs/jffs2/background.c
 +++ b/fs/jffs2/background.c
-@@ -95,13 +95,17 @@ static int jffs2_garbage_collect_thread(
+@@ -95,13 +95,17 @@
  			spin_unlock(&c->erase_completion_lock);
  			
  
@@ -145081,7 +145046,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif
 --- a/include/linux/device.h
 +++ b/include/linux/device.h
-@@ -48,6 +48,11 @@ extern int __must_check bus_create_file(
+@@ -48,6 +48,11 @@
  					struct bus_attribute *);
  extern void bus_remove_file(struct bus_type *, struct bus_attribute *);
  
@@ -145095,7 +145060,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	struct bus_attribute	*bus_attrs;
 --- a/include/linux/fb.h
 +++ b/include/linux/fb.h
-@@ -123,6 +123,7 @@ struct dentry;
+@@ -123,6 +123,7 @@
  #define FB_ACCEL_TRIDENT_3DIMAGE 51	/* Trident 3DImage		*/
  #define FB_ACCEL_TRIDENT_BLADE3D 52	/* Trident Blade3D		*/
  #define FB_ACCEL_TRIDENT_BLADEXP 53	/* Trident BladeXP		*/
@@ -145305,7 +145270,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif
 --- a/include/linux/kernel.h
 +++ b/include/linux/kernel.h
-@@ -225,6 +225,8 @@ extern struct ratelimit_state printk_rat
+@@ -225,6 +225,8 @@
  extern int printk_ratelimit(void);
  extern bool printk_timed_ratelimit(unsigned long *caller_jiffies,
  				   unsigned int interval_msec);
@@ -146816,7 +146781,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/include/linux/mmc/core.h
 +++ b/include/linux/mmc/core.h
-@@ -129,6 +129,8 @@ struct mmc_request {
+@@ -129,6 +129,8 @@
  struct mmc_host;
  struct mmc_card;
  
@@ -146838,7 +146803,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #endif
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -713,7 +713,7 @@ static inline int shmem_lock(struct file
+@@ -713,7 +713,7 @@
  }
  #endif
  struct file *shmem_file_setup(char *name, loff_t size, unsigned long flags);
@@ -147778,7 +147743,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif
 --- a/include/linux/suspend.h
 +++ b/include/linux/suspend.h
-@@ -146,6 +146,12 @@ struct pbe {
+@@ -146,6 +146,12 @@
  	struct pbe *next;
  };
  
@@ -148037,7 +148002,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +#endif
 --- a/include/linux/vt.h
 +++ b/include/linux/vt.h
-@@ -18,8 +18,19 @@ extern int unregister_vt_notifier(struct
+@@ -18,8 +18,19 @@
   * resizing).
   */
  #define MIN_NR_CONSOLES 1       /* must be at least 1 */
@@ -148059,7 +148024,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/include/sound/soc-dapm.h
 +++ b/include/sound/soc-dapm.h
-@@ -244,6 +244,13 @@ int snd_soc_dapm_nc_pin(struct snd_soc_c
+@@ -244,6 +244,13 @@
  int snd_soc_dapm_get_pin_status(struct snd_soc_codec *codec, char *pin);
  int snd_soc_dapm_sync(struct snd_soc_codec *codec);
  
@@ -148075,7 +148040,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	snd_soc_dapm_input = 0,		/* input pin */
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -732,6 +732,15 @@ config AIO
+@@ -732,6 +732,15 @@
            by some high performance threaded applications. Disabling
            this option saves about 7k.
  
@@ -148093,7 +148058,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	bool "Enable VM event counters for /proc/vmstat" if EMBEDDED
 --- a/kernel/irq/chip.c
 +++ b/kernel/irq/chip.c
-@@ -380,6 +380,7 @@ handle_level_irq(unsigned int irq, struc
+@@ -380,6 +380,7 @@
  out_unlock:
  	spin_unlock(&desc->lock);
  }
@@ -148101,7 +148066,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /**
   *	handle_fasteoi_irq - irq handler for transparent controllers
-@@ -583,6 +584,7 @@ __set_irq_handler(unsigned int irq, irq_
+@@ -583,6 +584,7 @@
  	}
  	spin_unlock_irqrestore(&desc->lock, flags);
  }
@@ -148111,7 +148076,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  set_irq_chip_and_handler(unsigned int irq, struct irq_chip *chip,
 --- a/kernel/power/main.c
 +++ b/kernel/power/main.c
-@@ -132,6 +132,9 @@ static inline int suspend_test(int level
+@@ -132,6 +132,9 @@
  
  #endif /* CONFIG_PM_SLEEP */
  
@@ -148121,7 +148086,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #ifdef CONFIG_SUSPEND
  
  #ifdef CONFIG_PM_TEST_SUSPEND
-@@ -322,6 +325,8 @@ int suspend_devices_and_enter(suspend_st
+@@ -322,6 +325,8 @@
  	if (!suspend_ops)
  		return -ENOSYS;
  
@@ -148130,7 +148095,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	if (suspend_ops->begin) {
  		error = suspend_ops->begin(state);
  		if (error)
-@@ -365,6 +370,8 @@ int suspend_devices_and_enter(suspend_st
+@@ -365,6 +370,8 @@
   Close:
  	if (suspend_ops->end)
  		suspend_ops->end();
@@ -148139,7 +148104,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	return error;
  
   Recover_platform:
-@@ -427,6 +434,8 @@ static int enter_state(suspend_state_t s
+@@ -427,6 +434,8 @@
  		return -EBUSY;
  
  	printk(KERN_INFO "PM: Syncing filesystems ... ");
@@ -148162,7 +148127,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  /*
   * Architectures can override it:
-@@ -67,6 +70,12 @@ int console_printk[4] = {
+@@ -67,6 +70,12 @@
  int oops_in_progress;
  EXPORT_SYMBOL(oops_in_progress);
  
@@ -148175,7 +148140,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /*
   * console_sem protects the console_drivers list, and also
   * provides serialisation for access to the entire console
-@@ -667,8 +676,39 @@ asmlinkage int vprintk(const char *fmt, 
+@@ -667,8 +676,39 @@
  	/* Emit the output into the temporary buffer */
  	printed_len += vscnprintf(printk_buf + printed_len,
  				  sizeof(printk_buf) - printed_len, fmt, args);
@@ -148219,7 +148184,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	 * appropriate log level tags, we insert them here
 --- a/kernel/timer.c
 +++ b/kernel/timer.c
-@@ -813,7 +813,11 @@ static int cascade(struct tvec_base *bas
+@@ -813,7 +813,11 @@
  	 * don't have to detach them individually.
  	 */
  	list_for_each_entry_safe(timer, tmp, &tv_list, entry) {
@@ -148234,7 +148199,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1705,6 +1705,20 @@ FILE LOCKING (flock() and fcntl()/lockf(
+@@ -1705,6 +1705,20 @@
  P:	Matthew Wilcox
  M:	matthew@wil.cx
  L:	linux-fsdevel@vger.kernel.org
@@ -148937,7 +148902,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +MODULE_LICENSE("GPL");
 --- a/mm/Makefile
 +++ b/mm/Makefile
-@@ -22,6 +22,7 @@ obj-$(CONFIG_NUMA) 	+= mempolicy.o
+@@ -22,6 +22,7 @@
  obj-$(CONFIG_SPARSEMEM)	+= sparse.o
  obj-$(CONFIG_SPARSEMEM_VMEMMAP) += sparse-vmemmap.o
  obj-$(CONFIG_SHMEM) += shmem.o
@@ -148947,7 +148912,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  obj-$(CONFIG_SLOB) += slob.o
 --- a/mm/tiny-shmem.c
 +++ b/mm/tiny-shmem.c
-@@ -97,6 +97,22 @@ put_memory:
+@@ -97,6 +97,22 @@
  }
  EXPORT_SYMBOL_GPL(shmem_file_setup);
  
@@ -148970,7 +148935,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /**
   * shmem_zero_setup - setup a shared anonymous mapping
   * @vma: the vma to be mmapped is prepared by do_mmap_pgoff
-@@ -110,10 +126,8 @@ int shmem_zero_setup(struct vm_area_stru
+@@ -110,10 +126,8 @@
  	if (IS_ERR(file))
  		return PTR_ERR(file);
  
@@ -149006,7 +148971,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
 +
 --- a/scripts/mkuboot.sh
 +++ b/scripts/mkuboot.sh
-@@ -11,7 +11,7 @@ if [ -z "${MKIMAGE}" ]; then
+@@ -11,7 +11,7 @@
  	if [ -z "${MKIMAGE}" ]; then
  		# Doesn't exist
  		echo '"mkimage" command not found - U-Boot images will not be built' >&2
@@ -149017,7 +148982,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/sound/soc/codecs/wm8753.c
 +++ b/sound/soc/codecs/wm8753.c
-@@ -1584,6 +1584,9 @@ static int wm8753_init(struct snd_soc_de
+@@ -1584,6 +1584,9 @@
  	schedule_delayed_work(&codec->delayed_work,
  		msecs_to_jiffies(caps_charge));
  
@@ -149027,7 +148992,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	/* set the update bits */
  	reg = wm8753_read_reg_cache(codec, WM8753_LDAC);
  	wm8753_write(codec, WM8753_LDAC, reg | 0x0100);
-@@ -1644,17 +1647,20 @@ static int wm8753_i2c_probe(struct i2c_c
+@@ -1644,17 +1647,20 @@
  	struct snd_soc_codec *codec = socdev->codec;
  	int ret;
  
@@ -149050,7 +149015,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  {
  	struct snd_soc_codec *codec = i2c_get_clientdata(client);
  	kfree(codec->reg_cache);
-@@ -1675,6 +1681,7 @@ static struct i2c_driver wm8753_i2c_driv
+@@ -1675,6 +1681,7 @@
  	.probe =    wm8753_i2c_probe,
  	.remove =   wm8753_i2c_remove,
  	.id_table = wm8753_i2c_id,
@@ -149058,7 +149023,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  static int wm8753_add_i2c_device(struct platform_device *pdev,
-@@ -1716,6 +1723,8 @@ err_driver:
+@@ -1716,6 +1723,8 @@
  	i2c_del_driver(&wm8753_i2c_driver);
  	return -ENODEV;
  }
@@ -149067,7 +149032,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #endif
  
  #if defined(CONFIG_SPI_MASTER)
-@@ -1783,7 +1792,7 @@ static int wm8753_probe(struct platform_
+@@ -1783,7 +1792,7 @@
  	struct wm8753_priv *wm8753;
  	int ret = 0;
  
@@ -149076,7 +149041,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	setup = socdev->codec_data;
  	codec = kzalloc(sizeof(struct snd_soc_codec), GFP_KERNEL);
-@@ -1820,6 +1829,7 @@ static int wm8753_probe(struct platform_
+@@ -1820,6 +1829,7 @@
  #endif
  
  	if (ret != 0) {
@@ -149084,7 +149049,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  		kfree(codec->private_data);
  		kfree(codec);
  	}
-@@ -1857,7 +1867,6 @@ static int wm8753_remove(struct platform
+@@ -1857,7 +1867,6 @@
  	snd_soc_free_pcms(socdev);
  	snd_soc_dapm_free(socdev);
  #if defined(CONFIG_I2C) || defined(CONFIG_I2C_MODULE)
@@ -149094,7 +149059,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #if defined(CONFIG_SPI_MASTER)
 --- a/sound/soc/s3c24xx/Kconfig
 +++ b/sound/soc/s3c24xx/Kconfig
-@@ -26,6 +26,15 @@ config SND_S3C24XX_SOC_NEO1973_WM8753
+@@ -26,6 +26,15 @@
  	  Say Y if you want to add support for SoC audio on smdk2440
  	  with the WM8753.
  
@@ -149112,7 +149077,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	depends on SND_S3C24XX_SOC && MACH_SMDK2443
 --- a/sound/soc/s3c24xx/Makefile
 +++ b/sound/soc/s3c24xx/Makefile
-@@ -13,7 +13,10 @@ obj-$(CONFIG_SND_S3C2412_SOC_I2S) += snd
+@@ -13,7 +13,10 @@
  snd-soc-neo1973-wm8753-objs := neo1973_wm8753.o
  snd-soc-smdk2443-wm9710-objs := smdk2443_wm9710.o
  snd-soc-ln2440sbc-alc650-objs := ln2440sbc_alc650.o
@@ -149810,7 +149775,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <asm/plat-s3c24xx/regs-iis.h>
  
  #include "../codecs/wm8753.h"
-@@ -585,7 +585,7 @@ static struct snd_soc_machine neo1973 = 
+@@ -585,7 +585,7 @@
  	.num_links = ARRAY_SIZE(neo1973_dai),
  };
  
@@ -149819,7 +149784,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	.i2c_bus = 0,
  	.i2c_address = 0x1a,
  };
-@@ -594,7 +594,7 @@ static struct snd_soc_device neo1973_snd
+@@ -594,7 +594,7 @@
  	.machine = &neo1973,
  	.platform = &s3c24xx_soc_platform,
  	.codec_dev = &soc_codec_dev_wm8753,
@@ -149828,7 +149793,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  };
  
  static int lm4857_i2c_probe(struct i2c_client *client,
-@@ -676,7 +676,7 @@ static int __init neo1973_init(void)
+@@ -676,7 +676,7 @@
  {
  	int ret;
  
@@ -149850,7 +149815,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  #include <mach/audio.h>
 --- a/sound/soc/s3c24xx/s3c24xx-i2s.c
 +++ b/sound/soc/s3c24xx/s3c24xx-i2s.c
-@@ -175,7 +175,7 @@ static void s3c24xx_snd_rxctrl(int on)
+@@ -175,7 +175,7 @@
  static int s3c24xx_snd_lrsync(void)
  {
  	u32 iiscon;
@@ -149859,7 +149824,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  	DBG("Entered %s\n", __func__);
  
-@@ -282,11 +282,14 @@ static int s3c24xx_i2s_trigger(struct sn
+@@ -282,11 +282,14 @@
  	case SNDRV_PCM_TRIGGER_START:
  	case SNDRV_PCM_TRIGGER_RESUME:
  	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
@@ -149879,7 +149844,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
  		if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
  			s3c24xx_snd_rxctrl(1);
-@@ -306,7 +309,6 @@ static int s3c24xx_i2s_trigger(struct sn
+@@ -306,7 +309,6 @@
  		break;
  	}
  
@@ -149889,7 +149854,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  
 --- a/sound/soc/s3c24xx/s3c24xx-pcm.c
 +++ b/sound/soc/s3c24xx/s3c24xx-pcm.c
-@@ -168,7 +168,7 @@ static int s3c24xx_pcm_hw_params(struct 
+@@ -168,7 +168,7 @@
  					  prtd->params->client, NULL);
  
  		if (ret < 0) {
@@ -149900,7 +149865,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  	}
 --- a/sound/soc/soc-core.c
 +++ b/sound/soc/soc-core.c
-@@ -1003,6 +1003,38 @@ static ssize_t codec_reg_show(struct dev
+@@ -1003,6 +1003,38 @@
  }
  static DEVICE_ATTR(codec_reg, 0444, codec_reg_show, NULL);
  
@@ -149939,7 +149904,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  /**
   * snd_soc_new_ac97_codec - initailise AC97 device
   * @codec: audio codec
-@@ -1218,6 +1250,9 @@ int snd_soc_register_card(struct snd_soc
+@@ -1218,6 +1250,9 @@
  
  	mutex_unlock(&codec->mutex);
  
@@ -149951,7 +149916,7 @@ mb@homer   Thu Jan  1 22:58:51 UTC 2009
  }
 --- a/sound/soc/soc-dapm.c
 +++ b/sound/soc/soc-dapm.c
-@@ -1525,6 +1525,56 @@ int snd_soc_dapm_get_pin_status(struct s
+@@ -1525,6 +1525,56 @@
  EXPORT_SYMBOL_GPL(snd_soc_dapm_get_pin_status);
  
  /**
