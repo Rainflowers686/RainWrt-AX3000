@@ -1,7 +1,7 @@
-From b2b341339cb835d6024b9878af2e8c548aa586e1 Mon Sep 17 00:00:00 2001
+From 622cb7769a5a3fb071ed920688bd5271f69f980e Mon Sep 17 00:00:00 2001
 From: popcornmix <popcornmix@gmail.com>
 Date: Mon, 3 Sep 2012 17:10:23 +0100
-Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
+Subject: [PATCH 028/196] Add non-mainline source for rtl8192cu wireless driver
  version 3.4.4_4749 as this is widely used. Disabled older rtlwifi driver
 
 ---
@@ -335,9 +335,11 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
  create mode 100644 drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c
  create mode 100644 drivers/net/wireless/rtl8192cu/wlan0dhcp
 
+diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
+index f8f0156..739e577 100644
 --- a/drivers/net/wireless/Kconfig
 +++ b/drivers/net/wireless/Kconfig
-@@ -276,9 +276,10 @@ source "drivers/net/wireless/libertas/Kc
+@@ -276,9 +276,10 @@ source "drivers/net/wireless/libertas/Kconfig"
  source "drivers/net/wireless/orinoco/Kconfig"
  source "drivers/net/wireless/p54/Kconfig"
  source "drivers/net/wireless/rt2x00/Kconfig"
@@ -349,6 +351,8 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +source "drivers/net/wireless/rtl8192cu/Kconfig"
  
  endif # WLAN
+diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
+index 67156ef..0027788 100644
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -24,7 +24,7 @@ obj-$(CONFIG_B43LEGACY)		+= b43legacy/
@@ -365,6 +369,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
  obj-$(CONFIG_BRCMFMAC)	+= brcm80211/
  obj-$(CONFIG_BRCMSMAC)	+= brcm80211/
 +obj-$(CONFIG_RTL8192CU)   += rtl8192cu/
+diff --git a/drivers/net/wireless/rtl8192cu/Kconfig b/drivers/net/wireless/rtl8192cu/Kconfig
+new file mode 100644
+index 0000000..bee5ed6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/Kconfig
 @@ -0,0 +1,6 @@
@@ -374,6 +381,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	---help---
 +	  Help message of RTL8192CU
 +
+diff --git a/drivers/net/wireless/rtl8192cu/Makefile b/drivers/net/wireless/rtl8192cu/Makefile
+new file mode 100644
+index 0000000..b52cace
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/Makefile
 @@ -0,0 +1,545 @@
@@ -922,6 +932,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	cd os_dep ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko 
 +endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/clean b/drivers/net/wireless/rtl8192cu/clean
+new file mode 100644
+index 0000000..34686a0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/clean
 @@ -0,0 +1,9 @@
@@ -935,6 +948,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +rmmod rtl8192c_common
 +rmmod rtlwifi
 \ No newline at end of file
+diff --git a/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c b/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c
+new file mode 100644
+index 0000000..4908d6e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c
 @@ -0,0 +1,1097 @@
@@ -2035,6 +2051,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif //PLATFORM_LINUX
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c b/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c
+new file mode 100644
+index 0000000..1fcdf1e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c
 @@ -0,0 +1,1694 @@
@@ -3732,6 +3751,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +#endif	// CONFIG_BR_EXT
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c b/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c
+new file mode 100644
+index 0000000..bdfec5d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c
 @@ -0,0 +1,2574 @@
@@ -6309,6 +6331,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_debug.c b/drivers/net/wireless/rtl8192cu/core/rtw_debug.c
+new file mode 100644
+index 0000000..04e472d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_debug.c
 @@ -0,0 +1,709 @@
@@ -7021,6 +7046,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c b/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c
+new file mode 100644
+index 0000000..4a0832b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c
 @@ -0,0 +1,424 @@
@@ -7448,6 +7476,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +_func_exit_;		
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c b/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c
+new file mode 100644
+index 0000000..2b85af9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c
 @@ -0,0 +1,1486 @@
@@ -8937,6 +8968,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif // CONFIG_WFD
 +#endif // CONFIG_P2P
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_io.c b/drivers/net/wireless/rtl8192cu/core/rtw_io.c
+new file mode 100644
+index 0000000..2efe719
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_io.c
 @@ -0,0 +1,490 @@
@@ -9430,6 +9464,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c
+new file mode 100644
+index 0000000..156640c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c
 @@ -0,0 +1,197 @@
@@ -9630,6 +9667,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c
+new file mode 100644
+index 0000000..87348a2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c
 @@ -0,0 +1,1032 @@
@@ -10665,6 +10705,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	return status;
 +}
 +//**************  oid_rtl_seg_03_00 section end **************  
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c
+new file mode 100644
+index 0000000..946d875
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c
 @@ -0,0 +1,1426 @@
@@ -12094,6 +12137,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	return rtw_set_channel_plan(adapter, channel_plan);
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_iol.c b/drivers/net/wireless/rtl8192cu/core/rtw_iol.c
+new file mode 100644
+index 0000000..f725ad4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_iol.c
 @@ -0,0 +1,266 @@
@@ -12363,6 +12409,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //CONFIG_IOL
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c b/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c
+new file mode 100644
+index 0000000..2e11d9d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c
 @@ -0,0 +1,3555 @@
@@ -15921,6 +15970,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c b/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c
+new file mode 100644
+index 0000000..e1e496d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c
 @@ -0,0 +1,12270 @@
@@ -28194,6 +28246,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif //CONFIG_TDLS
 +
 +}
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mp.c b/drivers/net/wireless/rtl8192cu/core/rtw_mp.c
+new file mode 100644
+index 0000000..bb76dae
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mp.c
 @@ -0,0 +1,1317 @@
@@ -29514,6 +29569,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c b/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c
+new file mode 100644
+index 0000000..a851568
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c
 @@ -0,0 +1,2841 @@
@@ -32358,6 +32416,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c b/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c
+new file mode 100644
+index 0000000..1df9d62
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c
 @@ -0,0 +1,3498 @@
@@ -35859,6 +35920,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //CONFIG_P2P
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c b/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c
+new file mode 100644
+index 0000000..92b3cb8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c
 @@ -0,0 +1,1227 @@
@@ -37089,6 +37153,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_recv.c b/drivers/net/wireless/rtl8192cu/core/rtw_recv.c
+new file mode 100644
+index 0000000..0d5143b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_recv.c
 @@ -0,0 +1,4597 @@
@@ -41689,6 +41756,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_rf.c b/drivers/net/wireless/rtl8192cu/core/rtw_rf.c
+new file mode 100644
+index 0000000..665c7e5
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_rf.c
 @@ -0,0 +1,96 @@
@@ -41788,6 +41858,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	return ch;
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_security.c b/drivers/net/wireless/rtl8192cu/core/rtw_security.c
+new file mode 100644
+index 0000000..58601b6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_security.c
 @@ -0,0 +1,2831 @@
@@ -44622,6 +44695,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c b/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c
+new file mode 100644
+index 0000000..70b25c9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c
 @@ -0,0 +1,720 @@
@@ -45345,6 +45421,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	return _TRUE;
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c b/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c
+new file mode 100644
+index 0000000..539b74f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c
 @@ -0,0 +1,1848 @@
@@ -47196,6 +47275,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c b/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c
+new file mode 100644
+index 0000000..178a5b7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c
 @@ -0,0 +1,4277 @@
@@ -51476,6 +51558,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/hal_init.c b/drivers/net/wireless/rtl8192cu/hal/hal_init.c
+new file mode 100644
+index 0000000..edef678
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/hal_init.c
 @@ -0,0 +1,120 @@
@@ -51599,6 +51684,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +		padapter->HalFunc.sreset_init_value(padapter); 
 +}
 +#endif	
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c
+new file mode 100644
+index 0000000..971ef6c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c
 @@ -0,0 +1,1361 @@
@@ -52963,6 +53051,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c
+new file mode 100644
+index 0000000..be1e800
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c
 @@ -0,0 +1,4794 @@
@@ -57760,6 +57851,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c
+new file mode 100644
+index 0000000..e3e2ae9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c
 @@ -0,0 +1,3642 @@
@@ -61405,6 +61499,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c
+new file mode 100644
+index 0000000..a3021a9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c
 @@ -0,0 +1,1230 @@
@@ -62638,6 +62735,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +#endif // CONFIG_MP_INCLUDE
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c
+new file mode 100644
+index 0000000..e527028
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c
 @@ -0,0 +1,5583 @@
@@ -68224,6 +68324,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c
+new file mode 100644
+index 0000000..593ea09
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c
 @@ -0,0 +1,1047 @@
@@ -69274,6 +69377,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +/* End of HalRf6052.c */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c
+new file mode 100644
+index 0000000..5aa6e61
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c
 @@ -0,0 +1,767 @@
@@ -70044,6 +70150,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c
+new file mode 100644
+index 0000000..e2817f3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c
 @@ -0,0 +1,293 @@
@@ -70340,6 +70449,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c
+new file mode 100644
+index 0000000..1615b5d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c
 @@ -0,0 +1,9662 @@
@@ -80005,6 +80117,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +0xc78,0x621f001e,
 +};
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c
+new file mode 100644
+index 0000000..66970f1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c
 @@ -0,0 +1,2564 @@
@@ -82572,6 +82687,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c
+new file mode 100644
+index 0000000..f39b4cb
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c
 @@ -0,0 +1,2668 @@
@@ -85243,6 +85361,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	DeInitLed871x( &(ledpriv->SwLed1) );
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c
+new file mode 100644
+index 0000000..4285d60
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c
 @@ -0,0 +1,380 @@
@@ -85626,6 +85747,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c
+new file mode 100644
+index 0000000..c276b51
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c
 @@ -0,0 +1,1322 @@
@@ -86951,6 +87075,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c
+new file mode 100644
+index 0000000..eb5ea29
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c
 @@ -0,0 +1,6039 @@
@@ -92993,6 +93120,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c
+new file mode 100644
+index 0000000..4d01b3c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c
 @@ -0,0 +1,1208 @@
@@ -94204,6 +94334,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c
+new file mode 100644
+index 0000000..d6f3376
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c
 @@ -0,0 +1,2045 @@
@@ -96252,6 +96385,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c
+new file mode 100644
+index 0000000..82adeff
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c
 @@ -0,0 +1,1266 @@
@@ -97521,6 +97657,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/ifcfg-wlan0 b/drivers/net/wireless/rtl8192cu/ifcfg-wlan0
+new file mode 100644
+index 0000000..7ecb7ae
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/ifcfg-wlan0
 @@ -0,0 +1,4 @@
@@ -97529,6 +97668,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +BOOTPROTO=dhcp
 +ONBOOT=yes
 \ No newline at end of file
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h
+new file mode 100644
+index 0000000..2ecb65d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h
 @@ -0,0 +1,81 @@
@@ -97613,6 +97755,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u32 Rtl8192CEAGCTAB_1TArray[AGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CE_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h
+new file mode 100644
+index 0000000..6ecb754
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h
 @@ -0,0 +1,451 @@
@@ -98067,6 +98212,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	// __INC_HAL8192CPHYCFG_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h
+new file mode 100644
+index 0000000..1f9f330
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h
 @@ -0,0 +1,1102 @@
@@ -99172,6 +99320,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//__INC_HAL8192SPHYREG_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h
+new file mode 100644
+index 0000000..254a060
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h
 @@ -0,0 +1,99 @@
@@ -99274,6 +99425,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u32 Rtl8192CUAGCTAB_1T_HPArray[AGCTAB_1T_HPArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h
+new file mode 100644
+index 0000000..47d4d2f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h
 @@ -0,0 +1,34 @@
@@ -99311,6 +99465,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__INC_HAL8192CU_FW_IMG_WOWLAN_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h
+new file mode 100644
+index 0000000..dc2bc17
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h
 @@ -0,0 +1,66 @@
@@ -99380,6 +99537,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u32 Rtl8192DEAGCTAB_1TArray[AGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DETestHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DETestHWImg.h
+new file mode 100644
+index 0000000..2432bcd
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DETestHWImg.h
 @@ -0,0 +1,54 @@
@@ -99437,6 +99597,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u32 Rtl8192DTestAGCTAB_2GArray[Rtl8192DTestAGCTAB_2GArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h
+new file mode 100644
+index 0000000..475cf36
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h
 @@ -0,0 +1,528 @@
@@ -99968,6 +100131,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	// __INC_HAL8192SPHYCFG_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h
+new file mode 100644
+index 0000000..f28aa03
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h
 @@ -0,0 +1,1171 @@
@@ -101142,6 +101308,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//__INC_HAL8192SPHYREG_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h
+new file mode 100644
+index 0000000..d931001
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h
 @@ -0,0 +1,66 @@
@@ -101211,6 +101380,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern const u32 Rtl8192DUAGCTAB_1TArray[Rtl8192DUAGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h
+new file mode 100644
+index 0000000..a297e76
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h
 @@ -0,0 +1,30 @@
@@ -101244,6 +101416,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__INC_HAL8192DU_FW_IMG_WOWLAN_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DUTestHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DUTestHWImg.h
+new file mode 100644
+index 0000000..e0491ff
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DUTestHWImg.h
 @@ -0,0 +1,54 @@
@@ -101301,6 +101476,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u32 Rtl8192DTestAGCTAB_2GArray[Rtl8192DTestAGCTAB_2GArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/autoconf.h b/drivers/net/wireless/rtl8192cu/include/autoconf.h
+new file mode 100644
+index 0000000..7d6db40
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/autoconf.h
 @@ -0,0 +1,288 @@
@@ -101592,6 +101770,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#define DBG_CONFIG_ERROR_DETECT
 +//#define DBG_CONFIG_ERROR_RESET
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/basic_types.h b/drivers/net/wireless/rtl8192cu/include/basic_types.h
+new file mode 100644
+index 0000000..f880224
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/basic_types.h
 @@ -0,0 +1,276 @@
@@ -101871,6 +102052,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__BASIC_TYPES_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h b/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h
+new file mode 100644
+index 0000000..eca68a6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h
 @@ -0,0 +1,87 @@
@@ -101961,6 +102145,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#include <byteorder/generic.h>
 +
 +#endif /* _LINUX_BYTEORDER_BIG_ENDIAN_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h b/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h
+new file mode 100644
+index 0000000..246ba89
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h
 @@ -0,0 +1,209 @@
@@ -102173,6 +102360,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_GENERIC_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h b/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h
+new file mode 100644
+index 0000000..433045e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h
 @@ -0,0 +1,89 @@
@@ -102265,6 +102455,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#include <byteorder/generic.h>
 +
 +#endif /* _LINUX_BYTEORDER_LITTLE_ENDIAN_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h b/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h
+new file mode 100644
+index 0000000..117c84d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h
 @@ -0,0 +1,133 @@
@@ -102401,6 +102594,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_SWAB_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h b/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h
+new file mode 100644
+index 0000000..1735349
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h
 @@ -0,0 +1,157 @@
@@ -102561,6 +102757,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_SWABB_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/circ_buf.h b/drivers/net/wireless/rtl8192cu/include/circ_buf.h
+new file mode 100644
+index 0000000..1bd4704
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/circ_buf.h
 @@ -0,0 +1,27 @@
@@ -102591,6 +102790,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
 +
 +#endif //_CIRC_BUF_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h b/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h
+new file mode 100644
+index 0000000..077efa7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h
 @@ -0,0 +1,36 @@
@@ -102630,6 +102832,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/drv_conf.h b/drivers/net/wireless/rtl8192cu/include/drv_conf.h
+new file mode 100644
+index 0000000..a2b6cc4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_conf.h
 @@ -0,0 +1,78 @@
@@ -102711,6 +102916,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // __DRV_CONF_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types.h b/drivers/net/wireless/rtl8192cu/include/drv_types.h
+new file mode 100644
+index 0000000..95e20cc
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types.h
 @@ -0,0 +1,555 @@
@@ -103269,6 +103477,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__DRV_TYPES_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h b/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h
+new file mode 100644
+index 0000000..be0459d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h
 @@ -0,0 +1,92 @@
@@ -103364,6 +103575,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h b/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h
+new file mode 100644
+index 0000000..db1c585
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h
 @@ -0,0 +1,25 @@
@@ -103392,6 +103606,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h b/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h
+new file mode 100644
+index 0000000..2d51b1d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h
 @@ -0,0 +1,95 @@
@@ -103490,6 +103707,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/ethernet.h b/drivers/net/wireless/rtl8192cu/include/ethernet.h
+new file mode 100644
+index 0000000..36e29c0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ethernet.h
 @@ -0,0 +1,41 @@
@@ -103534,6 +103754,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +#endif // #ifndef __INC_ETHERNET_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/farray.h b/drivers/net/wireless/rtl8192cu/include/farray.h
+new file mode 100644
+index 0000000..79d2a42
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/farray.h
 @@ -0,0 +1,31480 @@
@@ -135017,6 +135240,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +0x08,0xFB,0x90,0xB8,
 +0xFF,0xFF,0xFF,0xFF,
 +};
+diff --git a/drivers/net/wireless/rtl8192cu/include/h2clbk.h b/drivers/net/wireless/rtl8192cu/include/h2clbk.h
+new file mode 100644
+index 0000000..359c9e7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/h2clbk.h
 @@ -0,0 +1,35 @@
@@ -135055,6 +135281,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +void _lbk_evt(IN PADAPTER Adapter);
 +
 +void h2c_event_callback(unsigned char *dev, unsigned char *pbuf);
+diff --git a/drivers/net/wireless/rtl8192cu/include/hal_init.h b/drivers/net/wireless/rtl8192cu/include/hal_init.h
+new file mode 100644
+index 0000000..ec48f83
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/hal_init.h
 @@ -0,0 +1,305 @@
@@ -135363,6 +135592,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__HAL_INIT_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/ieee80211.h b/drivers/net/wireless/rtl8192cu/include/ieee80211.h
+new file mode 100644
+index 0000000..5c17a28
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ieee80211.h
 @@ -0,0 +1,1461 @@
@@ -136827,6 +137059,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +void rtw_macaddr_cfg(u8 *mac_addr);
 +#endif /* IEEE80211_H */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h b/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h
+new file mode 100644
+index 0000000..3e55305
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h
 @@ -0,0 +1,477 @@
@@ -137307,6 +137542,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/if_ether.h b/drivers/net/wireless/rtl8192cu/include/if_ether.h
+new file mode 100644
+index 0000000..045c067
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/if_ether.h
 @@ -0,0 +1,112 @@
@@ -137422,6 +137660,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +#endif	/* _LINUX_IF_ETHER_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h b/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h
+new file mode 100644
+index 0000000..7846927
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h
 @@ -0,0 +1,81 @@
@@ -137506,6 +137747,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__IOCTL_CFG80211_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/ip.h b/drivers/net/wireless/rtl8192cu/include/ip.h
+new file mode 100644
+index 0000000..5846347
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ip.h
 @@ -0,0 +1,138 @@
@@ -137647,6 +137891,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +};
 +
 +#endif	/* _LINUX_IP_H */
+diff --git a/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h b/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h
+new file mode 100644
+index 0000000..1583053
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h
 @@ -0,0 +1,44 @@
@@ -137694,6 +137941,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//_MLME_OSDEP_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h b/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h
+new file mode 100644
+index 0000000..5f86738
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h
 @@ -0,0 +1,353 @@
@@ -138050,6 +138300,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#define OID_RT_PRO_EFUSE_MAP				0xFF871217 //Q, S
 +
 +#endif //#ifndef	__CUSTOM_OID_H
+diff --git a/drivers/net/wireless/rtl8192cu/include/nic_spec.h b/drivers/net/wireless/rtl8192cu/include/nic_spec.h
+new file mode 100644
+index 0000000..18e7b2c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/nic_spec.h
 @@ -0,0 +1,47 @@
@@ -138100,6 +138353,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // __RTL8711_SPEC_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h b/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h
+new file mode 100644
+index 0000000..e374077
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h
 @@ -0,0 +1,171 @@
@@ -138274,6 +138530,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_intf.h b/drivers/net/wireless/rtl8192cu/include/osdep_intf.h
+new file mode 100644
+index 0000000..86b3f1f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_intf.h
 @@ -0,0 +1,128 @@
@@ -138405,6 +138664,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//_OSDEP_INTF_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_service.h b/drivers/net/wireless/rtl8192cu/include/osdep_service.h
+new file mode 100644
+index 0000000..6fedff4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_service.h
 @@ -0,0 +1,841 @@
@@ -139249,6 +139511,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +			 void *data, const char *name);
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/pci_hal.h b/drivers/net/wireless/rtl8192cu/include/pci_hal.h
+new file mode 100644
+index 0000000..1ee0ee2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_hal.h
 @@ -0,0 +1,168 @@
@@ -139420,6 +139685,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__PCIE_HAL_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/pci_ops.h b/drivers/net/wireless/rtl8192cu/include/pci_ops.h
+new file mode 100644
+index 0000000..dd63f5f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_ops.h
 @@ -0,0 +1,58 @@
@@ -139481,6 +139749,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/pci_osintf.h b/drivers/net/wireless/rtl8192cu/include/pci_osintf.h
+new file mode 100644
+index 0000000..09715af
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_osintf.h
 @@ -0,0 +1,33 @@
@@ -139517,6 +139788,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/recv_osdep.h b/drivers/net/wireless/rtl8192cu/include/recv_osdep.h
+new file mode 100644
+index 0000000..536ed31
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/recv_osdep.h
 @@ -0,0 +1,58 @@
@@ -139578,6 +139852,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h
+new file mode 100644
+index 0000000..1689c54
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h
 @@ -0,0 +1,153 @@
@@ -139734,6 +140011,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +void rtl8192c_set_wowlan_cmd(_adapter* padapter);
 +void SetFwRelatedForWoWLAN8192CU(_adapter* 	padapter,u8 bHostIsGoingtoSleep);
 +#endif // CONFIG_WOWLAN
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h
+new file mode 100644
+index 0000000..80b4a67
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h
 @@ -0,0 +1,616 @@
@@ -140353,6 +140633,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//__HAL8190PCIDM_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h
+new file mode 100644
+index 0000000..131b658
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h
 @@ -0,0 +1,29 @@
@@ -140385,6 +140668,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h
+new file mode 100644
+index 0000000..cddd998
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h
 @@ -0,0 +1,887 @@
@@ -141275,6 +141561,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +void rtl8192c_set_hal_ops(struct hal_ops *pHalFunc);
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h
+new file mode 100644
+index 0000000..b361ba5
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h
 @@ -0,0 +1,43 @@
@@ -141321,6 +141610,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h
+new file mode 100644
+index 0000000..b532a59
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h
 @@ -0,0 +1,183 @@
@@ -141507,6 +141799,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h
+new file mode 100644
+index 0000000..d3c4b67
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h
 @@ -0,0 +1,93 @@
@@ -141603,6 +141898,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif/* End of HalRf.h */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h
+new file mode 100644
+index 0000000..27e0f0e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h
 @@ -0,0 +1,1899 @@
@@ -143505,6 +143803,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h
+new file mode 100644
+index 0000000..dace413
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h
 @@ -0,0 +1,54 @@
@@ -143562,6 +143863,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u8 rtl8192c_sreset_get_wifi_status(_adapter *padapter);
 +#endif
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h
+new file mode 100644
+index 0000000..efb5f99
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h
 @@ -0,0 +1,91 @@
@@ -143656,6 +143960,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h
+new file mode 100644
+index 0000000..cb414a1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h
 @@ -0,0 +1,133 @@
@@ -143792,6 +144099,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif // CONFIG_WOWLAN
 +
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h
+new file mode 100644
+index 0000000..ce674f8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h
 @@ -0,0 +1,414 @@
@@ -144209,6 +144519,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +VOID rtl8192d_dm_CheckTXPowerTracking(IN PADAPTER Adapter);
 +
 +#endif	//__HAL8190PCIDM_H__
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h
+new file mode 100644
+index 0000000..30f2955
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h
 @@ -0,0 +1,983 @@
@@ -145195,6 +145508,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //end CONFIG_MP_INCLUDED
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h
+new file mode 100644
+index 0000000..454a1b8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h
 @@ -0,0 +1,44 @@
@@ -145242,6 +145558,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h
+new file mode 100644
+index 0000000..3ffc646
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h
 @@ -0,0 +1,183 @@
@@ -145428,6 +145747,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h
+new file mode 100644
+index 0000000..6995464
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h
 @@ -0,0 +1,98 @@
@@ -145529,6 +145851,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif/* End of HalRf.h */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h
+new file mode 100644
+index 0000000..9bba78a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h
 @@ -0,0 +1,1879 @@
@@ -147411,6 +147736,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h
+new file mode 100644
+index 0000000..0babb27
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h
 @@ -0,0 +1,106 @@
@@ -147520,6 +147848,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_android.h b/drivers/net/wireless/rtl8192cu/include/rtw_android.h
+new file mode 100644
+index 0000000..e1a0432
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_android.h
 @@ -0,0 +1,80 @@
@@ -147603,6 +147934,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__RTW_ANDROID_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h b/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h
+new file mode 100644
+index 0000000..9da3fdd
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h
 @@ -0,0 +1,76 @@
@@ -147682,6 +148016,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // _RTW_BR_EXT_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h b/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h
+new file mode 100644
+index 0000000..1313a25
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h
 @@ -0,0 +1,41 @@
@@ -147726,6 +148063,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif /* _RTL871X_BYTEORDER_H_ */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h
+new file mode 100644
+index 0000000..0556d0b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h
 @@ -0,0 +1,1132 @@
@@ -148861,6 +149201,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // _CMD_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_debug.h b/drivers/net/wireless/rtl8192cu/include/rtw_debug.h
+new file mode 100644
+index 0000000..eca6692
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_debug.h
 @@ -0,0 +1,389 @@
@@ -149253,6 +149596,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//__RTW_DEBUG_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h b/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h
+new file mode 100644
+index 0000000..9d31998
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h
 @@ -0,0 +1,153 @@
@@ -149409,6 +149755,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif //PLATFORM_LINUX
 +
 +#endif  //__RTL871X_EEPROM_H__
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h b/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h
+new file mode 100644
+index 0000000..66be910
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h
 @@ -0,0 +1,123 @@
@@ -149535,6 +149884,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +void	EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_event.h b/drivers/net/wireless/rtl8192cu/include/rtw_event.h
+new file mode 100644
+index 0000000..dd9f097
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_event.h
 @@ -0,0 +1,154 @@
@@ -149692,6 +150044,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // _WLANEVENT_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ht.h b/drivers/net/wireless/rtl8192cu/include/rtw_ht.h
+new file mode 100644
+index 0000000..4dcad2b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ht.h
 @@ -0,0 +1,51 @@
@@ -149746,6 +150101,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//_RTL871X_HT_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_io.h b/drivers/net/wireless/rtl8192cu/include/rtw_io.h
+new file mode 100644
+index 0000000..b1f57c1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_io.h
 @@ -0,0 +1,543 @@
@@ -150292,6 +150650,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +*/
 +
 +#endif	//_RTL8711_IO_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h
+new file mode 100644
+index 0000000..e6d34f0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h
 @@ -0,0 +1,271 @@
@@ -150566,6 +150927,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // #ifndef __INC_CEINFO_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h
+new file mode 100644
+index 0000000..e9ad16f1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h
 @@ -0,0 +1,37 @@
@@ -150606,6 +150970,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h
+new file mode 100644
+index 0000000..1ea8f21
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h
 @@ -0,0 +1,84 @@
@@ -150693,6 +151060,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h
+new file mode 100644
+index 0000000..577af51
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h
 @@ -0,0 +1,78 @@
@@ -150774,6 +151144,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_iol.h b/drivers/net/wireless/rtl8192cu/include/rtw_iol.h
+new file mode 100644
+index 0000000..45fa5a2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_iol.h
 @@ -0,0 +1,89 @@
@@ -150866,6 +151239,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +bool rtw_IOL_applied(ADAPTER *adapter);
 +
 +#endif //__RTW_IOL_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_led.h b/drivers/net/wireless/rtl8192cu/include/rtw_led.h
+new file mode 100644
+index 0000000..72634f8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_led.h
 @@ -0,0 +1,214 @@
@@ -151083,6 +151459,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__RTW_LED_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h b/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h
+new file mode 100644
+index 0000000..0beca93
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h
 @@ -0,0 +1,665 @@
@@ -151751,6 +152130,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif //CONFIG_INTEL_PROXIM
 +#endif //__RTL871X_MLME_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h b/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h
+new file mode 100644
+index 0000000..d9a203f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h
 @@ -0,0 +1,878 @@
@@ -152632,6 +153014,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp.h
+new file mode 100644
+index 0000000..a468714
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp.h
 @@ -0,0 +1,708 @@
@@ -153343,6 +153728,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //_RTW_MP_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h
+new file mode 100644
+index 0000000..e16df40
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h
 @@ -0,0 +1,596 @@
@@ -153942,6 +154330,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h
+new file mode 100644
+index 0000000..4906005
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h
 @@ -0,0 +1,1098 @@
@@ -155043,6 +155434,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//__INC_HAL8192SPHYREG_H
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h b/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h
+new file mode 100644
+index 0000000..a29ceaa
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h
 @@ -0,0 +1,151 @@
@@ -155197,6 +155591,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h b/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h
+new file mode 100644
+index 0000000..2b00beb
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h
 @@ -0,0 +1,343 @@
@@ -155543,6 +155940,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#define rtw_pwr_wakeup(adapter) _rtw_pwr_wakeup(adapter, __FUNCTION__)
 +
 +#endif  //__RTL871X_PWRCTRL_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_qos.h b/drivers/net/wireless/rtl8192cu/include/rtw_qos.h
+new file mode 100644
+index 0000000..e35b77f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_qos.h
 @@ -0,0 +1,41 @@
@@ -155587,6 +155987,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//_RTL871X_QOS_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_recv.h b/drivers/net/wireless/rtl8192cu/include/rtw_recv.h
+new file mode 100644
+index 0000000..e204ef3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_recv.h
 @@ -0,0 +1,708 @@
@@ -156298,6 +156701,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_rf.h b/drivers/net/wireless/rtl8192cu/include/rtw_rf.h
+new file mode 100644
+index 0000000..7414c1b6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_rf.h
 @@ -0,0 +1,152 @@
@@ -156453,6 +156859,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //_RTL8711_RF_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_security.h b/drivers/net/wireless/rtl8192cu/include/rtw_security.h
+new file mode 100644
+index 0000000..02ef9b0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_security.h
 @@ -0,0 +1,423 @@
@@ -156879,10 +157288,16 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +#endif	//__RTL871X_SECURITY_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_version.h b/drivers/net/wireless/rtl8192cu/include/rtw_version.h
+new file mode 100644
+index 0000000..f88ea77
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_version.h
 @@ -0,0 +1 @@
 +#define DRIVERVERSION	"v3.4.4_4749.20121105"
+diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h
+new file mode 100644
+index 0000000..54e0b2d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h
 @@ -0,0 +1,674 @@
@@ -157560,6 +157975,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif	//_RTL871X_XMIT_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_hal.h b/drivers/net/wireless/rtl8192cu/include/sdio_hal.h
+new file mode 100644
+index 0000000..51139bb
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_hal.h
 @@ -0,0 +1,34 @@
@@ -157597,6 +158015,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //__SDIO_HAL_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_ops.h b/drivers/net/wireless/rtl8192cu/include/sdio_ops.h
+new file mode 100644
+index 0000000..b1e9b63
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_ops.h
 @@ -0,0 +1,80 @@
@@ -157680,6 +158101,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_ops_ce.h b/drivers/net/wireless/rtl8192cu/include/sdio_ops_ce.h
+new file mode 100644
+index 0000000..81687c9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_ops_ce.h
 @@ -0,0 +1,56 @@
@@ -157739,6 +158163,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_ops_linux.h b/drivers/net/wireless/rtl8192cu/include/sdio_ops_linux.h
+new file mode 100644
+index 0000000..c58ab08
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_ops_linux.h
 @@ -0,0 +1,55 @@
@@ -157797,6 +158224,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_ops_xp.h b/drivers/net/wireless/rtl8192cu/include/sdio_ops_xp.h
+new file mode 100644
+index 0000000..3569611
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_ops_xp.h
 @@ -0,0 +1,56 @@
@@ -157856,6 +158286,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sdio_osintf.h b/drivers/net/wireless/rtl8192cu/include/sdio_osintf.h
+new file mode 100644
+index 0000000..099262b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sdio_osintf.h
 @@ -0,0 +1,48 @@
@@ -157907,6 +158340,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/sta_info.h b/drivers/net/wireless/rtl8192cu/include/sta_info.h
+new file mode 100644
+index 0000000..8f01f21
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sta_info.h
 @@ -0,0 +1,353 @@
@@ -158263,6 +158699,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +extern u8 rtw_access_ctrl(struct wlan_acl_pool* pacl_list, u8 * mac_addr);
 +
 +#endif //_STA_INFO_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/usb_hal.h b/drivers/net/wireless/rtl8192cu/include/usb_hal.h
+new file mode 100644
+index 0000000..9cd21f3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_hal.h
 @@ -0,0 +1,32 @@
@@ -158298,6 +158737,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif	//CONFIG_INTEL_PROXIM
 +#endif //__USB_HAL_H__
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/usb_ops.h b/drivers/net/wireless/rtl8192cu/include/usb_ops.h
+new file mode 100644
+index 0000000..3868bc0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_ops.h
 @@ -0,0 +1,100 @@
@@ -158401,6 +158843,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +
 +#endif //__USB_OPS_H_
+diff --git a/drivers/net/wireless/rtl8192cu/include/usb_osintf.h b/drivers/net/wireless/rtl8192cu/include/usb_osintf.h
+new file mode 100644
+index 0000000..8642aa2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_osintf.h
 @@ -0,0 +1,39 @@
@@ -158443,6 +158888,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h b/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h
+new file mode 100644
+index 0000000..72864de
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h
 @@ -0,0 +1,60 @@
@@ -158506,6 +158954,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +//BOOLEAN CEusbGetDescriptorRequest(PCE_USB_DEVICE CEdevice, IN short urbLength, IN UCHAR DescriptorType, IN UCHAR Index, IN USHORT LanguageId, IN PVOID  TransferBuffer, IN ULONG TransferBufferLength);
 +
 +#endif
+diff --git a/drivers/net/wireless/rtl8192cu/include/wifi.h b/drivers/net/wireless/rtl8192cu/include/wifi.h
+new file mode 100644
+index 0000000..a80a805
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/wifi.h
 @@ -0,0 +1,1190 @@
@@ -159699,6 +160150,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif // _WIFI_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h b/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h
+new file mode 100644
+index 0000000..fe555c6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h
 @@ -0,0 +1,453 @@
@@ -160155,6 +160609,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //#ifndef WLAN_BSSDEF_H_
 +
+diff --git a/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h b/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h
+new file mode 100644
+index 0000000..7d28d43
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h
 @@ -0,0 +1,90 @@
@@ -160248,6 +160705,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
+new file mode 100644
+index 0000000..b592e27
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
 @@ -0,0 +1,4618 @@
@@ -164869,6 +165329,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +#endif //CONFIG_IOCTL_CFG80211
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c
+new file mode 100644
+index 0000000..f999502
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c
 @@ -0,0 +1,9325 @@
@@ -174197,6 +174660,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +};
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c
+new file mode 100644
+index 0000000..0175ea2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c
 @@ -0,0 +1,740 @@
@@ -174940,6 +175406,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +#endif
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c
+new file mode 100644
+index 0000000..8feb780
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c
 @@ -0,0 +1,1555 @@
@@ -176498,6 +176967,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c
+new file mode 100644
+index 0000000..0848297
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c
 @@ -0,0 +1,1889 @@
@@ -178390,6 +178862,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +module_init(rtw_drv_entry);
 +module_exit(rtw_drv_halt);
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c
+new file mode 100644
+index 0000000..4a76c3f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c
 @@ -0,0 +1,462 @@
@@ -178855,6 +179330,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c
+new file mode 100644
+index 0000000..aceaaa7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c
 @@ -0,0 +1,713 @@
@@ -179571,6 +180049,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif /* defined(CONFIG_WIFI_CONTROL_FUNC) */
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/sdio_intf.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/sdio_intf.c
+new file mode 100644
+index 0000000..52faefc
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/sdio_intf.c
 @@ -0,0 +1,922 @@
@@ -180496,6 +180977,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +module_init(r8712s_drv_entry);
 +module_exit(r8712s_drv_halt);
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c
+new file mode 100644
+index 0000000..134acdc
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c
 @@ -0,0 +1,1523 @@
@@ -182022,6 +182506,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +EXPORT_SYMBOL(rtw_usb_get_sw_pointer);
 +#endif	//CONFIG_INTEL_PROXIM
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c
+new file mode 100644
+index 0000000..02eec93
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c
 @@ -0,0 +1,367 @@
@@ -182392,6 +182879,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +	return 0;
 +}
 +
+diff --git a/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c b/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c
+new file mode 100644
+index 0000000..343cd82
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c
 @@ -0,0 +1,1571 @@
@@ -183966,6 +184456,9 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +}
 +#endif
 +
+diff --git a/drivers/net/wireless/rtl8192cu/wlan0dhcp b/drivers/net/wireless/rtl8192cu/wlan0dhcp
+new file mode 100644
+index 0000000..6043382
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/wlan0dhcp
 @@ -0,0 +1,16 @@
@@ -183985,3 +184478,6 @@ Subject: [PATCH 028/174] Add non-mainline source for rtl8192cu wireless driver
 +
 +echo "get ip: $var1"
 +
+-- 
+1.9.1
+
