@@ -353,11 +353,9 @@ Subject: [PATCH 006/114] Add non-mainline source for rtl8192cu wireless driver
  create mode 100755 drivers/net/wireless/rtl8192cu/runwpa
  create mode 100755 drivers/net/wireless/rtl8192cu/wlan0dhcp
 
-diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
-index 16604bd..ea4d54f 100644
 --- a/drivers/net/wireless/Kconfig
 +++ b/drivers/net/wireless/Kconfig
-@@ -277,7 +277,8 @@ source "drivers/net/wireless/libertas/Kconfig"
+@@ -277,7 +277,8 @@ source "drivers/net/wireless/libertas/Kc
  source "drivers/net/wireless/orinoco/Kconfig"
  source "drivers/net/wireless/p54/Kconfig"
  source "drivers/net/wireless/rt2x00/Kconfig"
@@ -367,8 +365,6 @@ index 16604bd..ea4d54f 100644
  source "drivers/net/wireless/ti/Kconfig"
  source "drivers/net/wireless/zd1211rw/Kconfig"
  source "drivers/net/wireless/mwifiex/Kconfig"
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index 0c88916..2971041 100644
 --- a/drivers/net/wireless/Makefile
 +++ b/drivers/net/wireless/Makefile
 @@ -24,7 +24,8 @@ obj-$(CONFIG_B43LEGACY)		+= b43legacy/
@@ -381,9 +377,6 @@ index 0c88916..2971041 100644
  
  # 16-bit wireless PCMCIA client drivers
  obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
-diff --git a/drivers/net/wireless/rtl8192cu/Kconfig b/drivers/net/wireless/rtl8192cu/Kconfig
-new file mode 100644
-index 0000000..ed37b1a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/Kconfig
 @@ -0,0 +1,5 @@
@@ -392,9 +385,6 @@ index 0000000..ed37b1a
 +	depends on USB
 +	---help---
 +	  Help message of RTL8192CU
-diff --git a/drivers/net/wireless/rtl8192cu/Makefile b/drivers/net/wireless/rtl8192cu/Makefile
-new file mode 100644
-index 0000000..bc137ab
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/Makefile
 @@ -0,0 +1,615 @@
@@ -1013,9 +1003,6 @@ index 0000000..bc137ab
 +	cd os_dep/linux ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
 +	cd os_dep ; rm -fr *.mod.c *.mod *.o .*.cmd *.ko
 +endif
-diff --git a/drivers/net/wireless/rtl8192cu/clean b/drivers/net/wireless/rtl8192cu/clean
-new file mode 100755
-index 0000000..8766421
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/clean
 @@ -0,0 +1,5 @@
@@ -1024,9 +1011,6 @@ index 0000000..8766421
 +rmmod 8192ce
 +rmmod 8192du
 +rmmod 8192de
-diff --git a/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c b/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c
-new file mode 100644
-index 0000000..c7f2b67
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/efuse/rtw_efuse.c
 @@ -0,0 +1,1145 @@
@@ -2175,9 +2159,6 @@ index 0000000..c7f2b67
 +}
 +#endif //CONFIG_ADAPTOR_INFO_CACHING_FILE
 +#endif //PLATFORM_LINUX
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ap.c b/drivers/net/wireless/rtl8192cu/core/rtw_ap.c
-new file mode 100644
-index 0000000..cd7e5f3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ap.c
 @@ -0,0 +1,2939 @@
@@ -5120,9 +5101,6 @@ index 0000000..cd7e5f3
 +
 +#endif //CONFIG_NATIVEAP_MLME
 +#endif //CONFIG_AP_MODE
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c b/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c
-new file mode 100644
-index 0000000..a5ac601
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_br_ext.c
 @@ -0,0 +1,1699 @@
@@ -6825,9 +6803,6 @@ index 0000000..a5ac601
 +}
 +
 +#endif	// CONFIG_BR_EXT
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c b/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c
-new file mode 100644
-index 0000000..2455304
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_cmd.c
 @@ -0,0 +1,3034 @@
@@ -9865,9 +9840,6 @@ index 0000000..2455304
 +_func_exit_;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_debug.c b/drivers/net/wireless/rtl8192cu/core/rtw_debug.c
-new file mode 100644
-index 0000000..2268c1a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_debug.c
 @@ -0,0 +1,1336 @@
@@ -11207,9 +11179,6 @@ index 0000000..2268c1a
 +#endif /* CONFIG_DM_ADAPTIVITY */
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c b/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c
-new file mode 100644
-index 0000000..c0a6b54
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_eeprom.c
 @@ -0,0 +1,422 @@
@@ -11635,9 +11604,6 @@ index 0000000..c0a6b54
 +
 +_func_exit_;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c b/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c
-new file mode 100644
-index 0000000..cc0b97a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ieee80211.c
 @@ -0,0 +1,1914 @@
@@ -13555,9 +13521,6 @@ index 0000000..cc0b97a
 +	action = (action >= ACT_PUBLIC_MAX) ? ACT_PUBLIC_MAX : action;
 +	return _action_public_str[action];
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_io.c b/drivers/net/wireless/rtl8192cu/core/rtw_io.c
-new file mode 100644
-index 0000000..3e8ee42
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_io.c
 @@ -0,0 +1,462 @@
@@ -14023,9 +13986,6 @@ index 0000000..3e8ee42
 +	return _rtw_writeN(adapter, addr, length, data);
 +}
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c
-new file mode 100644
-index 0000000..a67b08d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_query.c
 @@ -0,0 +1,195 @@
@@ -14224,9 +14184,6 @@ index 0000000..a67b08d
 +	return _TRUE;
 +}
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c
-new file mode 100644
-index 0000000..4e663d7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_rtl.c
 @@ -0,0 +1,1031 @@
@@ -15261,9 +15218,6 @@ index 0000000..4e663d7
 +	return status;
 +}
 +//**************  oid_rtl_seg_03_00 section end **************
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c
-new file mode 100644
-index 0000000..9d1bcf3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_ioctl_set.c
 @@ -0,0 +1,1493 @@
@@ -16760,9 +16714,6 @@ index 0000000..9d1bcf3
 +	DBG_871X_LEVEL(_drv_always_, FUNC_ADPT_FMT" band:%d fail\n", FUNC_ADPT_ARG(adapter), band);
 +	return _FAIL;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_iol.c b/drivers/net/wireless/rtl8192cu/core/rtw_iol.c
-new file mode 100644
-index 0000000..20632d6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_iol.c
 @@ -0,0 +1,262 @@
@@ -17028,9 +16979,6 @@ index 0000000..20632d6
 +}
 +
 +#endif //CONFIG_IOL
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c b/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c
-new file mode 100644
-index 0000000..2dc13a4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mlme.c
 @@ -0,0 +1,3966 @@
@@ -21000,9 +20948,6 @@ index 0000000..2dc13a4
 +	return _FALSE;
 +}
 +#endif //CONFIG_CONCURRENT_MODE
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c b/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c
-new file mode 100644
-index 0000000..b7716ae
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mlme_ext.c
 @@ -0,0 +1,13599 @@
@@ -34605,9 +34550,6 @@ index 0000000..b7716ae
 +#endif //CONFIG_TDLS
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mp.c b/drivers/net/wireless/rtl8192cu/core/rtw_mp.c
-new file mode 100644
-index 0000000..2695425
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mp.c
 @@ -0,0 +1,1323 @@
@@ -35934,9 +35876,6 @@ index 0000000..2695425
 +}
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c b/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c
-new file mode 100644
-index 0000000..a0d8680
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_mp_ioctl.c
 @@ -0,0 +1,2953 @@
@@ -38893,9 +38832,6 @@ index 0000000..a0d8680
 +	return 0;
 +#endif
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c b/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c
-new file mode 100644
-index 0000000..8f6cad3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_p2p.c
 @@ -0,0 +1,5293 @@
@@ -44192,9 +44128,6 @@ index 0000000..8f6cad3
 +}
 +
 +#endif //CONFIG_P2P
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c b/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c
-new file mode 100644
-index 0000000..63f8655
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_pwrctrl.c
 @@ -0,0 +1,1538 @@
@@ -45736,9 +45669,6 @@ index 0000000..63f8655
 +	}
 +	return 0;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_recv.c b/drivers/net/wireless/rtl8192cu/core/rtw_recv.c
-new file mode 100644
-index 0000000..63aba4a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_recv.c
 @@ -0,0 +1,4286 @@
@@ -50028,9 +49958,6 @@ index 0000000..63aba4a
 +
 +}
 +#endif //CONFIG_NEW_SIGNAL_STAT_PROCESS
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_rf.c b/drivers/net/wireless/rtl8192cu/core/rtw_rf.c
-new file mode 100644
-index 0000000..52234bd
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_rf.c
 @@ -0,0 +1,94 @@
@@ -50128,9 +50055,6 @@ index 0000000..52234bd
 +
 +	return ch;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_security.c b/drivers/net/wireless/rtl8192cu/core/rtw_security.c
-new file mode 100644
-index 0000000..2df28ba
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_security.c
 @@ -0,0 +1,3114 @@
@@ -53248,9 +53172,6 @@ index 0000000..2df28ba
 +
 +	return status;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_sreset.c b/drivers/net/wireless/rtl8192cu/core/rtw_sreset.c
-new file mode 100644
-index 0000000..9d3dd7c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_sreset.c
 @@ -0,0 +1,351 @@
@@ -53605,9 +53526,6 @@ index 0000000..9d3dd7c
 +	DBG_871X("%s done in %d ms\n", __FUNCTION__, rtw_get_passing_time_ms(start));
 +#endif
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c b/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c
-new file mode 100644
-index 0000000..4483499
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_sta_mgt.c
 @@ -0,0 +1,847 @@
@@ -54458,9 +54376,6 @@ index 0000000..4483499
 +	return res;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_tdls.c b/drivers/net/wireless/rtl8192cu/core/rtw_tdls.c
-new file mode 100644
-index 0000000..c99fc01
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_tdls.c
 @@ -0,0 +1,2940 @@
@@ -57404,9 +57319,6 @@ index 0000000..c99fc01
 +}
 +
 +#endif //CONFIG_TDLS
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c b/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c
-new file mode 100644
-index 0000000..d671155
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_wlan_util.c
 @@ -0,0 +1,2304 @@
@@ -59714,9 +59626,6 @@ index 0000000..d671155
 +exit:
 +	return status;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c b/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c
-new file mode 100644
-index 0000000..fb4e698
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/core/rtw_xmit.c
 @@ -0,0 +1,4155 @@
@@ -63875,9 +63784,6 @@ index 0000000..fb4e698
 +	}
 +}
 +#endif //CONFIG_XMIT_ACK
-diff --git a/drivers/net/wireless/rtl8192cu/hal/HalPwrSeqCmd.c b/drivers/net/wireless/rtl8192cu/hal/HalPwrSeqCmd.c
-new file mode 100644
-index 0000000..4ecf229
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/HalPwrSeqCmd.c
 @@ -0,0 +1,175 @@
@@ -64056,9 +63962,6 @@ index 0000000..4ecf229
 +
 +	return _TRUE;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/dm.c b/drivers/net/wireless/rtl8192cu/hal/dm.c
-new file mode 100644
-index 0000000..807dfd1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/dm.c
 @@ -0,0 +1,313 @@
@@ -64375,9 +64278,6 @@ index 0000000..807dfd1
 +	return;
 +#endif /* CONFIG_DM_ADAPTIVITY */
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/dm.h b/drivers/net/wireless/rtl8192cu/hal/dm.h
-new file mode 100644
-index 0000000..cacd58f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/dm.h
 @@ -0,0 +1,30 @@
@@ -64411,9 +64311,6 @@ index 0000000..cacd58f
 +void dm_adaptivity(_adapter *pAdapter);
 +
 +#endif /* __DM_H__ */
-diff --git a/drivers/net/wireless/rtl8192cu/hal/hal_com.c b/drivers/net/wireless/rtl8192cu/hal/hal_com.c
-new file mode 100644
-index 0000000..b9e4dad
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/hal_com.c
 @@ -0,0 +1,370 @@
@@ -64787,9 +64684,6 @@ index 0000000..b9e4dad
 +exit:
 +	return ret;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/hal_intf.c b/drivers/net/wireless/rtl8192cu/hal/hal_intf.c
-new file mode 100644
-index 0000000..fd1e888
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/hal_intf.c
 @@ -0,0 +1,545 @@
@@ -65338,9 +65232,6 @@ index 0000000..fd1e888
 +{
 +	return adapter->HalFunc.c2h_id_filter_ccx;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c
-new file mode 100644
-index 0000000..27e8d54
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_cmd.c
 @@ -0,0 +1,1154 @@
@@ -66498,9 +66389,6 @@ index 0000000..27e8d54
 +}
 +
 +#endif  //CONFIG_WOWLAN
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c
-new file mode 100644
-index 0000000..98d6f14
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_dm.c
 @@ -0,0 +1,5055 @@
@@ -71559,9 +71447,6 @@ index 0000000..98d6f14
 +	}
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c
-new file mode 100644
-index 0000000..bf5518f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_hal_init.c
 @@ -0,0 +1,3627 @@
@@ -75192,9 +75077,6 @@ index 0000000..bf5518f
 +	pHalFunc->c2h_handler = c2h_handler_8192c;
 +	pHalFunc->c2h_id_filter_ccx = c2h_id_filter_ccx_8192c;
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c
-new file mode 100644
-index 0000000..4d574d3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_mp.c
 @@ -0,0 +1,1207 @@
@@ -76405,9 +76287,6 @@ index 0000000..4d574d3
 +}
 +
 +#endif // CONFIG_MP_INCLUDE
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c
-new file mode 100644
-index 0000000..8b19ced
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_phycfg.c
 @@ -0,0 +1,4840 @@
@@ -81251,9 +81130,6 @@ index 0000000..8b19ced
 +		_PHY_SetRFPathSwitch(pAdapter, bMain, _FALSE);
 +	}
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c
-new file mode 100644
-index 0000000..d4e92f8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rf6052.c
 @@ -0,0 +1,1030 @@
@@ -82287,9 +82163,6 @@ index 0000000..d4e92f8
 +}	/* PHY_RFShadowRead */
 +
 +/* End of HalRf6052.c */
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c
-new file mode 100644
-index 0000000..1b102c6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_rxdesc.c
 @@ -0,0 +1,874 @@
@@ -83167,9 +83040,6 @@ index 0000000..1b102c6
 +	//Offset 20
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c
-new file mode 100644
-index 0000000..6275894
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_sreset.c
 @@ -0,0 +1,93 @@
@@ -83266,9 +83136,6 @@ index 0000000..6275894
 +	}
 +}
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_xmit.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_xmit.c
-new file mode 100644
-index 0000000..e958164
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/rtl8192c_xmit.c
 @@ -0,0 +1,62 @@
@@ -83334,9 +83201,6 @@ index 0000000..e958164
 +	}
 +}
 +#endif //CONFIG_XMIT_ACK
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c
-new file mode 100644
-index 0000000..9faa8c1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg.c
 @@ -0,0 +1,8757 @@
@@ -92097,9 +91961,6 @@ index 0000000..9faa8c1
 +0xc78,0x621e001e,
 +0xc78,0x621f001e,
 +};
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c
-new file mode 100644
-index 0000000..5554813
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/Hal8192CUHWImg_wowlan.c
 @@ -0,0 +1,2557 @@
@@ -94660,9 +94521,6 @@ index 0000000..5554813
 +0x94,0x01,0x40,0x1e,0x90,0xfd,0x11,0xe0,0xb5,0x05,0x14,0x90,0x01,0x17,0xe0,0xb5,
 +0x05,0x07,0x90,0xfd,0x11,0xe4,0xf0,0x80,0x06,0xed,0x04,0x90,0xfd,0x11,0xf0,0xe4,
 +0x2f,0xff,0x22,0x00,0x18,0x58,};
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c
-new file mode 100644
-index 0000000..382b978
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_led.c
 @@ -0,0 +1,2674 @@
@@ -97340,9 +97198,6 @@ index 0000000..382b978
 +	DeInitLed871x( &(ledpriv->SwLed0) );
 +	DeInitLed871x( &(ledpriv->SwLed1) );
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c
-new file mode 100644
-index 0000000..dd4383f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_recv.c
 @@ -0,0 +1,227 @@
@@ -97573,9 +97428,6 @@ index 0000000..dd4383f
 +#endif
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c
-new file mode 100644
-index 0000000..c7bcae7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/rtl8192cu_xmit.c
 @@ -0,0 +1,1149 @@
@@ -98728,9 +98580,6 @@ index 0000000..c7bcae7
 +
 +}
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c
-new file mode 100644
-index 0000000..edb72c1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_halinit.c
 @@ -0,0 +1,6260 @@
@@ -104994,9 +104843,6 @@ index 0000000..edb72c1
 +_func_exit_;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c
-new file mode 100644
-index 0000000..26148fc
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_ce.c
 @@ -0,0 +1,1205 @@
@@ -106205,9 +106051,6 @@ index 0000000..26148fc
 +	return ret;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c
-new file mode 100644
-index 0000000..7167c26
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_linux.c
 @@ -0,0 +1,1535 @@
@@ -107746,9 +107589,6 @@ index 0000000..7167c26
 +	_func_exit_;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c
-new file mode 100644
-index 0000000..59143e3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/hal/rtl8192c/usb/usb_ops_xp.c
 @@ -0,0 +1,1264 @@
@@ -109016,9 +108856,6 @@ index 0000000..59143e3
 +	return ret;
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/ifcfg-wlan0 b/drivers/net/wireless/rtl8192cu/ifcfg-wlan0
-new file mode 100755
-index 0000000..7ecb7ae
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/ifcfg-wlan0
 @@ -0,0 +1,4 @@
@@ -109027,9 +108864,6 @@ index 0000000..7ecb7ae
 +BOOTPROTO=dhcp
 +ONBOOT=yes
 \ No newline at end of file
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h
-new file mode 100644
-index 0000000..2ae36e4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CEHWImg.h
 @@ -0,0 +1,85 @@
@@ -109118,9 +108952,6 @@ index 0000000..2ae36e4
 +extern u32 Rtl8192CEAGCTAB_1TArray[AGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CE_FW_IMG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h
-new file mode 100644
-index 0000000..918b520
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyCfg.h
 @@ -0,0 +1,427 @@
@@ -109551,9 +109382,6 @@ index 0000000..918b520
 +#define PHY_SetMacReg	PHY_SetBBReg
 +
 +#endif	// __INC_HAL8192CPHYCFG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h
-new file mode 100644
-index 0000000..746326e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CPhyReg.h
 @@ -0,0 +1,1122 @@
@@ -110679,9 +110507,6 @@ index 0000000..746326e
 +
 +
 +#endif	//__INC_HAL8192SPHYREG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h
-new file mode 100644
-index 0000000..cafea7b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg.h
 @@ -0,0 +1,105 @@
@@ -110790,9 +110615,6 @@ index 0000000..cafea7b
 +extern u32 Rtl8192CUAGCTAB_1T_HPArray[AGCTAB_1T_HPArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h
-new file mode 100644
-index 0000000..6e18fbc
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192CUHWImg_wowlan.h
 @@ -0,0 +1,33 @@
@@ -110829,9 +110651,6 @@ index 0000000..6e18fbc
 +extern u8 Rtl8192CUFwUMCBCutWWImgArray[UMCBCutWWImgArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_WOWLAN_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h
-new file mode 100644
-index 0000000..55998c2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DEHWImg.h
 @@ -0,0 +1,66 @@
@@ -110901,9 +110720,6 @@ index 0000000..55998c2
 +extern const u32 Rtl8192DEAGCTAB_1TArray[Rtl8192DEAGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h
-new file mode 100644
-index 0000000..43c1188
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyCfg.h
 @@ -0,0 +1,527 @@
@@ -111434,9 +111250,6 @@ index 0000000..43c1188
 +#define PHY_SetMacReg	PHY_SetBBReg
 +
 +#endif	// __INC_HAL8192SPHYCFG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h
-new file mode 100644
-index 0000000..f79d8a2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DPhyReg.h
 @@ -0,0 +1,1170 @@
@@ -112610,9 +112423,6 @@ index 0000000..f79d8a2
 +
 +
 +#endif	//__INC_HAL8192SPHYREG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h
-new file mode 100644
-index 0000000..0d225ce
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg.h
 @@ -0,0 +1,66 @@
@@ -112682,9 +112492,6 @@ index 0000000..0d225ce
 +extern const u32 Rtl8192DUAGCTAB_1TArray[Rtl8192DUAGCTAB_1TArrayLength];
 +
 +#endif //__INC_HAL8192CU_FW_IMG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h
-new file mode 100644
-index 0000000..b5ab71f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/Hal8192DUHWImg_wowlan.h
 @@ -0,0 +1,29 @@
@@ -112717,9 +112524,6 @@ index 0000000..b5ab71f
 +extern u8 Rtl8192DUFwWWImgArray[DUWWImgArrayLength];
 +
 +#endif //__INC_HAL8192DU_FW_IMG_WOWLAN_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/HalPwrSeqCmd.h b/drivers/net/wireless/rtl8192cu/include/HalPwrSeqCmd.h
-new file mode 100644
-index 0000000..e5d151c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/HalPwrSeqCmd.h
 @@ -0,0 +1,137 @@
@@ -112860,9 +112664,6 @@ index 0000000..e5d151c
 +	WLAN_PWR_CFG	PwrCfgCmd[]);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/autoconf.h b/drivers/net/wireless/rtl8192cu/include/autoconf.h
-new file mode 100644
-index 0000000..dcdb512
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/autoconf.h
 @@ -0,0 +1,336 @@
@@ -113202,9 +113003,6 @@ index 0000000..dcdb512
 +
 +//turn off power tracking when traffic is busy
 +//#define CONFIG_BUSY_TRAFFIC_SKIP_PWR_TRACK
-diff --git a/drivers/net/wireless/rtl8192cu/include/basic_types.h b/drivers/net/wireless/rtl8192cu/include/basic_types.h
-new file mode 100644
-index 0000000..c52fe3a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/basic_types.h
 @@ -0,0 +1,320 @@
@@ -113528,9 +113326,6 @@ index 0000000..c52fe3a
 +typedef unsigned char	BOOLEAN,*PBOOLEAN;
 +
 +#endif //__BASIC_TYPES_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h b/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h
-new file mode 100644
-index 0000000..0cd3504
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/big_endian.h
 @@ -0,0 +1,87 @@
@@ -113621,9 +113416,6 @@ index 0000000..0cd3504
 +#include <byteorder/generic.h>
 +
 +#endif /* _LINUX_BYTEORDER_BIG_ENDIAN_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h b/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h
-new file mode 100644
-index 0000000..11676a6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/generic.h
 @@ -0,0 +1,212 @@
@@ -113839,9 +113631,6 @@ index 0000000..11676a6
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_GENERIC_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h b/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h
-new file mode 100644
-index 0000000..9f77fb4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/little_endian.h
 @@ -0,0 +1,89 @@
@@ -113934,9 +113723,6 @@ index 0000000..9f77fb4
 +#include <byteorder/generic.h>
 +
 +#endif /* _LINUX_BYTEORDER_LITTLE_ENDIAN_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h b/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h
-new file mode 100644
-index 0000000..1cf2821
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/swab.h
 @@ -0,0 +1,140 @@
@@ -114080,9 +113866,6 @@ index 0000000..1cf2821
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_SWAB_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h b/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h
-new file mode 100644
-index 0000000..cf0fad6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/byteorder/swabb.h
 @@ -0,0 +1,156 @@
@@ -114242,9 +114025,6 @@ index 0000000..cf0fad6
 +#endif
 +
 +#endif /* _LINUX_BYTEORDER_SWABB_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/circ_buf.h b/drivers/net/wireless/rtl8192cu/include/circ_buf.h
-new file mode 100644
-index 0000000..236fbe6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/circ_buf.h
 @@ -0,0 +1,27 @@
@@ -114275,9 +114055,6 @@ index 0000000..236fbe6
 +#define CIRC_SPACE(head,tail,size) CIRC_CNT((tail),((head)+1),(size))
 +
 +#endif //_CIRC_BUF_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h b/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h
-new file mode 100644
-index 0000000..c4903f4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/cmd_osdep.h
 @@ -0,0 +1,35 @@
@@ -114316,9 +114093,6 @@ index 0000000..c4903f4
 +extern struct	cmd_obj	*_rtw_dequeue_cmd(_queue *queue);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_conf.h b/drivers/net/wireless/rtl8192cu/include/drv_conf.h
-new file mode 100644
-index 0000000..370a121
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_conf.h
 @@ -0,0 +1,77 @@
@@ -114399,9 +114173,6 @@ index 0000000..370a121
 +//#include <rtl871x_byteorder.h>
 +
 +#endif // __DRV_CONF_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types.h b/drivers/net/wireless/rtl8192cu/include/drv_types.h
-new file mode 100644
-index 0000000..46ab663
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types.h
 @@ -0,0 +1,661 @@
@@ -115066,9 +114837,6 @@ index 0000000..46ab663
 +
 +
 +#endif //__DRV_TYPES_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h b/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h
-new file mode 100644
-index 0000000..25794fd
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_ce.h
 @@ -0,0 +1,92 @@
@@ -115164,9 +114932,6 @@ index 0000000..25794fd
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h b/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h
-new file mode 100644
-index 0000000..812b744
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_linux.h
 @@ -0,0 +1,24 @@
@@ -115194,9 +114959,6 @@ index 0000000..812b744
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_sdio.h b/drivers/net/wireless/rtl8192cu/include/drv_types_sdio.h
-new file mode 100644
-index 0000000..c445712
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_sdio.h
 @@ -0,0 +1,69 @@
@@ -115269,9 +115031,6 @@ index 0000000..c445712
 +} SDIO_DATA, *PSDIO_DATA;
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h b/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h
-new file mode 100644
-index 0000000..1d735d6
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/drv_types_xp.h
 @@ -0,0 +1,94 @@
@@ -115369,9 +115128,6 @@ index 0000000..1d735d6
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/ethernet.h b/drivers/net/wireless/rtl8192cu/include/ethernet.h
-new file mode 100644
-index 0000000..e22c12b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ethernet.h
 @@ -0,0 +1,41 @@
@@ -115416,9 +115172,6 @@ index 0000000..e22c12b
 +
 +
 +#endif // #ifndef __INC_ETHERNET_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/h2clbk.h b/drivers/net/wireless/rtl8192cu/include/h2clbk.h
-new file mode 100644
-index 0000000..847356e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/h2clbk.h
 @@ -0,0 +1,35 @@
@@ -115457,9 +115210,6 @@ index 0000000..847356e
 +void _lbk_evt(IN PADAPTER Adapter);
 +
 +void h2c_event_callback(unsigned char *dev, unsigned char *pbuf);
-diff --git a/drivers/net/wireless/rtl8192cu/include/hal_com.h b/drivers/net/wireless/rtl8192cu/include/hal_com.h
-new file mode 100644
-index 0000000..382f124
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/hal_com.h
 @@ -0,0 +1,145 @@
@@ -115608,9 +115358,6 @@ index 0000000..382f124
 +s32 c2h_evt_read(_adapter *adapter, u8 *buf);
 +
 +#endif //__HAL_COMMON_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/hal_intf.h b/drivers/net/wireless/rtl8192cu/include/hal_intf.h
-new file mode 100644
-index 0000000..cac4408
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/hal_intf.h
 @@ -0,0 +1,431 @@
@@ -116045,9 +115792,6 @@ index 0000000..cac4408
 +c2h_id_filter rtw_hal_c2h_id_filter_ccx(_adapter *adapter);
 +
 +#endif //__HAL_INTF_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/ieee80211.h b/drivers/net/wireless/rtl8192cu/include/ieee80211.h
-new file mode 100644
-index 0000000..b3735bd
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ieee80211.h
 @@ -0,0 +1,1579 @@
@@ -117630,9 +117374,6 @@ index 0000000..b3735bd
 +const char *action_public_str(u8 action);
 +
 +#endif /* IEEE80211_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h b/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h
-new file mode 100644
-index 0000000..eba9001
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ieee80211_ext.h
 @@ -0,0 +1,476 @@
@@ -118112,9 +117853,6 @@ index 0000000..eba9001
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/if_ether.h b/drivers/net/wireless/rtl8192cu/include/if_ether.h
-new file mode 100644
-index 0000000..c81c536
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/if_ether.h
 @@ -0,0 +1,112 @@
@@ -118230,9 +117968,6 @@ index 0000000..c81c536
 +
 +
 +#endif	/* _LINUX_IF_ETHER_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h b/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h
-new file mode 100644
-index 0000000..b2b2e97
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ioctl_cfg80211.h
 @@ -0,0 +1,179 @@
@@ -118415,9 +118150,6 @@ index 0000000..b2b2e97
 +#endif
 +
 +#endif //__IOCTL_CFG80211_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/ip.h b/drivers/net/wireless/rtl8192cu/include/ip.h
-new file mode 100644
-index 0000000..2c3d2f3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/ip.h
 @@ -0,0 +1,141 @@
@@ -118562,9 +118294,6 @@ index 0000000..2c3d2f3
 +};
 +
 +#endif	/* _LINUX_IP_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/linux/wireless.h b/drivers/net/wireless/rtl8192cu/include/linux/wireless.h
-new file mode 100644
-index 0000000..036fc32
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/linux/wireless.h
 @@ -0,0 +1,90 @@
@@ -118658,9 +118387,6 @@ index 0000000..036fc32
 +};
 +
 +#endif	/* _LINUX_WIRELESS_H */
-diff --git a/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h b/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h
-new file mode 100644
-index 0000000..383fc38
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/mlme_osdep.h
 @@ -0,0 +1,39 @@
@@ -118703,9 +118429,6 @@ index 0000000..383fc38
 +void rtw_reset_securitypriv( _adapter *adapter );
 +
 +#endif	//_MLME_OSDEP_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h b/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h
-new file mode 100644
-index 0000000..9c9c69b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/mp_custom_oid.h
 @@ -0,0 +1,353 @@
@@ -119062,9 +118785,6 @@ index 0000000..9c9c69b
 +#define OID_RT_PRO_EFUSE_MAP				0xFF871217 //Q, S
 +
 +#endif //#ifndef	__CUSTOM_OID_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/nic_spec.h b/drivers/net/wireless/rtl8192cu/include/nic_spec.h
-new file mode 100644
-index 0000000..fba5e56
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/nic_spec.h
 @@ -0,0 +1,46 @@
@@ -119114,9 +118834,6 @@ index 0000000..fba5e56
 +
 +
 +#endif // __RTL8711_SPEC_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h b/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h
-new file mode 100644
-index 0000000..4b4def0
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_ce_service.h
 @@ -0,0 +1,170 @@
@@ -119290,9 +119007,6 @@ index 0000000..4b4def0
 +    NdisInterlockedDecrement((PULONG)&(_MutexCounter));              \
 +}
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_intf.h b/drivers/net/wireless/rtl8192cu/include/osdep_intf.h
-new file mode 100644
-index 0000000..10e5e4a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_intf.h
 @@ -0,0 +1,154 @@
@@ -119450,9 +119164,6 @@ index 0000000..10e5e4a
 +void rtw_ndev_destructor(_nic_hdl ndev);
 +
 +#endif	//_OSDEP_INTF_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/osdep_service.h b/drivers/net/wireless/rtl8192cu/include/osdep_service.h
-new file mode 100644
-index 0000000..f1511aa
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/osdep_service.h
 @@ -0,0 +1,1813 @@
@@ -121269,9 +120980,6 @@ index 0000000..f1511aa
 +void rtw_cbuf_free(struct rtw_cbuf *cbuf);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/pci_hal.h b/drivers/net/wireless/rtl8192cu/include/pci_hal.h
-new file mode 100644
-index 0000000..650b04f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_hal.h
 @@ -0,0 +1,167 @@
@@ -121442,9 +121150,6 @@ index 0000000..650b04f
 +#endif
 +
 +#endif //__PCIE_HAL_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/pci_ops.h b/drivers/net/wireless/rtl8192cu/include/pci_ops.h
-new file mode 100644
-index 0000000..51d96c4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_ops.h
 @@ -0,0 +1,60 @@
@@ -121508,9 +121213,6 @@ index 0000000..51d96c4
 +#endif
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/pci_osintf.h b/drivers/net/wireless/rtl8192cu/include/pci_osintf.h
-new file mode 100644
-index 0000000..8d38a533
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/pci_osintf.h
 @@ -0,0 +1,32 @@
@@ -121546,9 +121248,6 @@ index 0000000..8d38a533
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/recv_osdep.h b/drivers/net/wireless/rtl8192cu/include/recv_osdep.h
-new file mode 100644
-index 0000000..b39e00b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/recv_osdep.h
 @@ -0,0 +1,57 @@
@@ -121609,9 +121308,6 @@ index 0000000..b39e00b
 +
 +
 +#endif //
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h
-new file mode 100644
-index 0000000..3a63316
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_cmd.h
 @@ -0,0 +1,152 @@
@@ -121767,9 +121463,6 @@ index 0000000..3a63316
 +#endif // CONFIG_WOWLAN
 +
 +#endif	// __RTL8192C_CMD_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h
-new file mode 100644
-index 0000000..3c56d49
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_dm.h
 @@ -0,0 +1,515 @@
@@ -122288,9 +121981,6 @@ index 0000000..3c56d49
 +#endif
 +
 +#endif	//__HAL8190PCIDM_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h
-new file mode 100644
-index 0000000..ddc08bf
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_event.h
 @@ -0,0 +1,26 @@
@@ -122320,9 +122010,6 @@ index 0000000..ddc08bf
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h
-new file mode 100644
-index 0000000..c803139
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_hal.h
 @@ -0,0 +1,934 @@
@@ -123260,9 +122947,6 @@ index 0000000..c803139
 +extern void Hal_SetOFDMContinuousTx(PADAPTER pAdapter, u8 bStart);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h
-new file mode 100644
-index 0000000..88002db
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_led.h
 @@ -0,0 +1,41 @@
@@ -123307,9 +122991,6 @@ index 0000000..88002db
 +#endif
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h
-new file mode 100644
-index 0000000..9cfca91
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_recv.h
 @@ -0,0 +1,183 @@
@@ -123496,9 +123177,6 @@ index 0000000..9cfca91
 +void rtl8192c_query_rx_desc_status(union recv_frame *precvframe, struct recv_stat *pdesc);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h
-new file mode 100644
-index 0000000..7e22503
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_rf.h
 @@ -0,0 +1,91 @@
@@ -123593,9 +123271,6 @@ index 0000000..7e22503
 +
 +
 +#endif/* End of HalRf.h */
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h
-new file mode 100644
-index 0000000..c45a140
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_spec.h
 @@ -0,0 +1,1864 @@
@@ -125463,9 +125138,6 @@ index 0000000..c45a140
 +#include "basic_types.h"
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h
-new file mode 100644
-index 0000000..6f5b953
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_sreset.h
 @@ -0,0 +1,32 @@
@@ -125501,9 +125173,6 @@ index 0000000..6f5b953
 +extern void rtl8192c_sreset_linked_status_check(_adapter *padapter);
 +#endif
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h
-new file mode 100644
-index 0000000..9abbae9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192c_xmit.h
 @@ -0,0 +1,128 @@
@@ -125635,9 +125304,6 @@ index 0000000..9abbae9
 +#endif
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h
-new file mode 100644
-index 0000000..8a8873a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_cmd.h
 @@ -0,0 +1,140 @@
@@ -125781,9 +125447,6 @@ index 0000000..8a8873a
 +#endif // CONFIG_WOWLAN
 +
 +#endif	// __RTL8192D_CMD_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h
-new file mode 100644
-index 0000000..eaf1e4f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_dm.h
 @@ -0,0 +1,420 @@
@@ -126207,9 +125870,6 @@ index 0000000..eaf1e4f
 +VOID rtl8192d_dm_CheckTXPowerTracking(IN PADAPTER Adapter);
 +
 +#endif	//__HAL8190PCIDM_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h
-new file mode 100644
-index 0000000..347337c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_hal.h
 @@ -0,0 +1,1125 @@
@@ -127338,9 +126998,6 @@ index 0000000..347337c
 +
 +
 +#endif //end CONFIG_MP_INCLUDED
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h
-new file mode 100644
-index 0000000..b1f7a94
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_led.h
 @@ -0,0 +1,42 @@
@@ -127386,9 +127043,6 @@ index 0000000..b1f7a94
 +#endif
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h
-new file mode 100644
-index 0000000..e03347a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_recv.h
 @@ -0,0 +1,186 @@
@@ -127578,9 +127232,6 @@ index 0000000..e03347a
 +void rtl8192d_query_rx_desc_status(union recv_frame *precvframe, struct recv_stat *pdesc);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h
-new file mode 100644
-index 0000000..1aba229
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_rf.h
 @@ -0,0 +1,96 @@
@@ -127680,9 +127331,6 @@ index 0000000..1aba229
 +
 +
 +#endif/* End of HalRf.h */
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h
-new file mode 100644
-index 0000000..d2d3e89
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_spec.h
 @@ -0,0 +1,1840 @@
@@ -129526,9 +129174,6 @@ index 0000000..d2d3e89
 +#include "basic_types.h"
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h
-new file mode 100644
-index 0000000..bc651c1
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtl8192d_xmit.h
 @@ -0,0 +1,144 @@
@@ -129676,9 +129321,6 @@ index 0000000..bc651c1
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_android.h b/drivers/net/wireless/rtl8192cu/include/rtw_android.h
-new file mode 100644
-index 0000000..468ae77
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_android.h
 @@ -0,0 +1,89 @@
@@ -129771,9 +129413,6 @@ index 0000000..468ae77
 +#endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
 +
 +#endif //__RTW_ANDROID_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ap.h b/drivers/net/wireless/rtl8192cu/include/rtw_ap.h
-new file mode 100644
-index 0000000..1265174
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ap.h
 @@ -0,0 +1,63 @@
@@ -129840,9 +129479,6 @@ index 0000000..1265174
 +#endif //end of CONFIG_AP_MODE
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h b/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h
-new file mode 100644
-index 0000000..1b5709a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_br_ext.h
 @@ -0,0 +1,75 @@
@@ -129921,9 +129557,6 @@ index 0000000..1b5709a
 +void nat25_db_cleanup(_adapter *priv);
 +
 +#endif // _RTW_BR_EXT_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h b/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h
-new file mode 100644
-index 0000000..757b01d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_byteorder.h
 @@ -0,0 +1,39 @@
@@ -129966,9 +129599,6 @@ index 0000000..757b01d
 +#endif
 +
 +#endif /* _RTL871X_BYTEORDER_H_ */
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h b/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h
-new file mode 100644
-index 0000000..5253911
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_cmd.h
 @@ -0,0 +1,1166 @@
@@ -131138,9 +130768,6 @@ index 0000000..5253911
 +#endif
 +
 +#endif // _CMD_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_debug.h b/drivers/net/wireless/rtl8192cu/include/rtw_debug.h
-new file mode 100644
-index 0000000..9c72f70
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_debug.h
 @@ -0,0 +1,537 @@
@@ -131681,9 +131308,6 @@ index 0000000..9c72f70
 +#endif //CONFIG_PROC_DEBUG
 +
 +#endif	//__RTW_DEBUG_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h b/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h
-new file mode 100644
-index 0000000..4326109
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_eeprom.h
 @@ -0,0 +1,152 @@
@@ -131839,9 +131463,6 @@ index 0000000..4326109
 +#endif //PLATFORM_LINUX
 +
 +#endif  //__RTL871X_EEPROM_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h b/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h
-new file mode 100644
-index 0000000..dd09b85
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_efuse.h
 @@ -0,0 +1,123 @@
@@ -131968,9 +131589,6 @@ index 0000000..dd09b85
 +void	EFUSE_ShadowRead(PADAPTER pAdapter, u8 Type, u16 Offset, u32 *Value);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_event.h b/drivers/net/wireless/rtl8192cu/include/rtw_event.h
-new file mode 100644
-index 0000000..3a0bbf3
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_event.h
 @@ -0,0 +1,153 @@
@@ -132127,9 +131745,6 @@ index 0000000..3a0bbf3
 +
 +
 +#endif // _WLANEVENT_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ht.h b/drivers/net/wireless/rtl8192cu/include/rtw_ht.h
-new file mode 100644
-index 0000000..74e416d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ht.h
 @@ -0,0 +1,49 @@
@@ -132182,9 +131797,6 @@ index 0000000..74e416d
 +};
 +
 +#endif	//_RTL871X_HT_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_io.h b/drivers/net/wireless/rtl8192cu/include/rtw_io.h
-new file mode 100644
-index 0000000..daf342ac
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_io.h
 @@ -0,0 +1,504 @@
@@ -132692,9 +132304,6 @@ index 0000000..daf342ac
 +*/
 +
 +#endif	//_RTL8711_IO_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h
-new file mode 100644
-index 0000000..093e46b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl.h
 @@ -0,0 +1,268 @@
@@ -132966,9 +132575,6 @@ index 0000000..093e46b
 +	);
 +
 +#endif // #ifndef __INC_CEINFO_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h
-new file mode 100644
-index 0000000..3fcbc54
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_query.h
 @@ -0,0 +1,35 @@
@@ -133007,9 +132613,6 @@ index 0000000..3fcbc54
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h
-new file mode 100644
-index 0000000..c017006
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_rtl.h
 @@ -0,0 +1,83 @@
@@ -133096,9 +132699,6 @@ index 0000000..c017006
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h
-new file mode 100644
-index 0000000..5e21408
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_ioctl_set.h
 @@ -0,0 +1,78 @@
@@ -133180,9 +132780,6 @@ index 0000000..5e21408
 +int rtw_set_band(_adapter *adapter, enum _BAND band);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_iol.h b/drivers/net/wireless/rtl8192cu/include/rtw_iol.h
-new file mode 100644
-index 0000000..59786ee
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_iol.h
 @@ -0,0 +1,89 @@
@@ -133275,9 +132872,6 @@ index 0000000..59786ee
 +bool rtw_IOL_applied(ADAPTER *adapter);
 +
 +#endif //__RTW_IOL_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_led.h b/drivers/net/wireless/rtl8192cu/include/rtw_led.h
-new file mode 100644
-index 0000000..7de268e
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_led.h
 @@ -0,0 +1,216 @@
@@ -133497,9 +133091,6 @@ index 0000000..7de268e
 +extern void BlinkHandler(PLED_871x	 pLed);
 +
 +#endif //__RTW_LED_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h b/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h
-new file mode 100644
-index 0000000..862326d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mlme.h
 @@ -0,0 +1,843 @@
@@ -134346,9 +133937,6 @@ index 0000000..862326d
 +void rtw_proxim_send_packet(_adapter *padapter,u8 *pbuf,u16 len,u8 hw_rate);
 +#endif //CONFIG_INTEL_PROXIM
 +#endif //__RTL871X_MLME_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h b/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h
-new file mode 100644
-index 0000000..4403244
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mlme_ext.h
 @@ -0,0 +1,962 @@
@@ -135314,9 +134902,6 @@ index 0000000..4403244
 +#endif//_RTL8192C_CMD_C_
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp.h
-new file mode 100644
-index 0000000..06d43b5
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp.h
 @@ -0,0 +1,711 @@
@@ -136031,9 +135616,6 @@ index 0000000..06d43b5
 +extern void Hal_ProSetCrystalCap (PADAPTER pAdapter , u32 CrystalCapVal);
 +
 +#endif //_RTW_MP_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h
-new file mode 100644
-index 0000000..3016a9c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp_ioctl.h
 @@ -0,0 +1,595 @@
@@ -136632,9 +136214,6 @@ index 0000000..3016a9c
 +#endif /* _RTW_MP_IOCTL_C_ */
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h b/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h
-new file mode 100644
-index 0000000..24e6624
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_mp_phy_regdef.h
 @@ -0,0 +1,1096 @@
@@ -137734,9 +137313,6 @@ index 0000000..24e6624
 +
 +
 +#endif	//__INC_HAL8192SPHYREG_H
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h b/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h
-new file mode 100644
-index 0000000..b230faf
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_p2p.h
 @@ -0,0 +1,160 @@
@@ -137900,9 +137476,6 @@ index 0000000..b230faf
 +	(wdinfo)->find_phase_state_exchange_cnt != P2P_FINDPHASE_EX_NONE)
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h b/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h
-new file mode 100644
-index 0000000..a867da2
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_pwrctrl.h
 @@ -0,0 +1,362 @@
@@ -138268,9 +137841,6 @@ index 0000000..a867da2
 +int rtw_pm_set_lps(_adapter *padapter, u8 mode);
 +
 +#endif  //__RTL871X_PWRCTRL_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_qos.h b/drivers/net/wireless/rtl8192cu/include/rtw_qos.h
-new file mode 100644
-index 0000000..bd15f93
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_qos.h
 @@ -0,0 +1,39 @@
@@ -138313,9 +137883,6 @@ index 0000000..bd15f93
 +
 +
 +#endif	//_RTL871X_QOS_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_recv.h b/drivers/net/wireless/rtl8192cu/include/rtw_recv.h
-new file mode 100644
-index 0000000..28dca00
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_recv.h
 @@ -0,0 +1,730 @@
@@ -139049,9 +138616,6 @@ index 0000000..28dca00
 +extern void  mgt_dispatcher(_adapter *padapter, union recv_frame *precv_frame);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_rf.h b/drivers/net/wireless/rtl8192cu/include/rtw_rf.h
-new file mode 100644
-index 0000000..b8acf93
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_rf.h
 @@ -0,0 +1,151 @@
@@ -139206,9 +138770,6 @@ index 0000000..b8acf93
 +
 +
 +#endif //_RTL8711_RF_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_security.h b/drivers/net/wireless/rtl8192cu/include/rtw_security.h
-new file mode 100644
-index 0000000..0d99c9a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_security.h
 @@ -0,0 +1,446 @@
@@ -139658,9 +139219,6 @@ index 0000000..0d99c9a
 +u8 rtw_handle_tkip_countermeasure(_adapter* adapter, const char *caller);
 +
 +#endif	//__RTL871X_SECURITY_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_sreset.h b/drivers/net/wireless/rtl8192cu/include/rtw_sreset.h
-new file mode 100644
-index 0000000..f2d5dc7
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_sreset.h
 @@ -0,0 +1,73 @@
@@ -139737,9 +139295,6 @@ index 0000000..f2d5dc7
 +void sreset_reset(_adapter *padapter);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_tdls.h b/drivers/net/wireless/rtl8192cu/include/rtw_tdls.h
-new file mode 100644
-index 0000000..cbf996f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_tdls.h
 @@ -0,0 +1,142 @@
@@ -139885,16 +139440,10 @@ index 0000000..cbf996f
 +#endif //CONFIG_TDLS
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_version.h b/drivers/net/wireless/rtl8192cu/include/rtw_version.h
-new file mode 100644
-index 0000000..4fb9dd4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_version.h
 @@ -0,0 +1 @@
 +#define DRIVERVERSION	"v4.0.2_9000.20130911"
-diff --git a/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h b/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h
-new file mode 100644
-index 0000000..11c67c4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/rtw_xmit.h
 @@ -0,0 +1,753 @@
@@ -140651,9 +140200,6 @@ index 0000000..11c67c4
 +#include <xmit_osdep.h>
 +
 +#endif	//_RTL871X_XMIT_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/sta_info.h b/drivers/net/wireless/rtl8192cu/include/sta_info.h
-new file mode 100644
-index 0000000..e7e3dc4
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/sta_info.h
 @@ -0,0 +1,431 @@
@@ -141088,9 +140634,6 @@ index 0000000..e7e3dc4
 +extern u8 rtw_access_ctrl(_adapter *padapter, u8 *mac_addr);
 +
 +#endif //_STA_INFO_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/usb_hal.h b/drivers/net/wireless/rtl8192cu/include/usb_hal.h
-new file mode 100644
-index 0000000..ff29ea8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_hal.h
 @@ -0,0 +1,36 @@
@@ -141130,9 +140673,6 @@ index 0000000..ff29ea8
 +#endif // CONFIG_WOWLAN_MANUAL
 +#endif //CONFIG_WOWLAN
 +#endif //__USB_HAL_H__
-diff --git a/drivers/net/wireless/rtl8192cu/include/usb_ops.h b/drivers/net/wireless/rtl8192cu/include/usb_ops.h
-new file mode 100644
-index 0000000..3160fc9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_ops.h
 @@ -0,0 +1,109 @@
@@ -141245,9 +140785,6 @@ index 0000000..3160fc9
 +}
 +
 +#endif //__USB_OPS_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/usb_ops_linux.h b/drivers/net/wireless/rtl8192cu/include/usb_ops_linux.h
-new file mode 100644
-index 0000000..d3a5507
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_ops_linux.h
 @@ -0,0 +1,62 @@
@@ -141313,9 +140850,6 @@ index 0000000..d3a5507
 +void usb_write_port_cancel(struct intf_hdl *pintfhdl);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/usb_osintf.h b/drivers/net/wireless/rtl8192cu/include/usb_osintf.h
-new file mode 100644
-index 0000000..6003ebb
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_osintf.h
 @@ -0,0 +1,37 @@
@@ -141356,9 +140890,6 @@ index 0000000..6003ebb
 +
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h b/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h
-new file mode 100644
-index 0000000..0f67122
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/usb_vendor_req.h
 @@ -0,0 +1,59 @@
@@ -141421,9 +140952,6 @@ index 0000000..0f67122
 +//BOOLEAN CEusbGetDescriptorRequest(PCE_USB_DEVICE CEdevice, IN short urbLength, IN UCHAR DescriptorType, IN UCHAR Index, IN USHORT LanguageId, IN PVOID  TransferBuffer, IN ULONG TransferBufferLength);
 +
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/include/wifi.h b/drivers/net/wireless/rtl8192cu/include/wifi.h
-new file mode 100644
-index 0000000..1ff400a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/wifi.h
 @@ -0,0 +1,1245 @@
@@ -142672,9 +142200,6 @@ index 0000000..1ff400a
 +
 +
 +#endif // _WIFI_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h b/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h
-new file mode 100644
-index 0000000..641b7e9
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/wlan_bssdef.h
 @@ -0,0 +1,702 @@
@@ -143380,9 +142905,6 @@ index 0000000..641b7e9
 +
 +
 +#endif //#ifndef WLAN_BSSDEF_H_
-diff --git a/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h b/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h
-new file mode 100644
-index 0000000..0f6d092
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/include/xmit_osdep.h
 @@ -0,0 +1,94 @@
@@ -143480,9 +143002,6 @@ index 0000000..0f6d092
 +extern void rtw_os_xmit_complete(_adapter *padapter, struct xmit_frame *pxframe);
 +
 +#endif //__XMIT_OSDEP_H_
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
-new file mode 100644
-index 0000000..60e92b8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_cfg80211.c
 @@ -0,0 +1,5488 @@
@@ -148974,9 +148493,6 @@ index 0000000..60e92b8
 +}
 +
 +#endif //CONFIG_IOCTL_CFG80211
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c
-new file mode 100644
-index 0000000..865f57f
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/ioctl_linux.c
 @@ -0,0 +1,11908 @@
@@ -160888,9 +160404,6 @@ index 0000000..865f57f
 +#endif
 +};
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c
-new file mode 100644
-index 0000000..d518395
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/mlme_linux.c
 @@ -0,0 +1,585 @@
@@ -161479,9 +160992,6 @@ index 0000000..d518395
 +
 +#endif
 +#endif
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c
-new file mode 100644
-index 0000000..476ea5c
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/os_intfs.c
 @@ -0,0 +1,2748 @@
@@ -164233,9 +163743,6 @@ index 0000000..476ea5c
 +#endif
 +	free_netdev(ndev);
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c
-new file mode 100644
-index 0000000..15f5d9b
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_intf.c
 @@ -0,0 +1,1996 @@
@@ -166235,9 +165742,6 @@ index 0000000..15f5d9b
 +
 +module_init(rtw_drv_entry);
 +module_exit(rtw_drv_halt);
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_ops_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_ops_linux.c
-new file mode 100644
-index 0000000..5eed11a
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/pci_ops_linux.c
 @@ -0,0 +1,21 @@
@@ -166262,9 +165766,6 @@ index 0000000..5eed11a
 +#define _PCI_OPS_LINUX_C_
 +
 +#include <drv_types.h>
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c
-new file mode 100644
-index 0000000..ba82c4d
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/recv_linux.c
 @@ -0,0 +1,447 @@
@@ -166715,9 +166216,6 @@ index 0000000..ba82c4d
 +	_init_timer(&(preorder_ctrl->reordering_ctrl_timer), padapter->pnetdev, _rtw_reordering_ctrl_timeout_handler, preorder_ctrl);
 +
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c
-new file mode 100644
-index 0000000..d59c236
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/rtw_android.c
 @@ -0,0 +1,838 @@
@@ -167559,9 +167057,6 @@ index 0000000..d59c236
 +	platform_driver_unregister(&wifi_device_legacy);
 +}
 +#endif /* defined(RTW_ENABLE_WIFI_CONTROL_FUNC) */
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c
-new file mode 100644
-index 0000000..aaf45fa
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_intf.c
 @@ -0,0 +1,1654 @@
@@ -169219,9 +168714,6 @@ index 0000000..aaf45fa
 +}
 +EXPORT_SYMBOL(rtw_usb_get_sw_pointer);
 +#endif	//CONFIG_INTEL_PROXIM
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_ops_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_ops_linux.c
-new file mode 100644
-index 0000000..acb58ef
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/usb_ops_linux.c
 @@ -0,0 +1,648 @@
@@ -169873,9 +169365,6 @@ index 0000000..acb58ef
 +		pxmitbuf++;
 +	}
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c b/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c
-new file mode 100644
-index 0000000..13dc446
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/linux/xmit_linux.c
 @@ -0,0 +1,420 @@
@@ -170299,9 +169788,6 @@ index 0000000..13dc446
 +		rtw_mstat_update(MSTAT_TYPE_SKB, MSTAT_ALLOC_SUCCESS, pkt->truesize);
 +	return _rtw_xmit_entry(pkt, pnetdev);
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c b/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c
-new file mode 100644
-index 0000000..b4a7523
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/os_dep/osdep_service.c
 @@ -0,0 +1,2299 @@
@@ -172604,9 +172090,6 @@ index 0000000..b4a7523
 +{
 +	rtw_mfree((u8*)cbuf, sizeof(*cbuf) + sizeof(void*)*cbuf->size);
 +}
-diff --git a/drivers/net/wireless/rtl8192cu/runwpa b/drivers/net/wireless/rtl8192cu/runwpa
-new file mode 100755
-index 0000000..17616d8
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/runwpa
 @@ -0,0 +1,18 @@
@@ -172628,9 +172111,6 @@ index 0000000..17616d8
 +
 +	fi
 +fi
-diff --git a/drivers/net/wireless/rtl8192cu/wlan0dhcp b/drivers/net/wireless/rtl8192cu/wlan0dhcp
-new file mode 100755
-index 0000000..24ab372
 --- /dev/null
 +++ b/drivers/net/wireless/rtl8192cu/wlan0dhcp
 @@ -0,0 +1,15 @@
@@ -172649,6 +172129,3 @@ index 0000000..24ab372
 +rm -f /etc/sysconfig/network-scripts/ifcfg-wlan0
 +
 +echo "get ip: $var1"
--- 
-1.8.3.2
-
