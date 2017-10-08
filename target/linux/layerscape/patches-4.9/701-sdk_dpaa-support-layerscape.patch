@@ -527,9 +527,6 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
  create mode 100644 include/uapi/linux/fmd/ioctls.h
  create mode 100644 include/uapi/linux/fmd/net_ioctls.h
 
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/Kconfig b/drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
-new file mode 100644
-index 00000000..92118b76
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
 @@ -0,0 +1,173 @@
@@ -706,9 +703,6 @@ index 00000000..92118b76
 +		# cat /sys/kernel/debug/powerpc/fsl_dpa/eth4_loop
 +			4->5
 +endif # FSL_SDK_DPAA_ETH
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/Makefile b/drivers/net/ethernet/freescale/sdk_dpaa/Makefile
-new file mode 100644
-index 00000000..a0f4b190
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/Makefile
 @@ -0,0 +1,46 @@
@@ -758,9 +752,6 @@ index 00000000..a0f4b190
 +
 +# Needed by the tracing framework
 +CFLAGS_dpaa_eth.o := -I$(src)
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.c
-new file mode 100644
-index 00000000..3bf8cbca
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.c
 @@ -0,0 +1,580 @@
@@ -1344,9 +1335,6 @@ index 00000000..3bf8cbca
 +	kfree(tsu);
 +}
 +EXPORT_SYMBOL(dpa_ptp_cleanup);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.h
-new file mode 100644
-index 00000000..73390168
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.h
 @@ -0,0 +1,138 @@
@@ -1488,9 +1476,6 @@ index 00000000..73390168
 +				struct sk_buff *skb, void *data);
 +extern int dpa_ioctl_1588(struct net_device *dev, struct ifreq *ifr, int cmd);
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.c
-new file mode 100644
-index 00000000..25d9f5f1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.c
 @@ -0,0 +1,180 @@
@@ -1674,9 +1659,6 @@ index 00000000..25d9f5f1
 +{
 +	debugfs_remove(dpa_debugfs_root);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.h
-new file mode 100644
-index 00000000..63d35427
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.h
 @@ -0,0 +1,43 @@
@@ -1723,9 +1705,6 @@ index 00000000..63d35427
 +void __exit dpa_debugfs_module_exit(void);
 +
 +#endif /* DPAA_DEBUGFS_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c
-new file mode 100644
-index 00000000..7026f916
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c
 @@ -0,0 +1,1213 @@
@@ -2942,9 +2921,6 @@ index 00000000..7026f916
 +		KBUILD_BASENAME".c", __func__);
 +}
 +module_exit(dpa_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h
-new file mode 100644
-index 00000000..b1703bc1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h
 @@ -0,0 +1,698 @@
@@ -3646,9 +3622,6 @@ index 00000000..b1703bc1
 +#endif  /* !CONFIG_PPC */
 +
 +#endif	/* __DPA_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.c
-new file mode 100644
-index 00000000..507e77c3
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.c
 @@ -0,0 +1,205 @@
@@ -3857,9 +3830,6 @@ index 00000000..507e77c3
 +
 +}
 +module_exit(dpa_advanced_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.h
-new file mode 100644
-index 00000000..6ec68c3c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_base.h
 @@ -0,0 +1,49 @@
@@ -3912,9 +3882,6 @@ index 00000000..6ec68c3c
 +		size_t count);
 +
 +#endif /* __DPAA_ETH_BASE_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c
-new file mode 100644
-index 00000000..cac613b7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c
 @@ -0,0 +1,1992 @@
@@ -5910,9 +5877,6 @@ index 00000000..cac613b7
 +
 +module_init(ceetm_register);
 +module_exit(ceetm_unregister);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h
-new file mode 100644
-index 00000000..63cc3475
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h
 @@ -0,0 +1,237 @@
@@ -6153,9 +6117,6 @@ index 00000000..63cc3475
 +
 +int __hot ceetm_tx(struct sk_buff *skb, struct net_device *net_dev);
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.c
-new file mode 100644
-index 00000000..fbe61da2
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.c
 @@ -0,0 +1,1811 @@
@@ -7970,9 +7931,6 @@ index 00000000..fbe61da2
 +}
 +EXPORT_SYMBOL(dpa_disable_ceetm);
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.h
-new file mode 100644
-index 00000000..41db4302
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.h
 @@ -0,0 +1,225 @@
@@ -8201,9 +8159,6 @@ index 00000000..41db4302
 +		      struct net_device *net_dev);
 +
 +#endif /* __DPAA_ETH_COMMON_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_proxy.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_proxy.c
-new file mode 100644
-index 00000000..994d38cd
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_proxy.c
 @@ -0,0 +1,381 @@
@@ -8588,9 +8543,6 @@ index 00000000..994d38cd
 +		KBUILD_BASENAME".c", __func__);
 +}
 +module_exit(dpa_proxy_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c
-new file mode 100644
-index 00000000..11b47e8c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c
 @@ -0,0 +1,1179 @@
@@ -9773,9 +9725,6 @@ index 00000000..11b47e8c
 +	return NETDEV_TX_OK;
 +}
 +EXPORT_SYMBOL(dpa_tx_extended);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sysfs.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sysfs.c
-new file mode 100644
-index 00000000..3542d0b2
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sysfs.c
 @@ -0,0 +1,278 @@
@@ -10057,9 +10006,6 @@ index 00000000..3542d0b2
 +	for (i = 0; i < ARRAY_SIZE(dpaa_eth_attrs); i++)
 +		device_remove_file(dev, &dpaa_eth_attrs[i]);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_trace.h b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_trace.h
-new file mode 100644
-index 00000000..30069ef9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_trace.h
 @@ -0,0 +1,144 @@
@@ -10207,9 +10153,6 @@ index 00000000..30069ef9
 +#undef TRACE_INCLUDE_FILE
 +#define TRACE_INCLUDE_FILE	dpaa_eth_trace
 +#include <trace/define_trace.h>
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c
-new file mode 100644
-index 00000000..4b784662
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c
 @@ -0,0 +1,544 @@
@@ -10757,9 +10700,6 @@ index 00000000..4b784662
 +	.set_wol = dpa_set_wol,
 +#endif
 +};
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ptp.c b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ptp.c
-new file mode 100644
-index 00000000..f54a3d67
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ptp.c
 @@ -0,0 +1,291 @@
@@ -11054,9 +10994,6 @@ index 00000000..f54a3d67
 +	ptp_clock_unregister(clock);
 +}
 +module_exit(dpa_ptp_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c b/drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c
-new file mode 100644
-index 00000000..2c5652d9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c
 @@ -0,0 +1,907 @@
@@ -11967,9 +11904,6 @@ index 00000000..2c5652d9
 +	[XGMAC] = setup_xgmac,
 +	[MEMAC] = setup_memac
 +};
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/mac.c b/drivers/net/ethernet/freescale/sdk_dpaa/mac.c
-new file mode 100644
-index 00000000..60133b02
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac.c
 @@ -0,0 +1,489 @@
@@ -12462,9 +12396,6 @@ index 00000000..60133b02
 +		KBUILD_BASENAME".c", __func__);
 +}
 +module_exit(mac_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/mac.h b/drivers/net/ethernet/freescale/sdk_dpaa/mac.h
-new file mode 100644
-index 00000000..b5288f2a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac.h
 @@ -0,0 +1,135 @@
@@ -12603,9 +12534,6 @@ index 00000000..b5288f2a
 +void get_pause_cfg(struct mac_device *mac_dev, bool *rx_pause, bool *tx_pause);
 +
 +#endif	/* __MAC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.c b/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.c
-new file mode 100644
-index 00000000..fb084af5
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.c
 @@ -0,0 +1,848 @@
@@ -13457,9 +13385,6 @@ index 00000000..fb084af5
 +		KBUILD_BASENAME".c", __func__);
 +}
 +module_exit(oh_port_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.h b/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.h
-new file mode 100644
-index 00000000..432ee88d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/offline_port.h
 @@ -0,0 +1,59 @@
@@ -13522,9 +13447,6 @@ index 00000000..432ee88d
 +};
 +
 +#endif /* __OFFLINE_PORT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Kconfig b/drivers/net/ethernet/freescale/sdk_fman/Kconfig
-new file mode 100644
-index 00000000..d98c0989
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Kconfig
 @@ -0,0 +1,153 @@
@@ -13681,9 +13603,6 @@ index 00000000..d98c0989
 +endif # FSL_SDK_FMAN
 +
 +endmenu
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Makefile
-new file mode 100644
-index 00000000..25ce7e6a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Makefile
 @@ -0,0 +1,11 @@
@@ -13698,9 +13617,6 @@ index 00000000..25ce7e6a
 +obj-y		+= etc/
 +obj-y		+= Peripherals/FM/
 +obj-y		+= src/
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/Makefile
-new file mode 100644
-index 00000000..d0e76727
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/Makefile
 @@ -0,0 +1,15 @@
@@ -13719,9 +13635,6 @@ index 00000000..d0e76727
 +obj-y		+= fsl-ncsw-Hc.o
 +
 +fsl-ncsw-Hc-objs	:=   hc.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/hc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/hc.c
-new file mode 100644
-index 00000000..363c8f95
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/HC/hc.c
 @@ -0,0 +1,1232 @@
@@ -14957,9 +14870,6 @@ index 00000000..363c8f95
 +    t_FmHc *p_FmHc = (t_FmHc*)h_FmHc;
 +    return p_FmHc->h_HcPortDev;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/Makefile
-new file mode 100644
-index 00000000..f6b090da
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/Makefile
 @@ -0,0 +1,28 @@
@@ -14991,9 +14901,6 @@ index 00000000..f6b090da
 +fsl-ncsw-MAC-objs       +=  memac.o memac_mii_acc.o fman_memac_mii_acc.o
 +endif
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.c
-new file mode 100644
-index 00000000..f853825f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.c
 @@ -0,0 +1,1464 @@
@@ -16461,9 +16368,6 @@ index 00000000..f853825f
 +
 +    return p_Dtsec;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.h
-new file mode 100644
-index 00000000..c26f40cc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec.h
 @@ -0,0 +1,228 @@
@@ -16695,9 +16599,6 @@ index 00000000..c26f40cc
 +
 +
 +#endif /* __DTSEC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.c
-new file mode 100644
-index 00000000..87da25ff
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.c
 @@ -0,0 +1,97 @@
@@ -16798,9 +16699,6 @@ index 00000000..87da25ff
 +    return E_OK;
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.h
-new file mode 100644
-index 00000000..75cc658a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.h
 @@ -0,0 +1,42 @@
@@ -16846,9 +16744,6 @@ index 00000000..75cc658a
 +t_Error DTSEC_MII_ReadPhyReg(t_Handle  h_Dtsec, uint8_t phyAddr, uint8_t reg, uint16_t *p_Data);
 +
 +#endif /* __DTSEC_MII_ACC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.c
-new file mode 100644
-index 00000000..20bf150a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.c
 @@ -0,0 +1,658 @@
@@ -17510,9 +17405,6 @@ index 00000000..20bf150a
 +    RETURN_ERROR(MINOR, E_NOT_SUPPORTED, NO_MSG);
 +}
 +#endif /* (defined(DEBUG_ERRORS) && ... */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.h
-new file mode 100644
-index 00000000..77b9a89d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.h
 @@ -0,0 +1,225 @@
@@ -17741,9 +17633,6 @@ index 00000000..77b9a89d
 +
 +
 +#endif /* __FM_MAC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.c
-new file mode 100644
-index 00000000..b6a4ca25
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.c
 @@ -0,0 +1,119 @@
@@ -17866,9 +17755,6 @@ index 00000000..b6a4ca25
 +	crc = get_mirror32(crc);
 +	return crc;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.h
-new file mode 100644
-index 00000000..6e32fdc6
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_crc32.h
 @@ -0,0 +1,43 @@
@@ -17915,9 +17801,6 @@ index 00000000..6e32fdc6
 +
 +
 +#endif /* __FMAN_CRC32_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec.c
-new file mode 100644
-index 00000000..5b092865
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec.c
 @@ -0,0 +1,845 @@
@@ -18766,9 +18649,6 @@ index 00000000..5b092865
 +
 +	return ret_val;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec_mii_acc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec_mii_acc.c
-new file mode 100644
-index 00000000..8819f8fc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_dtsec_mii_acc.c
 @@ -0,0 +1,163 @@
@@ -18935,9 +18815,6 @@ index 00000000..8819f8fc
 +	return 0;
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac.c
-new file mode 100644
-index 00000000..00995a10
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac.c
 @@ -0,0 +1,511 @@
@@ -19452,9 +19329,6 @@ index 00000000..00995a10
 +    cfg->debug_mode			= FALSE;
 +    cfg->wake_on_lan        = FALSE;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac_mii_acc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac_mii_acc.c
-new file mode 100755
-index 00000000..ccda11ec
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_memac_mii_acc.c
 @@ -0,0 +1,213 @@
@@ -19671,9 +19545,6 @@ index 00000000..ccda11ec
 +
 +/* ......................................................................... */
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_tgec.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_tgec.c
-new file mode 100644
-index 00000000..fff9d5de
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/fman_tgec.c
 @@ -0,0 +1,367 @@
@@ -20044,9 +19915,6 @@ index 00000000..fff9d5de
 +
 +	iowrite32be(tmp, &regs->tx_ipg_len);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.c
-new file mode 100644
-index 00000000..85426c5f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.c
 @@ -0,0 +1,1096 @@
@@ -21146,9 +21014,6 @@ index 00000000..85426c5f
 +
 +    return p_Memac;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.h
-new file mode 100644
-index 00000000..2fd89dae
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.h
 @@ -0,0 +1,110 @@
@@ -21262,9 +21127,6 @@ index 00000000..2fd89dae
 +
 +
 +#endif /* __MEMAC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.c
-new file mode 100644
-index 00000000..56eaffbc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.c
 @@ -0,0 +1,78 @@
@@ -21346,9 +21208,6 @@ index 00000000..56eaffbc
 +                                       p_Data,
 +                                       (enum enet_speed)ENET_SPEED_FROM_MODE(p_Memac->enetMode));
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.h
-new file mode 100644
-index 00000000..325ec082
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac_mii_acc.h
 @@ -0,0 +1,73 @@
@@ -21425,9 +21284,6 @@ index 00000000..325ec082
 +
 +
 +#endif /* __MEMAC_MII_ACC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.c
-new file mode 100644
-index 00000000..9b136a69
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.c
 @@ -0,0 +1,975 @@
@@ -22406,9 +22262,6 @@ index 00000000..9b136a69
 +
 +    return p_Tgec;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.h
-new file mode 100644
-index 00000000..2aa39238
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec.h
 @@ -0,0 +1,151 @@
@@ -22563,9 +22416,6 @@ index 00000000..2aa39238
 +
 +
 +#endif /* __TGEC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.c
-new file mode 100644
-index 00000000..e0fafd1d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.c
 @@ -0,0 +1,139 @@
@@ -22708,9 +22558,6 @@ index 00000000..e0fafd1d
 +
 +    return E_OK;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.h
-new file mode 100644
-index 00000000..645cdde5
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.h
 @@ -0,0 +1,80 @@
@@ -22794,9 +22641,6 @@ index 00000000..645cdde5
 +
 +
 +#endif /* __TGEC_MII_ACC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/Makefile
-new file mode 100644
-index 00000000..bfa02f5e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/Makefile
 @@ -0,0 +1,15 @@
@@ -22815,9 +22659,6 @@ index 00000000..bfa02f5e
 +obj-y		+= fsl-ncsw-macsec.o
 +
 +fsl-ncsw-macsec-objs	:= fm_macsec.o fm_macsec_guest.o fm_macsec_master.o fm_macsec_secy.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.c
-new file mode 100644
-index 00000000..0a1b31f1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.c
 @@ -0,0 +1,237 @@
@@ -23058,9 +22899,6 @@ index 00000000..0a1b31f1
 +    RETURN_ERROR(MINOR, E_NOT_SUPPORTED, NO_MSG);
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.h
-new file mode 100644
-index 00000000..fbe51875
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec.h
 @@ -0,0 +1,203 @@
@@ -23267,9 +23105,6 @@ index 00000000..fbe51875
 +
 +
 +#endif /* __FM_MACSEC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_guest.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_guest.c
-new file mode 100644
-index 00000000..31d789d0
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_guest.c
 @@ -0,0 +1,59 @@
@@ -23332,9 +23167,6 @@ index 00000000..31d789d0
 +    UNUSED(p_FmMacsecParam);
 +    return NULL;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.c
-new file mode 100644
-index 00000000..623612ac
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.c
 @@ -0,0 +1,1031 @@
@@ -24369,9 +24201,6 @@ index 00000000..623612ac
 +    }
 +    return p_FmMacsec;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.h
-new file mode 100644
-index 00000000..2296a0f1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_master.h
 @@ -0,0 +1,479 @@
@@ -24854,9 +24683,6 @@ index 00000000..2296a0f1
 +
 +
 +#endif /* __FM_MACSEC_MASTER_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.c
-new file mode 100644
-index 00000000..7c72dc98
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.c
 @@ -0,0 +1,883 @@
@@ -25743,9 +25569,6 @@ index 00000000..7c72dc98
 +    RETURN_ERROR(MINOR, E_NOT_SUPPORTED, NO_MSG);
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.h
-new file mode 100644
-index 00000000..0cf624e6
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MACSEC/fm_macsec_secy.h
 @@ -0,0 +1,144 @@
@@ -25893,9 +25716,6 @@ index 00000000..0cf624e6
 +
 +
 +#endif /* __FM_MACSEC_SECY_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Makefile
-new file mode 100644
-index 00000000..619f6608
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Makefile
 @@ -0,0 +1,23 @@
@@ -25922,9 +25742,6 @@ index 00000000..619f6608
 +obj-y		+= HC/
 +obj-y		+= Rtc/
 +obj-y		+= MACSEC/
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/Makefile
-new file mode 100644
-index 00000000..62fbd73c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/Makefile
 @@ -0,0 +1,26 @@
@@ -25954,9 +25771,6 @@ index 00000000..62fbd73c
 +fsl-ncsw-Pcd-objs	+= fm_replic.o
 +endif
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/crc64.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/crc64.h
-new file mode 100644
-index 00000000..335ee681
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/crc64.h
 @@ -0,0 +1,360 @@
@@ -26320,9 +26134,6 @@ index 00000000..335ee681
 +
 +
 +#endif /* __CRC64_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.c
-new file mode 100644
-index 00000000..17c933b4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.c
 @@ -0,0 +1,7582 @@
@@ -33908,9 +33719,6 @@ index 00000000..17c933b4
 +
 +    return FM_PCD_MatchTableGetMissStatistics(h_HashBucket, p_MissStatistics);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.h
-new file mode 100644
-index 00000000..3456bb56
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.h
 @@ -0,0 +1,399 @@
@@ -34313,9 +34121,6 @@ index 00000000..3456bb56
 +
 +
 +#endif /* __FM_CC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.c
-new file mode 100644
-index 00000000..f183d2f9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.c
 @@ -0,0 +1,3242 @@
@@ -37561,9 +37366,6 @@ index 00000000..f183d2f9
 +        WRITE_UINT32(p_Regs->fmkg_gdv1r,value);
 +    return E_OK;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.h
-new file mode 100644
-index 00000000..cb7521a1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.h
 @@ -0,0 +1,206 @@
@@ -37773,9 +37575,6 @@ index 00000000..cb7521a1
 +
 +
 +#endif /* __FM_KG_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.c
-new file mode 100644
-index 00000000..113777e5
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.c
 @@ -0,0 +1,5571 @@
@@ -43350,9 +43149,6 @@ index 00000000..113777e5
 +    return p_Manip;
 +}
 +#endif /* (defined(FM_CAPWAP_SUPPORT) && (DPAA_VERSION == 10)) */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.h
-new file mode 100644
-index 00000000..853bb834
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_manip.h
 @@ -0,0 +1,555 @@
@@ -43911,9 +43707,6 @@ index 00000000..853bb834
 +
 +
 +#endif /* __FM_MANIP_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.c
-new file mode 100644
-index 00000000..91f70a1a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.c
 @@ -0,0 +1,2095 @@
@@ -46012,9 +45805,6 @@ index 00000000..91f70a1a
 +    return FmHcGetPort(p_FmPcd->h_Hc);
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.h
-new file mode 100644
-index 00000000..27ec9c5b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.h
 @@ -0,0 +1,543 @@
@@ -46561,9 +46351,6 @@ index 00000000..27ec9c5b
 +
 +
 +#endif /* __FM_PCD_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd_ipc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd_ipc.h
-new file mode 100644
-index 00000000..325d3e33
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd_ipc.h
 @@ -0,0 +1,280 @@
@@ -46847,9 +46634,6 @@ index 00000000..325d3e33
 +
 +
 +#endif /* __FM_PCD_IPC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.c
-new file mode 100644
-index 00000000..e3753305
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.c
 @@ -0,0 +1,1847 @@
@@ -48700,9 +48484,6 @@ index 00000000..e3753305
 +
 +    return E_OK;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.h
-new file mode 100644
-index 00000000..2bb8b969
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_plcr.h
 @@ -0,0 +1,165 @@
@@ -48871,9 +48652,6 @@ index 00000000..2bb8b969
 +
 +
 +#endif /* __FM_PLCR_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.c
-new file mode 100644
-index 00000000..ff4f0a2f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.c
 @@ -0,0 +1,423 @@
@@ -49300,9 +49078,6 @@ index 00000000..ff4f0a2f
 +
 +    return E_OK;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.h
-new file mode 100644
-index 00000000..056f225e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.h
 @@ -0,0 +1,316 @@
@@ -49622,9 +49397,6 @@ index 00000000..056f225e
 +    bitMask = 0x80000000>>prsPortId
 +
 +#endif /* __FM_PRS_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.c
-new file mode 100644
-index 00000000..ee82f730
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.c
 @@ -0,0 +1,984 @@
@@ -50612,9 +50384,6 @@ index 00000000..ee82f730
 +/*********************** End of API routines ************************/
 +
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.h
-new file mode 100644
-index 00000000..0e8e8bc0
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fm_replic.h
 @@ -0,0 +1,101 @@
@@ -50719,9 +50488,6 @@ index 00000000..0e8e8bc0
 +
 +
 +#endif /* __FM_REPLIC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_kg.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_kg.c
-new file mode 100644
-index 00000000..49b86e8e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_kg.c
 @@ -0,0 +1,888 @@
@@ -51613,9 +51379,6 @@ index 00000000..49b86e8e
 +	err = fman_kg_write_ar_wait(regs, tmp_reg);
 +	return err;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_prs.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_prs.c
-new file mode 100644
-index 00000000..108779db
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Pcd/fman_prs.c
 @@ -0,0 +1,129 @@
@@ -51748,9 +51511,6 @@ index 00000000..108779db
 +	else
 +		iowrite32be(0, &regs->fmpr_ppsc);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/Makefile
-new file mode 100644
-index 00000000..7d928e0a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/Makefile
 @@ -0,0 +1,15 @@
@@ -51769,9 +51529,6 @@ index 00000000..7d928e0a
 +obj-y		+= fsl-ncsw-Pcd.o
 +
 +fsl-ncsw-Pcd-objs	:=   fm_port.o fm_port_im.o fman_port.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.c
-new file mode 100644
-index 00000000..ec6e0ed5
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.c
 @@ -0,0 +1,6436 @@
@@ -58211,9 +57968,6 @@ index 00000000..ec6e0ed5
 +    stats->snmpGetNextCnt = snmp_stats->snmpGetNextReqCnt;
 +    return E_OK;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.h
-new file mode 100644
-index 00000000..85986f55
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.h
 @@ -0,0 +1,999 @@
@@ -59216,9 +58970,6 @@ index 00000000..85986f55
 +
 +
 +#endif /* __FM_PORT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_dsar.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_dsar.h
-new file mode 100755
-index 00000000..95619eff
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_dsar.h
 @@ -0,0 +1,494 @@
@@ -59716,9 +59467,6 @@ index 00000000..95619eff
 +
 +
 +#endif /* __FM_PORT_DSAR_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_im.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_im.c
-new file mode 100644
-index 00000000..8de8f5fd
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port_im.c
 @@ -0,0 +1,753 @@
@@ -60475,9 +60223,6 @@ index 00000000..8de8f5fd
 +
 +    return FmPortImRx(p_FmPort);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fman_port.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fman_port.c
-new file mode 100755
-index 00000000..60acbf34
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fman_port.c
 @@ -0,0 +1,1568 @@
@@ -62049,9 +61794,6 @@ index 00000000..60acbf34
 +    }
 +    return 0;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/Makefile
-new file mode 100644
-index 00000000..d2c21d34
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/Makefile
 @@ -0,0 +1,15 @@
@@ -62070,9 +61812,6 @@ index 00000000..d2c21d34
 +obj-y		+= fsl-ncsw-RTC.o
 +
 +fsl-ncsw-RTC-objs	:=   fm_rtc.o fman_rtc.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.c
-new file mode 100644
-index 00000000..99de427b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.c
 @@ -0,0 +1,692 @@
@@ -62768,9 +62507,6 @@ index 00000000..99de427b
 +	return E_OK;
 +}
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.h
-new file mode 100644
-index 00000000..843ca008
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.h
 @@ -0,0 +1,96 @@
@@ -62870,9 +62606,6 @@ index 00000000..843ca008
 +
 +
 +#endif /* __FM_RTC_H__ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fman_rtc.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fman_rtc.c
-new file mode 100755
-index 00000000..acdf507e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Rtc/fman_rtc.c
 @@ -0,0 +1,334 @@
@@ -63210,9 +62943,6 @@ index 00000000..acdf507e
 +		fman_rtc_set_timer_ctrl(regs, fman_rtc_get_timer_ctrl(regs) | tmpReg);
 +	}
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/Makefile b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/Makefile
-new file mode 100644
-index 00000000..fae50ce4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/Makefile
 @@ -0,0 +1,15 @@
@@ -63231,9 +62961,6 @@ index 00000000..fae50ce4
 +obj-y		+= fsl-ncsw-sp.o
 +
 +fsl-ncsw-sp-objs	:= fm_sp.o fman_sp.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.c
-new file mode 100644
-index 00000000..0994f34d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.c
 @@ -0,0 +1,757 @@
@@ -63994,9 +63721,6 @@ index 00000000..0994f34d
 +}
 +
 +#endif /* (DPAA_VERSION >= 11) */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.h
-new file mode 100644
-index 00000000..9c171d85
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fm_sp.h
 @@ -0,0 +1,85 @@
@@ -64085,9 +63809,6 @@ index 00000000..9c171d85
 +
 +
 +#endif /* __FM_SP_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fman_sp.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fman_sp.c
-new file mode 100755
-index 00000000..0f772e91
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/SP/fman_sp.c
 @@ -0,0 +1,197 @@
@@ -64288,9 +64009,6 @@ index 00000000..0f772e91
 +    /* buffer margins - fill spliodn register */
 +    iowrite32be(liodn_offset, &sp_regs->fm_sp_spliodn);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.c
-new file mode 100644
-index 00000000..a870b47e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.c
 @@ -0,0 +1,5216 @@
@@ -69510,9 +69228,6 @@ index 00000000..a870b47e
 +	WRITE_UINT32(p_Fm->p_FmFpmRegs->fm_rcr, rcr);
 +}
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.h
-new file mode 100644
-index 00000000..0bded75d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm.h
 @@ -0,0 +1,648 @@
@@ -70164,9 +69879,6 @@ index 00000000..0bded75d
 +
 +
 +#endif /* __FM_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_ipc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_ipc.h
-new file mode 100644
-index 00000000..7ce36a76
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_ipc.h
 @@ -0,0 +1,465 @@
@@ -70635,9 +70347,6 @@ index 00000000..7ce36a76
 +
 +
 +#endif /* __FM_IPC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_muram.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_muram.c
-new file mode 100644
-index 00000000..0bc67cb7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fm_muram.c
 @@ -0,0 +1,174 @@
@@ -70815,9 +70524,6 @@ index 00000000..0bc67cb7
 +
 +    return MM_GetFreeMemSize(p_FmMuram->h_Mem);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fman.c b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fman.c
-new file mode 100755
-index 00000000..a41ecd04
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/fman.c
 @@ -0,0 +1,1398 @@
@@ -72219,9 +71925,6 @@ index 00000000..a41ecd04
 +
 +	iowrite32be(tmp, &fpm_rg->fmfp_ee);
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_common.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_common.h
-new file mode 100644
-index 00000000..204840c9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_common.h
 @@ -0,0 +1,1214 @@
@@ -73439,9 +73142,6 @@ index 00000000..204840c9
 +
 +
 +#endif /* __FM_COMMON_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_hc.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_hc.h
-new file mode 100644
-index 00000000..492aa8a3
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_hc.h
 @@ -0,0 +1,93 @@
@@ -73538,9 +73238,6 @@ index 00000000..492aa8a3
 +
 +
 +#endif /* __FM_HC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_sp_common.h b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_sp_common.h
-new file mode 100644
-index 00000000..f9dd384b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/inc/fm_sp_common.h
 @@ -0,0 +1,117 @@
@@ -73661,9 +73358,6 @@ index 00000000..f9dd384b
 +
 +
 +#endif /* __FM_SP_COMMON_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/Makefile b/drivers/net/ethernet/freescale/sdk_fman/etc/Makefile
-new file mode 100644
-index 00000000..d03a519c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/Makefile
 @@ -0,0 +1,12 @@
@@ -73679,9 +73373,6 @@ index 00000000..d03a519c
 +obj-y		+= fsl-ncsw-etc.o
 +
 +fsl-ncsw-etc-objs	:= mm.o memcpy.o sprint.o list.o error.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/error.c b/drivers/net/ethernet/freescale/sdk_fman/etc/error.c
-new file mode 100644
-index 00000000..fead7f50
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/error.c
 @@ -0,0 +1,95 @@
@@ -73780,9 +73471,6 @@ index 00000000..fead7f50
 +    return NULL;
 +}
 +#endif /* (defined(DEBUG_ERRORS) && (DEBUG_ERRORS > 0)) */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/list.c b/drivers/net/ethernet/freescale/sdk_fman/etc/list.c
-new file mode 100644
-index 00000000..2d044be2
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/list.c
 @@ -0,0 +1,71 @@
@@ -73857,9 +73545,6 @@ index 00000000..2d044be2
 +
 +    return numOfObjs;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/memcpy.c b/drivers/net/ethernet/freescale/sdk_fman/etc/memcpy.c
-new file mode 100644
-index 00000000..fa203ec7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/memcpy.c
 @@ -0,0 +1,620 @@
@@ -74483,9 +74168,6 @@ index 00000000..fa203ec7
 +        XX_Print("\r\n");
 +    }
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/mm.c b/drivers/net/ethernet/freescale/sdk_fman/etc/mm.c
-new file mode 100644
-index 00000000..9fcc46e0
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/mm.c
 @@ -0,0 +1,1155 @@
@@ -75644,9 +75326,6 @@ index 00000000..9fcc46e0
 +        XX_Print("\n");
 +    }
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/mm.h b/drivers/net/ethernet/freescale/sdk_fman/etc/mm.h
-new file mode 100644
-index 00000000..43b2298f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/mm.h
 @@ -0,0 +1,105 @@
@@ -75755,9 +75434,6 @@ index 00000000..43b2298f
 +
 +
 +#endif /* __MM_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/etc/sprint.c b/drivers/net/ethernet/freescale/sdk_fman/etc/sprint.c
-new file mode 100644
-index 00000000..46d2956a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/etc/sprint.c
 @@ -0,0 +1,81 @@
@@ -75842,9 +75518,6 @@ index 00000000..46d2956a
 +    return i;
 +}
 +#endif /* NCSW_VXWORKS */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/fmanv3h_dflags.h b/drivers/net/ethernet/freescale/sdk_fman/fmanv3h_dflags.h
-new file mode 100644
-index 00000000..435b0d2b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/fmanv3h_dflags.h
 @@ -0,0 +1,57 @@
@@ -75905,9 +75578,6 @@ index 00000000..435b0d2b
 +#define EVENT_GLOBAL_LEVEL  REPORT_LEVEL_MINOR
 +
 +#endif /* __dflags_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/fmanv3l_dflags.h b/drivers/net/ethernet/freescale/sdk_fman/fmanv3l_dflags.h
-new file mode 100644
-index 00000000..789eb879
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/fmanv3l_dflags.h
 @@ -0,0 +1,56 @@
@@ -75967,9 +75637,6 @@ index 00000000..789eb879
 +#define EVENT_GLOBAL_LEVEL  REPORT_LEVEL_MINOR
 +
 +#endif /* __dflags_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/crc_mac_addr_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/crc_mac_addr_ext.h
-new file mode 100644
-index 00000000..a84d5631
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/crc_mac_addr_ext.h
 @@ -0,0 +1,364 @@
@@ -76337,9 +76004,6 @@ index 00000000..a84d5631
 +
 +
 +#endif /* __crc_mac_addr_ext_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/dpaa_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/dpaa_ext.h
-new file mode 100644
-index 00000000..e6d9e932
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/dpaa_ext.h
 @@ -0,0 +1,210 @@
@@ -76553,9 +76217,6 @@ index 00000000..e6d9e932
 +
 +
 +#endif /* __DPAA_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_ext.h
-new file mode 100644
-index 00000000..a8a64386
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_ext.h
 @@ -0,0 +1,1731 @@
@@ -78290,9 +77951,6 @@ index 00000000..a8a64386
 +
 +
 +#endif /* __FM_EXT */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_mac_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_mac_ext.h
-new file mode 100644
-index 00000000..da7e0463
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_mac_ext.h
 @@ -0,0 +1,859 @@
@@ -79155,9 +78813,6 @@ index 00000000..da7e0463
 +
 +
 +#endif /* __FM_MAC_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_macsec_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_macsec_ext.h
-new file mode 100644
-index 00000000..57925f10
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_macsec_ext.h
 @@ -0,0 +1,1271 @@
@@ -80432,9 +80087,6 @@ index 00000000..57925f10
 +
 +
 +#endif /* __FM_MACSEC_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_muram_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_muram_ext.h
-new file mode 100644
-index 00000000..ef62c8ef
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_muram_ext.h
 @@ -0,0 +1,170 @@
@@ -80608,9 +80260,6 @@ index 00000000..ef62c8ef
 +
 +
 +#endif /* __FM_MURAM_EXT */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_pcd_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_pcd_ext.h
-new file mode 100644
-index 00000000..8d1c3d88
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_pcd_ext.h
 @@ -0,0 +1,3974 @@
@@ -84588,9 +84237,6 @@ index 00000000..8d1c3d88
 +
 +
 +#endif /* __FM_PCD_EXT */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_port_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_port_ext.h
-new file mode 100644
-index 00000000..08a5aa59
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_port_ext.h
 @@ -0,0 +1,2608 @@
@@ -87202,9 +86848,6 @@ index 00000000..08a5aa59
 +
 +
 +#endif /* __FM_PORT_EXT */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_rtc_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_rtc_ext.h
-new file mode 100644
-index 00000000..72078ac4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_rtc_ext.h
 @@ -0,0 +1,619 @@
@@ -87827,9 +87470,6 @@ index 00000000..72078ac4
 +
 +
 +#endif /* __FM_RTC_EXT_H__ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_vsp_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_vsp_ext.h
-new file mode 100644
-index 00000000..f9aed036
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/fm_vsp_ext.h
 @@ -0,0 +1,411 @@
@@ -88244,9 +87884,6 @@ index 00000000..f9aed036
 +
 +
 +#endif /* __FM_VSP_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/mii_acc_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/mii_acc_ext.h
-new file mode 100644
-index 00000000..f635d3c2
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/Peripherals/mii_acc_ext.h
 @@ -0,0 +1,76 @@
@@ -88326,9 +87963,6 @@ index 00000000..f635d3c2
 +
 +
 +#endif /* __MII_ACC_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/core_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/core_ext.h
-new file mode 100644
-index 00000000..ec89a6dd
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/core_ext.h
 @@ -0,0 +1,90 @@
@@ -88422,9 +88056,6 @@ index 00000000..ec89a6dd
 +#define fsl_mem_core_barrier() CORE_MemoryBarrier()
 +
 +#endif /* __CORE_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/cores/arm_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/arm_ext.h
-new file mode 100644
-index 00000000..e63444a7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/arm_ext.h
 @@ -0,0 +1,55 @@
@@ -88483,9 +88114,6 @@ index 00000000..e63444a7
 +}
 +
 +#endif /* __PPC_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/cores/e500v2_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/e500v2_ext.h
-new file mode 100644
-index 00000000..e79b1ddf
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/e500v2_ext.h
 @@ -0,0 +1,476 @@
@@ -88965,9 +88593,6 @@ index 00000000..e79b1ddf
 +
 +
 +#endif /* __E500V2_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/cores/ppc_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/ppc_ext.h
-new file mode 100644
-index 00000000..9344b3a1
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/cores/ppc_ext.h
 @@ -0,0 +1,141 @@
@@ -89112,9 +88737,6 @@ index 00000000..9344b3a1
 +
 +
 +#endif /* __PPC_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/ddr_std_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/ddr_std_ext.h
-new file mode 100644
-index 00000000..8bb343fc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/ddr_std_ext.h
 @@ -0,0 +1,77 @@
@@ -89195,9 +88817,6 @@ index 00000000..8bb343fc
 +
 +#endif /* __DDR_SDT_EXT_H */
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/debug_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/debug_ext.h
-new file mode 100644
-index 00000000..57db0a14
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/debug_ext.h
 @@ -0,0 +1,233 @@
@@ -89434,9 +89053,6 @@ index 00000000..57db0a14
 +
 +#endif /* __DEBUG_EXT_H */
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/endian_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/endian_ext.h
-new file mode 100644
-index 00000000..5cdec668
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/endian_ext.h
 @@ -0,0 +1,447 @@
@@ -89887,9 +89503,6 @@ index 00000000..5cdec668
 +
 +#endif /* __ENDIAN_EXT_H */
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/enet_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/enet_ext.h
-new file mode 100644
-index 00000000..ef3bee55
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/enet_ext.h
 @@ -0,0 +1,205 @@
@@ -90098,9 +89711,6 @@ index 00000000..ef3bee55
 +
 +
 +#endif /* __ENET_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/error_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/error_ext.h
-new file mode 100644
-index 00000000..2a5ad67b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/error_ext.h
 @@ -0,0 +1,529 @@
@@ -90633,9 +90243,6 @@ index 00000000..2a5ad67b
 +#endif /* __ERROR_EXT_H */
 +
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/etc/list_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/list_ext.h
-new file mode 100644
-index 00000000..ee6b9f29
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/list_ext.h
 @@ -0,0 +1,358 @@
@@ -90997,9 +90604,6 @@ index 00000000..ee6b9f29
 +
 +
 +#endif /* __LIST_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mem_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mem_ext.h
-new file mode 100644
-index 00000000..d0565d41
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mem_ext.h
 @@ -0,0 +1,318 @@
@@ -91321,9 +90925,6 @@ index 00000000..d0565d41
 +
 +
 +#endif /* __MEM_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/etc/memcpy_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/memcpy_ext.h
-new file mode 100644
-index 00000000..1b3a2fac
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/memcpy_ext.h
 @@ -0,0 +1,208 @@
@@ -91535,9 +91136,6 @@ index 00000000..1b3a2fac
 +
 +
 +#endif /* __MEMCPY_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mm_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mm_ext.h
-new file mode 100644
-index 00000000..fa7c85e3
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/mm_ext.h
 @@ -0,0 +1,310 @@
@@ -91851,9 +91449,6 @@ index 00000000..fa7c85e3
 +/** @} */ /* end of etc_id group */
 +
 +#endif /* __MM_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/etc/sprint_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/sprint_ext.h
-new file mode 100644
-index 00000000..52f7a9dc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/etc/sprint_ext.h
 @@ -0,0 +1,118 @@
@@ -91975,9 +91570,6 @@ index 00000000..52f7a9dc
 +
 +
 +#endif /* __SPRINT_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/arch/ppc_access.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/arch/ppc_access.h
-new file mode 100644
-index 00000000..c7b9b46f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/arch/ppc_access.h
 @@ -0,0 +1,37 @@
@@ -92018,9 +91610,6 @@ index 00000000..c7b9b46f
 +
 +#endif /* FL_E500_MACROS_H */
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/general.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/general.h
-new file mode 100644
-index 00000000..b3f516fb
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/common/general.h
 @@ -0,0 +1,52 @@
@@ -92076,9 +91665,6 @@ index 00000000..b3f516fb
 +
 +
 +#endif /* __GENERAL_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fman_common.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fman_common.h
-new file mode 100755
-index 00000000..8b194e99
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fman_common.h
 @@ -0,0 +1,78 @@
@@ -92160,9 +91746,6 @@ index 00000000..8b194e99
 +#define NIA_BMI_AC_FETCH_ALL_FRAME              0x0000020c
 +
 +#endif /* __FMAN_COMMON_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_enet.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_enet.h
-new file mode 100644
-index 00000000..caa87fc6
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_enet.h
 @@ -0,0 +1,273 @@
@@ -92439,9 +92022,6 @@ index 00000000..caa87fc6
 +	} while (0)
 +
 +#endif /* __FSL_ENET_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman.h
-new file mode 100755
-index 00000000..96a63fa7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman.h
 @@ -0,0 +1,825 @@
@@ -93270,9 +92850,6 @@ index 00000000..96a63fa7
 +
 +
 +#endif /* __FSL_FMAN_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec.h
-new file mode 100644
-index 00000000..6004e478
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec.h
 @@ -0,0 +1,1096 @@
@@ -94372,9 +93949,6 @@ index 00000000..6004e478
 +
 +
 +#endif /* __FSL_FMAN_DTSEC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec_mii_acc.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec_mii_acc.h
-new file mode 100644
-index 00000000..0dda09c3
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_dtsec_mii_acc.h
 @@ -0,0 +1,107 @@
@@ -94485,9 +94059,6 @@ index 00000000..0dda09c3
 +			uint16_t dtsec_freq);
 +
 +#endif /* __FSL_FMAN_DTSEC_MII_ACC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_kg.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_kg.h
-new file mode 100644
-index 00000000..010e4b70
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_kg.h
 @@ -0,0 +1,514 @@
@@ -95005,9 +94576,6 @@ index 00000000..010e4b70
 +}
 +
 +#endif /* __FSL_FMAN_KG_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac.h
-new file mode 100644
-index 00000000..0dd8286b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac.h
 @@ -0,0 +1,427 @@
@@ -95438,9 +95006,6 @@ index 00000000..0dd8286b
 +
 +
 +#endif /*__FSL_FMAN_MEMAC_H*/
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac_mii_acc.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac_mii_acc.h
-new file mode 100755
-index 00000000..b4304450
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_memac_mii_acc.h
 @@ -0,0 +1,78 @@
@@ -95522,9 +95087,6 @@ index 00000000..b4304450
 +	enum enet_speed enet_speed);
 +
 +#endif /* __MAC_API_MEMAC_MII_ACC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_port.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_port.h
-new file mode 100755
-index 00000000..080a23e9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_port.h
 @@ -0,0 +1,593 @@
@@ -96121,9 +95683,6 @@ index 00000000..080a23e9
 +
 +
 +#endif /* __FSL_FMAN_PORT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_prs.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_prs.h
-new file mode 100644
-index 00000000..b18997dc
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_prs.h
 @@ -0,0 +1,102 @@
@@ -96229,9 +95788,6 @@ index 00000000..b18997dc
 +void fman_prs_set_stst_port_msk(struct fman_prs_regs *regs, uint32_t pid_msk);
 +void fman_prs_set_stst(struct fman_prs_regs *regs, bool enable);
 +#endif /* __FSL_FMAN_PRS_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_rtc.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_rtc.h
-new file mode 100755
-index 00000000..f6b69a1f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_rtc.h
 @@ -0,0 +1,449 @@
@@ -96684,9 +96240,6 @@ index 00000000..f6b69a1f
 +};
 +
 +#endif /* __FSL_FMAN_RTC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_sp.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_sp.h
-new file mode 100755
-index 00000000..f8ef7d56
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_sp.h
 @@ -0,0 +1,138 @@
@@ -96828,9 +96381,6 @@ index 00000000..f8ef7d56
 +
 +
 +#endif /* __FSL_FMAN_SP_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_tgec.h b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_tgec.h
-new file mode 100644
-index 00000000..a0373141
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/flib/fsl_fman_tgec.h
 @@ -0,0 +1,479 @@
@@ -97313,9 +96863,6 @@ index 00000000..a0373141
 +
 +
 +#endif /* __FSL_FMAN_TGEC_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/dpaa_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/dpaa_integration_ext.h
-new file mode 100644
-index 00000000..0346cf60
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/dpaa_integration_ext.h
 @@ -0,0 +1,291 @@
@@ -97610,9 +97157,6 @@ index 00000000..0346cf60
 +#define NUM_OF_SA_PER_TX_SC         2
 +
 +#endif /* __DPAA_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_ext.h
-new file mode 100644
-index 00000000..0d62dd15
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_ext.h
 @@ -0,0 +1,71 @@
@@ -97687,9 +97231,6 @@ index 00000000..0d62dd15
 +
 +
 +#endif /* __PART_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_integration_ext.h
-new file mode 100644
-index 00000000..3254c766
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3H/part_integration_ext.h
 @@ -0,0 +1,304 @@
@@ -97997,9 +97538,6 @@ index 00000000..3254c766
 +
 +
 +#endif /* __PART_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/dpaa_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/dpaa_integration_ext.h
-new file mode 100644
-index 00000000..f7f8eb07
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/dpaa_integration_ext.h
 @@ -0,0 +1,293 @@
@@ -98296,9 +97834,6 @@ index 00000000..f7f8eb07
 +#define NUM_OF_SA_PER_TX_SC         2
 +
 +#endif /* __DPAA_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_ext.h
-new file mode 100644
-index 00000000..ba9732ee
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_ext.h
 @@ -0,0 +1,59 @@
@@ -98361,9 +97896,6 @@ index 00000000..ba9732ee
 +
 +
 +#endif /* __PART_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_integration_ext.h
-new file mode 100644
-index 00000000..3254c766
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/FMANV3L/part_integration_ext.h
 @@ -0,0 +1,304 @@
@@ -98671,9 +98203,6 @@ index 00000000..3254c766
 +
 +
 +#endif /* __PART_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/dpaa_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/dpaa_integration_ext.h
-new file mode 100644
-index 00000000..5a8f3583
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/dpaa_integration_ext.h
 @@ -0,0 +1,291 @@
@@ -98968,9 +98497,6 @@ index 00000000..5a8f3583
 +#define NUM_OF_SA_PER_TX_SC         2
 +
 +#endif /* __DPAA_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_ext.h
-new file mode 100644
-index 00000000..4787e19c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_ext.h
 @@ -0,0 +1,64 @@
@@ -99038,9 +98564,6 @@ index 00000000..4787e19c
 +
 +
 +#endif /* __PART_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_integration_ext.h
-new file mode 100644
-index 00000000..85ba2a47
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/LS1043/part_integration_ext.h
 @@ -0,0 +1,185 @@
@@ -99229,9 +98752,6 @@ index 00000000..85ba2a47
 +
 +
 +#endif /* __PART_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/dpaa_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/dpaa_integration_ext.h
-new file mode 100644
-index 00000000..7b5390de
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/dpaa_integration_ext.h
 @@ -0,0 +1,213 @@
@@ -99448,9 +98968,6 @@ index 00000000..7b5390de
 +
 +
 +#endif /* __DPAA_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_ext.h
-new file mode 100644
-index 00000000..6814d5fb
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_ext.h
 @@ -0,0 +1,82 @@
@@ -99536,9 +99053,6 @@ index 00000000..6814d5fb
 +
 +
 +#endif /* __PART_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_integration_ext.h
-new file mode 100644
-index 00000000..e838283d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P1023/part_integration_ext.h
 @@ -0,0 +1,635 @@
@@ -100177,9 +99691,6 @@ index 00000000..e838283d
 +
 +
 +#endif /* __PART_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/dpaa_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/dpaa_integration_ext.h
-new file mode 100644
-index 00000000..6e2b925f
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/dpaa_integration_ext.h
 @@ -0,0 +1,276 @@
@@ -100459,9 +99970,6 @@ index 00000000..6e2b925f
 +
 +
 +#endif /* __DPAA_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_ext.h
-new file mode 100644
-index 00000000..512f0baf
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_ext.h
 @@ -0,0 +1,83 @@
@@ -100548,9 +100056,6 @@ index 00000000..512f0baf
 +
 +
 +#endif /* __PART_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_integration_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_integration_ext.h
-new file mode 100644
-index 00000000..03c59b8b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/integrations/P3040_P4080_P5020/part_integration_ext.h
 @@ -0,0 +1,336 @@
@@ -100890,9 +100395,6 @@ index 00000000..03c59b8b
 +    { /* Port A */ 0xFFFFFFFF }
 +
 +#endif /* __PART_INTEGRATION_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/math_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/math_ext.h
-new file mode 100644
-index 00000000..4ecfc6ed
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/math_ext.h
 @@ -0,0 +1,100 @@
@@ -100996,9 +100498,6 @@ index 00000000..4ecfc6ed
 +
 +
 +#endif /* __MATH_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/ncsw_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/ncsw_ext.h
-new file mode 100644
-index 00000000..dc32e249
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/ncsw_ext.h
 @@ -0,0 +1,435 @@
@@ -101437,9 +100936,6 @@ index 00000000..dc32e249
 +
 +
 +#endif /* __NCSW_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/net_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/net_ext.h
-new file mode 100644
-index 00000000..8f3bc369
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/net_ext.h
 @@ -0,0 +1,430 @@
@@ -101873,9 +101369,6 @@ index 00000000..8f3bc369
 +
 +
 +#endif /* __NET_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/std_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/std_ext.h
-new file mode 100644
-index 00000000..d91e6fdd
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/std_ext.h
 @@ -0,0 +1,48 @@
@@ -101927,9 +101420,6 @@ index 00000000..d91e6fdd
 +
 +
 +#endif /* __STD_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/stdarg_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/stdarg_ext.h
-new file mode 100644
-index 00000000..3c8bb0a0
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/stdarg_ext.h
 @@ -0,0 +1,49 @@
@@ -101982,9 +101472,6 @@ index 00000000..3c8bb0a0
 +
 +
 +#endif /* __STDARG_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/stdlib_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/stdlib_ext.h
-new file mode 100644
-index 00000000..a47860cf
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/stdlib_ext.h
 @@ -0,0 +1,162 @@
@@ -102150,9 +101637,6 @@ index 00000000..a47860cf
 +
 +
 +#endif /* __STDLIB_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/string_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/string_ext.h
-new file mode 100644
-index 00000000..a5c6c7e0
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/string_ext.h
 @@ -0,0 +1,56 @@
@@ -102212,9 +101696,6 @@ index 00000000..a5c6c7e0
 +
 +
 +#endif /* __STRING_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/types_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/types_ext.h
-new file mode 100644
-index 00000000..8c87edb7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/types_ext.h
 @@ -0,0 +1,62 @@
@@ -102280,9 +101761,6 @@ index 00000000..8c87edb7
 +#endif /* defined (__ROCOO__) */
 +
 +#endif /* __TYPES_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/xx_common.h b/drivers/net/ethernet/freescale/sdk_fman/inc/xx_common.h
-new file mode 100644
-index 00000000..8e81094b
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/xx_common.h
 @@ -0,0 +1,56 @@
@@ -102342,9 +101820,6 @@ index 00000000..8e81094b
 +#define MODULE_FM_SP            0x00080000
 +#define MODULE_FM_MACSEC        0x00090000
 +#endif /* __XX_COMMON_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/inc/xx_ext.h b/drivers/net/ethernet/freescale/sdk_fman/inc/xx_ext.h
-new file mode 100644
-index 00000000..21b62d0a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/inc/xx_ext.h
 @@ -0,0 +1,791 @@
@@ -103139,9 +102614,6 @@ index 00000000..21b62d0a
 +
 +
 +#endif /* __XX_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/ls1043_dflags.h b/drivers/net/ethernet/freescale/sdk_fman/ls1043_dflags.h
-new file mode 100644
-index 00000000..c3a5a623
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/ls1043_dflags.h
 @@ -0,0 +1,56 @@
@@ -103201,9 +102673,6 @@ index 00000000..c3a5a623
 +#define EVENT_GLOBAL_LEVEL  REPORT_LEVEL_MINOR
 +
 +#endif /* __dflags_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/ncsw_config.mk b/drivers/net/ethernet/freescale/sdk_fman/ncsw_config.mk
-new file mode 100644
-index 00000000..586f9c79
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/ncsw_config.mk
 @@ -0,0 +1,53 @@
@@ -103260,9 +102729,6 @@ index 00000000..586f9c79
 +ccflags-y += -I$(srctree)/include/uapi/linux/fmd
 +ccflags-y += -I$(srctree)/include/uapi/linux/fmd/Peripherals
 +ccflags-y += -I$(srctree)/include/uapi/linux/fmd/integrations
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/p1023_dflags.h b/drivers/net/ethernet/freescale/sdk_fman/p1023_dflags.h
-new file mode 100644
-index 00000000..b48819d7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/p1023_dflags.h
 @@ -0,0 +1,65 @@
@@ -103331,9 +102797,6 @@ index 00000000..b48819d7
 +
 +
 +#endif /* __dflags_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/p3040_4080_5020_dflags.h b/drivers/net/ethernet/freescale/sdk_fman/p3040_4080_5020_dflags.h
-new file mode 100644
-index 00000000..74389742
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/p3040_4080_5020_dflags.h
 @@ -0,0 +1,62 @@
@@ -103399,9 +102862,6 @@ index 00000000..74389742
 +
 +
 +#endif /* __dflags_h */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/Makefile b/drivers/net/ethernet/freescale/sdk_fman/src/Makefile
-new file mode 100644
-index 00000000..49405d0e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/Makefile
 @@ -0,0 +1,11 @@
@@ -103416,9 +102876,6 @@ index 00000000..49405d0e
 +obj-y		+= system/
 +obj-y		+= wrapper/
 +obj-y		+= xx/
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_ext.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_ext.h
-new file mode 100644
-index 00000000..20f27d29
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_ext.h
 @@ -0,0 +1,118 @@
@@ -103540,9 +102997,6 @@ index 00000000..20f27d29
 +        } else
 +
 +#endif /* __SYS_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_io_ext.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_io_ext.h
-new file mode 100644
-index 00000000..d6aa9d41
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/system/sys_io_ext.h
 @@ -0,0 +1,46 @@
@@ -103592,9 +103046,6 @@ index 00000000..d6aa9d41
 +
 +
 +#endif /* __SYS_IO_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/types_linux.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/types_linux.h
-new file mode 100644
-index 00000000..201ad699
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/types_linux.h
 @@ -0,0 +1,208 @@
@@ -103806,9 +103257,6 @@ index 00000000..201ad699
 +
 +
 +#endif /* __TYPES_LINUX_H__ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/fsl_fman_test.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/fsl_fman_test.h
-new file mode 100644
-index 00000000..0466a473
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/fsl_fman_test.h
 @@ -0,0 +1,84 @@
@@ -103896,9 +103344,6 @@ index 00000000..0466a473
 +#define FMAN_TEST_MAX_TX_FQS 8
 +
 +#endif /* __FSL_FMAN_TEST_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_exp_sym.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_exp_sym.h
-new file mode 100644
-index 00000000..0c0c6c11
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_exp_sym.h
 @@ -0,0 +1,128 @@
@@ -104030,9 +103475,6 @@ index 00000000..0c0c6c11
 +EXPORT_SYMBOL(FM_GetSpecialOperationCoding);
 +
 +#endif /* __LNXWRP_EXP_SYM_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fm_ext.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fm_ext.h
-new file mode 100644
-index 00000000..a72c8670
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fm_ext.h
 @@ -0,0 +1,163 @@
@@ -104199,9 +103641,6 @@ index 00000000..a72c8670
 +
 +
 +#endif /* __LNXWRP_FM_EXT_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fsl_fman.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fsl_fman.h
-new file mode 100644
-index 00000000..c50031cf
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/wrapper/lnxwrp_fsl_fman.h
 @@ -0,0 +1,921 @@
@@ -105126,9 +104565,6 @@ index 00000000..c50031cf
 +#define DPA_PTP_NOMINAL_FREQ_PERIOD_NS (1 << DPA_PTP_NOMINAL_FREQ_PERIOD_SHIFT) /* 4ns,250MHz */
 +
 +#endif /* __LNXWRP_FSL_FMAN_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/inc/xx/xx.h b/drivers/net/ethernet/freescale/sdk_fman/src/inc/xx/xx.h
-new file mode 100644
-index 00000000..b183c86d
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/inc/xx/xx.h
 @@ -0,0 +1,50 @@
@@ -105182,9 +104618,6 @@ index 00000000..b183c86d
 +
 +
 +#endif /* __XX_H */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/system/Makefile b/drivers/net/ethernet/freescale/sdk_fman/src/system/Makefile
-new file mode 100644
-index 00000000..667cd859
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/system/Makefile
 @@ -0,0 +1,10 @@
@@ -105198,9 +104631,6 @@ index 00000000..667cd859
 +#
 +
 +obj-y		+= sys_io.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/system/sys_io.c b/drivers/net/ethernet/freescale/sdk_fman/src/system/sys_io.c
-new file mode 100644
-index 00000000..c106a8b7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/system/sys_io.c
 @@ -0,0 +1,171 @@
@@ -105375,9 +104805,6 @@ index 00000000..c106a8b7
 +        return (uint64_t)(addr - p_IoMap->virtAddr + p_IoMap->physAddr);
 +    return (uint64_t)virt_to_phys(UINT_TO_PTR(addr));
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/Makefile b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/Makefile
-new file mode 100644
-index 00000000..62713d62
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/Makefile
 @@ -0,0 +1,19 @@
@@ -105400,9 +104827,6 @@ index 00000000..62713d62
 +fsl-ncsw-PFM-objs	:=	lnxwrp_fm.o lnxwrp_fm_port.o lnxwrp_ioctls_fm.o \
 +				lnxwrp_sysfs.o lnxwrp_sysfs_fm.o lnxwrp_sysfs_fm_port.o 
 +obj-$(CONFIG_COMPAT)     +=   lnxwrp_ioctls_fm_compat.o
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/fman_test.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/fman_test.c
-new file mode 100644
-index 00000000..270d07b8
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/fman_test.c
 @@ -0,0 +1,1665 @@
@@ -107071,9 +106495,6 @@ index 00000000..270d07b8
 +
 +module_init(fmt_load);
 +module_exit(fmt_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.c
-new file mode 100755
-index 00000000..31f654b4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.c
 @@ -0,0 +1,2908 @@
@@ -109985,9 +109406,6 @@ index 00000000..31f654b4
 +
 +module_init (fm_load);
 +module_exit (fm_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.h
-new file mode 100644
-index 00000000..09832563
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.h
 @@ -0,0 +1,294 @@
@@ -110285,9 +109703,6 @@ index 00000000..09832563
 +void LnxWrpPCDIOCTLEnumChecking(void);
 +
 +#endif /* __LNXWRP_FM_H__ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm_port.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm_port.c
-new file mode 100644
-index 00000000..00ab4bcb
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm_port.c
 @@ -0,0 +1,1480 @@
@@ -111771,9 +111186,6 @@ index 00000000..00ab4bcb
 +
 +module_init(fm_port_load);
 +module_exit(fm_port_unload);
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm.c
-new file mode 100644
-index 00000000..1ddde856
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm.c
 @@ -0,0 +1,4813 @@
@@ -116590,9 +116002,6 @@ index 00000000..1ddde856
 +    .open =             fm_open,
 +    .release =          fm_close,
 +};
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.c
-new file mode 100644
-index 00000000..322ae9ef
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.c
 @@ -0,0 +1,1297 @@
@@ -117893,9 +117302,6 @@ index 00000000..322ae9ef
 +    _fm_cpt_dbg (compat, " ...->}\n");
 +}
 +#endif /* (DPAA_VERSION >= 11) */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.h
-new file mode 100644
-index 00000000..187011f7
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.h
 @@ -0,0 +1,755 @@
@@ -118654,9 +118060,6 @@ index 00000000..187011f7
 +
 +/* } pcd compat functions */
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources.h
-new file mode 100644
-index 00000000..1b72e1d5
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources.h
 @@ -0,0 +1,121 @@
@@ -118781,9 +118184,6 @@ index 00000000..1b72e1d5
 +#endif
 +
 +#endif /* LNXWRP_RESOURCES_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.c
-new file mode 100644
-index 00000000..6c06a5a6
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.c
 @@ -0,0 +1,191 @@
@@ -118978,9 +118378,6 @@ index 00000000..6c06a5a6
 +
 +	return 0;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.h
-new file mode 100644
-index 00000000..063946eb
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.h
 @@ -0,0 +1,144 @@
@@ -119128,9 +118525,6 @@ index 00000000..063946eb
 +} _PackedType t_FmPrsResult;
 +
 +#endif
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.make b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.make
-new file mode 100644
-index 00000000..58009cd8
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_resources_ut.make
 @@ -0,0 +1,28 @@
@@ -119162,9 +118556,6 @@ index 00000000..58009cd8
 +clean:
 +	rm -f *.o
 +	rm -f $(LNXWRP_RESS_UT)
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.c
-new file mode 100644
-index 00000000..813771bf
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.c
 @@ -0,0 +1,60 @@
@@ -119228,9 +118619,6 @@ index 00000000..813771bf
 +	WARN(1, "FMD: Should never get here!");
 +	return 0;
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.h
-new file mode 100644
-index 00000000..2098b244
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.h
 @@ -0,0 +1,60 @@
@@ -119294,9 +118682,6 @@ index 00000000..2098b244
 +				uint8_t *offset);
 +
 +#endif /* LNXWRP_SYSFS_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.c
-new file mode 100644
-index 00000000..1badbf98
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.c
 @@ -0,0 +1,1855 @@
@@ -121155,9 +120540,6 @@ index 00000000..1badbf98
 +	/* should never get here */
 +	return -EINVAL; /* counter not available */
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.h
-new file mode 100644
-index 00000000..137653e9
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm.h
 @@ -0,0 +1,136 @@
@@ -121297,9 +120679,6 @@ index 00000000..137653e9
 +	} while (0)
 +
 +#endif /* LNXWRP_SYSFS_FM_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.c b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.c
-new file mode 100644
-index 00000000..db8e824c
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.c
 @@ -0,0 +1,1268 @@
@@ -122571,9 +121950,6 @@ index 00000000..db8e824c
 +	return n;
 +}
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.h b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.h
-new file mode 100644
-index 00000000..1e7636f4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.h
 @@ -0,0 +1,56 @@
@@ -122633,9 +122009,6 @@ index 00000000..1e7636f4
 +#endif
 +
 +#endif /* LNXWRP_SYSFS_FM_PORT_H_ */
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/xx/Makefile b/drivers/net/ethernet/freescale/sdk_fman/src/xx/Makefile
-new file mode 100644
-index 00000000..1071c22a
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/xx/Makefile
 @@ -0,0 +1,18 @@
@@ -122657,9 +122030,6 @@ index 00000000..1071c22a
 +				module_strings.o
 +endif
 +
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/xx/module_strings.c b/drivers/net/ethernet/freescale/sdk_fman/src/xx/module_strings.c
-new file mode 100644
-index 00000000..d7fed170
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/xx/module_strings.c
 @@ -0,0 +1,46 @@
@@ -122709,9 +122079,6 @@ index 00000000..d7fed170
 +    "FM-SP",                    /* MODULE_FM_SP */
 +    "FM-MACSEC"                 /* MODULE_FM_MACSEC */
 +};
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_arm_linux.c b/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_arm_linux.c
-new file mode 100644
-index 00000000..dd3e376e
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_arm_linux.c
 @@ -0,0 +1,905 @@
@@ -123620,9 +122987,6 @@ index 00000000..dd3e376e
 +{
 +    xx_Free((void*)(*((uintptr_t *)(p) - 1)));
 +}
-diff --git a/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_linux.c b/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_linux.c
-new file mode 100644
-index 00000000..992757d4
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/xx/xx_linux.c
 @@ -0,0 +1,918 @@
@@ -124544,9 +123908,6 @@ index 00000000..992757d4
 +{
 +    xx_Free((void*)(*((uintptr_t *)(p) - 1)));
 +}
-diff --git a/drivers/staging/fsl_qbman/Kconfig b/drivers/staging/fsl_qbman/Kconfig
-new file mode 100644
-index 00000000..93dcb7d3
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/Kconfig
 @@ -0,0 +1,228 @@
@@ -124778,9 +124139,6 @@ index 00000000..93dcb7d3
 +
 +
 +endmenu
-diff --git a/drivers/staging/fsl_qbman/Makefile b/drivers/staging/fsl_qbman/Makefile
-new file mode 100644
-index 00000000..777d7d34
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/Makefile
 @@ -0,0 +1,28 @@
@@ -124812,9 +124170,6 @@ index 00000000..777d7d34
 +
 +# USDPAA
 +obj-$(CONFIG_FSL_USDPAA)	+= fsl_usdpaa.o fsl_usdpaa_irq.o
-diff --git a/drivers/staging/fsl_qbman/bman_config.c b/drivers/staging/fsl_qbman/bman_config.c
-new file mode 100644
-index 00000000..bb397730
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_config.c
 @@ -0,0 +1,720 @@
@@ -125538,9 +124893,6 @@ index 00000000..bb397730
 +module_exit(bman_ctrl_exit);
 +
 +#endif /* CONFIG_SYSFS */
-diff --git a/drivers/staging/fsl_qbman/bman_debugfs.c b/drivers/staging/fsl_qbman/bman_debugfs.c
-new file mode 100644
-index 00000000..96909348
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_debugfs.c
 @@ -0,0 +1,119 @@
@@ -125663,9 +125015,6 @@ index 00000000..96909348
 +module_init(bman_debugfs_module_init);
 +module_exit(bman_debugfs_module_exit);
 +MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/staging/fsl_qbman/bman_driver.c b/drivers/staging/fsl_qbman/bman_driver.c
-new file mode 100644
-index 00000000..86fabef6
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_driver.c
 @@ -0,0 +1,575 @@
@@ -126244,9 +125593,6 @@ index 00000000..86fabef6
 +	return;
 +}
 +#endif
-diff --git a/drivers/staging/fsl_qbman/bman_high.c b/drivers/staging/fsl_qbman/bman_high.c
-new file mode 100644
-index 00000000..c066602d
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_high.c
 @@ -0,0 +1,1145 @@
@@ -127395,9 +126741,6 @@ index 00000000..c066602d
 +{
 +	return portal->sharing_redirect ? NULL : portal->config;
 +}
-diff --git a/drivers/staging/fsl_qbman/bman_low.h b/drivers/staging/fsl_qbman/bman_low.h
-new file mode 100644
-index 00000000..3da70571
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_low.h
 @@ -0,0 +1,565 @@
@@ -127966,9 +127309,6 @@ index 00000000..3da70571
 +	}
 +	return 0;
 +}
-diff --git a/drivers/staging/fsl_qbman/bman_private.h b/drivers/staging/fsl_qbman/bman_private.h
-new file mode 100644
-index 00000000..64eefe7d
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_private.h
 @@ -0,0 +1,166 @@
@@ -128138,9 +127478,6 @@ index 00000000..64eefe7d
 +#endif
 +
 +#endif /* CONFIG_FSL_BMAN_CONFIG */
-diff --git a/drivers/staging/fsl_qbman/bman_test.c b/drivers/staging/fsl_qbman/bman_test.c
-new file mode 100644
-index 00000000..db5b7fd3
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_test.c
 @@ -0,0 +1,56 @@
@@ -128200,9 +127537,6 @@ index 00000000..db5b7fd3
 +
 +module_init(test_init);
 +module_exit(test_exit);
-diff --git a/drivers/staging/fsl_qbman/bman_test.h b/drivers/staging/fsl_qbman/bman_test.h
-new file mode 100644
-index 00000000..fcd65056
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_test.h
 @@ -0,0 +1,44 @@
@@ -128250,9 +127584,6 @@ index 00000000..fcd65056
 +
 +void bman_test_high(void);
 +void bman_test_thresh(void);
-diff --git a/drivers/staging/fsl_qbman/bman_test_high.c b/drivers/staging/fsl_qbman/bman_test_high.c
-new file mode 100644
-index 00000000..1617a531
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_test_high.c
 @@ -0,0 +1,183 @@
@@ -128439,9 +127770,6 @@ index 00000000..1617a531
 +	bman_free_pool(pool);
 +	pr_info("BMAN:  --- finished high-level test ---\n");
 +}
-diff --git a/drivers/staging/fsl_qbman/bman_test_thresh.c b/drivers/staging/fsl_qbman/bman_test_thresh.c
-new file mode 100644
-index 00000000..67093693
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/bman_test_thresh.c
 @@ -0,0 +1,196 @@
@@ -128641,9 +127969,6 @@ index 00000000..67093693
 +
 +	pr_info("bman_test_thresh: done\n");
 +}
-diff --git a/drivers/staging/fsl_qbman/dpa_alloc.c b/drivers/staging/fsl_qbman/dpa_alloc.c
-new file mode 100644
-index 00000000..44db3e1e
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_alloc.c
 @@ -0,0 +1,706 @@
@@ -129353,9 +128678,6 @@ index 00000000..44db3e1e
 +	spin_unlock_irq(&list_head->lock);
 +	return res;
 +}
-diff --git a/drivers/staging/fsl_qbman/dpa_sys.h b/drivers/staging/fsl_qbman/dpa_sys.h
-new file mode 100644
-index 00000000..e144f5a4
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_sys.h
 @@ -0,0 +1,259 @@
@@ -129618,9 +128940,6 @@ index 00000000..e144f5a4
 +			     void **iir_reg);
 +#endif
 +#endif /* DPA_SYS_H */
-diff --git a/drivers/staging/fsl_qbman/dpa_sys_arm.h b/drivers/staging/fsl_qbman/dpa_sys_arm.h
-new file mode 100644
-index 00000000..17c5500e
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_sys_arm.h
 @@ -0,0 +1,95 @@
@@ -129719,9 +129038,6 @@ index 00000000..17c5500e
 +
 +#define hard_smp_processor_id() raw_smp_processor_id()
 +#endif
-diff --git a/drivers/staging/fsl_qbman/dpa_sys_arm64.h b/drivers/staging/fsl_qbman/dpa_sys_arm64.h
-new file mode 100644
-index 00000000..247c8d97
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_sys_arm64.h
 @@ -0,0 +1,102 @@
@@ -129827,9 +129143,6 @@ index 00000000..247c8d97
 +
 +
 +#endif
-diff --git a/drivers/staging/fsl_qbman/dpa_sys_ppc32.h b/drivers/staging/fsl_qbman/dpa_sys_ppc32.h
-new file mode 100644
-index 00000000..874616df
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_sys_ppc32.h
 @@ -0,0 +1,70 @@
@@ -129903,9 +129216,6 @@ index 00000000..874616df
 +}
 +
 +#endif
-diff --git a/drivers/staging/fsl_qbman/dpa_sys_ppc64.h b/drivers/staging/fsl_qbman/dpa_sys_ppc64.h
-new file mode 100644
-index 00000000..d9803199
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/dpa_sys_ppc64.h
 @@ -0,0 +1,79 @@
@@ -129988,9 +129298,6 @@ index 00000000..d9803199
 +}
 +
 +#endif
-diff --git a/drivers/staging/fsl_qbman/fsl_usdpaa.c b/drivers/staging/fsl_qbman/fsl_usdpaa.c
-new file mode 100644
-index 00000000..3a6d3722
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/fsl_usdpaa.c
 @@ -0,0 +1,1983 @@
@@ -131977,9 +131284,6 @@ index 00000000..3a6d3722
 +MODULE_LICENSE("GPL");
 +MODULE_AUTHOR("Freescale Semiconductor");
 +MODULE_DESCRIPTION("Freescale USDPAA process driver");
-diff --git a/drivers/staging/fsl_qbman/fsl_usdpaa_irq.c b/drivers/staging/fsl_qbman/fsl_usdpaa_irq.c
-new file mode 100644
-index 00000000..914c7471
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/fsl_usdpaa_irq.c
 @@ -0,0 +1,289 @@
@@ -132272,9 +131576,6 @@ index 00000000..914c7471
 +MODULE_LICENSE("GPL");
 +MODULE_AUTHOR("Freescale Semiconductor");
 +MODULE_DESCRIPTION("Freescale USDPAA process IRQ driver");
-diff --git a/drivers/staging/fsl_qbman/qbman_driver.c b/drivers/staging/fsl_qbman/qbman_driver.c
-new file mode 100644
-index 00000000..ab487d5f
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qbman_driver.c
 @@ -0,0 +1,88 @@
@@ -132366,9 +131667,6 @@ index 00000000..ab487d5f
 +	return 0;
 +}
 +subsys_initcall(qbman_init);
-diff --git a/drivers/staging/fsl_qbman/qman_config.c b/drivers/staging/fsl_qbman/qman_config.c
-new file mode 100644
-index 00000000..9bb1e11a
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_config.c
 @@ -0,0 +1,1224 @@
@@ -133596,9 +132894,6 @@ index 00000000..9bb1e11a
 +module_exit(qman_ctrl_exit);
 +
 +#endif /* CONFIG_SYSFS */
-diff --git a/drivers/staging/fsl_qbman/qman_debugfs.c b/drivers/staging/fsl_qbman/qman_debugfs.c
-new file mode 100644
-index 00000000..fb8ecba1
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_debugfs.c
 @@ -0,0 +1,1594 @@
@@ -135196,9 +134491,6 @@ index 00000000..fb8ecba1
 +module_init(qman_debugfs_module_init);
 +module_exit(qman_debugfs_module_exit);
 +MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/staging/fsl_qbman/qman_driver.c b/drivers/staging/fsl_qbman/qman_driver.c
-new file mode 100644
-index 00000000..857ecd62
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_driver.c
 @@ -0,0 +1,977 @@
@@ -136179,9 +135471,6 @@ index 00000000..857ecd62
 +	return;
 +}
 +#endif
-diff --git a/drivers/staging/fsl_qbman/qman_high.c b/drivers/staging/fsl_qbman/qman_high.c
-new file mode 100644
-index 00000000..1651e62c
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_high.c
 @@ -0,0 +1,5669 @@
@@ -141854,9 +141143,6 @@ index 00000000..1651e62c
 +{
 +	return portal->sharing_redirect ? NULL : portal->config;
 +}
-diff --git a/drivers/staging/fsl_qbman/qman_low.h b/drivers/staging/fsl_qbman/qman_low.h
-new file mode 100644
-index 00000000..547b5fa2
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_low.h
 @@ -0,0 +1,1427 @@
@@ -143287,9 +142573,6 @@ index 00000000..547b5fa2
 +	}
 +	return -1;
 +}
-diff --git a/drivers/staging/fsl_qbman/qman_private.h b/drivers/staging/fsl_qbman/qman_private.h
-new file mode 100644
-index 00000000..ee025cff
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_private.h
 @@ -0,0 +1,398 @@
@@ -143691,9 +142974,6 @@ index 00000000..ee025cff
 +void suspend_unused_qportal(void);
 +void resume_unused_qportal(void);
 +#endif
-diff --git a/drivers/staging/fsl_qbman/qman_test.c b/drivers/staging/fsl_qbman/qman_test.c
-new file mode 100644
-index 00000000..7995dd8c
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_test.c
 @@ -0,0 +1,57 @@
@@ -143754,9 +143034,6 @@ index 00000000..7995dd8c
 +
 +module_init(test_init);
 +module_exit(test_exit);
-diff --git a/drivers/staging/fsl_qbman/qman_test.h b/drivers/staging/fsl_qbman/qman_test.h
-new file mode 100644
-index 00000000..8c4181c7
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_test.h
 @@ -0,0 +1,45 @@
@@ -143805,9 +143082,6 @@ index 00000000..8c4181c7
 +void qman_test_hotpotato(void);
 +void qman_test_high(void);
 +
-diff --git a/drivers/staging/fsl_qbman/qman_test_high.c b/drivers/staging/fsl_qbman/qman_test_high.c
-new file mode 100644
-index 00000000..65ee270e
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_test_high.c
 @@ -0,0 +1,216 @@
@@ -144027,9 +143301,6 @@ index 00000000..65ee270e
 +	retire_complete = 1;
 +	wake_up(&waitqueue);
 +}
-diff --git a/drivers/staging/fsl_qbman/qman_test_hotpotato.c b/drivers/staging/fsl_qbman/qman_test_hotpotato.c
-new file mode 100644
-index 00000000..899d2aa9
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_test_hotpotato.c
 @@ -0,0 +1,502 @@
@@ -144535,9 +143806,6 @@ index 00000000..899d2aa9
 +	kmem_cache_destroy(hp_handler_slab);
 +	pr_info("qman_test_hotpotato finished\n");
 +}
-diff --git a/drivers/staging/fsl_qbman/qman_utility.c b/drivers/staging/fsl_qbman/qman_utility.c
-new file mode 100644
-index 00000000..f1e39023
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_utility.c
 @@ -0,0 +1,129 @@
@@ -144670,9 +143938,6 @@ index 00000000..f1e39023
 +	return pool->used;
 +}
 +EXPORT_SYMBOL(qman_fqid_pool_used);
-diff --git a/include/linux/fsl_bman.h b/include/linux/fsl_bman.h
-new file mode 100644
-index 00000000..43942221
 --- /dev/null
 +++ b/include/linux/fsl_bman.h
 @@ -0,0 +1,532 @@
@@ -145208,9 +144473,6 @@ index 00000000..43942221
 +#endif
 +
 +#endif /* FSL_BMAN_H */
-diff --git a/include/linux/fsl_qman.h b/include/linux/fsl_qman.h
-new file mode 100644
-index 00000000..4e4b21d5
 --- /dev/null
 +++ b/include/linux/fsl_qman.h
 @@ -0,0 +1,3888 @@
@@ -149102,9 +148364,6 @@ index 00000000..4e4b21d5
 +#endif
 +
 +#endif /* FSL_QMAN_H */
-diff --git a/include/linux/fsl_usdpaa.h b/include/linux/fsl_usdpaa.h
-new file mode 100644
-index 00000000..381853de
 --- /dev/null
 +++ b/include/linux/fsl_usdpaa.h
 @@ -0,0 +1,372 @@
@@ -149480,9 +148739,6 @@ index 00000000..381853de
 +#endif
 +
 +#endif /* FSL_USDPAA_H */
-diff --git a/include/uapi/linux/fmd/Kbuild b/include/uapi/linux/fmd/Kbuild
-new file mode 100644
-index 00000000..56a20401
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Kbuild
 @@ -0,0 +1,5 @@
@@ -149491,9 +148747,6 @@ index 00000000..56a20401
 +
 +header-y += ioctls.h
 +header-y += net_ioctls.h
-diff --git a/include/uapi/linux/fmd/Peripherals/Kbuild b/include/uapi/linux/fmd/Peripherals/Kbuild
-new file mode 100644
-index 00000000..43883efe
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Peripherals/Kbuild
 @@ -0,0 +1,4 @@
@@ -149501,9 +148754,6 @@ index 00000000..43883efe
 +header-y += fm_port_ioctls.h
 +header-y += fm_pcd_ioctls.h
 +header-y += fm_test_ioctls.h
-diff --git a/include/uapi/linux/fmd/Peripherals/fm_ioctls.h b/include/uapi/linux/fmd/Peripherals/fm_ioctls.h
-new file mode 100644
-index 00000000..e0c2dd31
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Peripherals/fm_ioctls.h
 @@ -0,0 +1,628 @@
@@ -150135,9 +149385,6 @@ index 00000000..e0c2dd31
 +#define FMD_API_VERSION_RESPIN 0
 +
 +#endif /* __FM_IOCTLS_H */
-diff --git a/include/uapi/linux/fmd/Peripherals/fm_pcd_ioctls.h b/include/uapi/linux/fmd/Peripherals/fm_pcd_ioctls.h
-new file mode 100644
-index 00000000..d13e878d
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Peripherals/fm_pcd_ioctls.h
 @@ -0,0 +1,3084 @@
@@ -153225,9 +152472,6 @@ index 00000000..d13e878d
 +/** @} */ /* end of lnx_ioctl_FM_PCD_Runtime_grp group */
 +/** @} */ /* end of lnx_ioctl_FM_PCD_grp group */
 +/** @} */ /* end of lnx_ioctl_FM_grp group */
-diff --git a/include/uapi/linux/fmd/Peripherals/fm_port_ioctls.h b/include/uapi/linux/fmd/Peripherals/fm_port_ioctls.h
-new file mode 100644
-index 00000000..a2f61107
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Peripherals/fm_port_ioctls.h
 @@ -0,0 +1,948 @@
@@ -154179,9 +153423,6 @@ index 00000000..a2f61107
 +/** @} */ /* end of lnx_ioctl_FM_PORT_grp group */
 +/** @} */ /* end of lnx_ioctl_FM_grp group */
 +#endif /* __FM_PORT_IOCTLS_H */
-diff --git a/include/uapi/linux/fmd/Peripherals/fm_test_ioctls.h b/include/uapi/linux/fmd/Peripherals/fm_test_ioctls.h
-new file mode 100644
-index 00000000..207ed1eb
 --- /dev/null
 +++ b/include/uapi/linux/fmd/Peripherals/fm_test_ioctls.h
 @@ -0,0 +1,208 @@
@@ -154393,16 +153634,10 @@ index 00000000..207ed1eb
 +
 +
 +#endif /* __FM_TEST_IOCTLS_H */
-diff --git a/include/uapi/linux/fmd/integrations/Kbuild b/include/uapi/linux/fmd/integrations/Kbuild
-new file mode 100644
-index 00000000..e548d676
 --- /dev/null
 +++ b/include/uapi/linux/fmd/integrations/Kbuild
 @@ -0,0 +1 @@
 +header-y += integration_ioctls.h
-diff --git a/include/uapi/linux/fmd/integrations/integration_ioctls.h b/include/uapi/linux/fmd/integrations/integration_ioctls.h
-new file mode 100644
-index 00000000..61d696e2
 --- /dev/null
 +++ b/include/uapi/linux/fmd/integrations/integration_ioctls.h
 @@ -0,0 +1,56 @@
@@ -154462,9 +153697,6 @@ index 00000000..61d696e2
 +#endif
 +
 +#endif /* __INTG_IOCTLS_H */
-diff --git a/include/uapi/linux/fmd/ioctls.h b/include/uapi/linux/fmd/ioctls.h
-new file mode 100644
-index 00000000..4f36cb05
 --- /dev/null
 +++ b/include/uapi/linux/fmd/ioctls.h
 @@ -0,0 +1,96 @@
@@ -154564,9 +153796,6 @@ index 00000000..4f36cb05
 +
 +
 +#endif /* __IOCTLS_H__ */
-diff --git a/include/uapi/linux/fmd/net_ioctls.h b/include/uapi/linux/fmd/net_ioctls.h
-new file mode 100644
-index 00000000..c99d64cf
 --- /dev/null
 +++ b/include/uapi/linux/fmd/net_ioctls.h
 @@ -0,0 +1,430 @@
@@ -155000,6 +154229,3 @@ index 00000000..c99d64cf
 +
 +
 +#endif /* __NET_IOCTLS_H */
--- 
-2.14.1
-
