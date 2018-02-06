@@ -1,29 +1,30 @@
-From 3cd36deb674720ab34eabb9783648ed743e52121 Mon Sep 17 00:00:00 2001
+From 2f887ade916e7e1de2f8a84d3902aaa30af4b163 Mon Sep 17 00:00:00 2001
 From: Yangbo Lu <yangbo.lu@nxp.com>
-Date: Mon, 25 Sep 2017 11:58:03 +0800
-Subject: [PATCH] sdk_dpaa: support layerscape
+Date: Wed, 17 Jan 2018 14:59:15 +0800
+Subject: [PATCH 07/30] sdk_dpaa: support layerscape
 
-This is a integrated patch for layerscape dpaa1-sdk support.
+This is an integrated patch for layerscape dpaa1-sdk support.
 
 Signed-off-by: Camelia Groza <camelia.groza@nxp.com>
 Signed-off-by: Zhao Qiang <qiang.zhao@nxp.com>
 Signed-off-by: Zhang Ying-22455 <ying.zhang22455@nxp.com>
 Signed-off-by: Madalin Bucur <madalin.bucur@nxp.com>
+Signed-off-by: Mathew McBride <matt@traverse.com.au>
 Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 ---
- drivers/net/ethernet/freescale/sdk_dpaa/Kconfig    |  173 +
+ drivers/net/ethernet/freescale/sdk_dpaa/Kconfig    |  196 +
  drivers/net/ethernet/freescale/sdk_dpaa/Makefile   |   46 +
  .../net/ethernet/freescale/sdk_dpaa/dpaa_1588.c    |  580 ++
  .../net/ethernet/freescale/sdk_dpaa/dpaa_1588.h    |  138 +
  .../net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.c |  180 +
  .../net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.h |   43 +
- drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c | 1213 ++++
+ drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c | 1224 ++++
  drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h |  687 ++
  .../ethernet/freescale/sdk_dpaa/dpaa_eth_base.c    |  205 +
  .../ethernet/freescale/sdk_dpaa/dpaa_eth_base.h    |   49 +
- .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c   | 1992 +++++
- .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h   |  237 +
- .../ethernet/freescale/sdk_dpaa/dpaa_eth_common.c  | 1820 +++++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c   | 2013 ++++++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h   |  238 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_common.c  | 1802 +++++
  .../ethernet/freescale/sdk_dpaa/dpaa_eth_common.h  |  225 +
  .../ethernet/freescale/sdk_dpaa/dpaa_eth_proxy.c   |  381 +
  .../net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c  | 1168 +++
@@ -241,14 +242,14 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
  drivers/staging/fsl_qbman/dpa_sys_arm64.h          |  102 +
  drivers/staging/fsl_qbman/dpa_sys_ppc32.h          |   70 +
  drivers/staging/fsl_qbman/dpa_sys_ppc64.h          |   79 +
- drivers/staging/fsl_qbman/fsl_usdpaa.c             | 1983 +++++
+ drivers/staging/fsl_qbman/fsl_usdpaa.c             | 2007 ++++++
  drivers/staging/fsl_qbman/fsl_usdpaa_irq.c         |  289 +
  drivers/staging/fsl_qbman/qbman_driver.c           |   88 +
  drivers/staging/fsl_qbman/qman_config.c            | 1224 ++++
  drivers/staging/fsl_qbman/qman_debugfs.c           | 1594 ++++
  drivers/staging/fsl_qbman/qman_driver.c            |  977 +++
  drivers/staging/fsl_qbman/qman_high.c              | 5669 +++++++++++++++
- drivers/staging/fsl_qbman/qman_low.h               | 1427 ++++
+ drivers/staging/fsl_qbman/qman_low.h               | 1442 ++++
  drivers/staging/fsl_qbman/qman_private.h           |  398 +
  drivers/staging/fsl_qbman/qman_test.c              |   57 +
  drivers/staging/fsl_qbman/qman_test.h              |   45 +
@@ -268,7 +269,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
  .../linux/fmd/integrations/integration_ioctls.h    |   56 +
  include/uapi/linux/fmd/ioctls.h                    |   96 +
  include/uapi/linux/fmd/net_ioctls.h                |  430 ++
- 257 files changed, 153159 insertions(+)
+ 257 files changed, 153236 insertions(+)
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/Makefile
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.c
@@ -529,7 +530,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
-@@ -0,0 +1,173 @@
+@@ -0,0 +1,196 @@
 +menuconfig FSL_SDK_DPAA_ETH
 +	tristate "DPAA Ethernet"
 +	depends on (FSL_SOC || ARM64 || ARM) && FSL_SDK_BMAN && FSL_SDK_QMAN && FSL_SDK_FMAN && !FSL_DPAA_ETH
@@ -551,6 +552,29 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	default n
 +	help
 +	Enable QoS offloading support through the CEETM hardware block.
++
++config FSL_DPAA_CEETM_CCS_THRESHOLD_1G
++	hex "CEETM egress congestion threshold on 1G ports"
++	depends on FSL_DPAA_CEETM
++	range 0x1000 0x10000000
++	default "0x000a0000"
++	help
++	  The size in bytes of the CEETM egress Class Congestion State threshold on 1G ports.
++	  The threshold needs to be configured keeping in mind the following factors:
++	       - A threshold too large will buffer frames for a long time in the TX queues,
++	       when a small shaping rate is configured. This will cause buffer pool depletion
++	       or out of memory errors. This in turn will cause frame loss on RX;
++	       - A threshold too small will cause unnecessary frame loss by entering
++	       congestion too often.
++
++config FSL_DPAA_CEETM_CCS_THRESHOLD_10G
++	hex "CEETM egress congestion threshold on 10G ports"
++	depends on FSL_DPAA_CEETM
++	range 0x1000 0x20000000
++	default "0x00640000"
++	help
++	  The size in bytes of the CEETM egress Class Congestion State threshold on 10G ports.
++	  See FSL_DPAA_CEETM_CCS_THRESHOLD_1G for details.
 +
 +config FSL_DPAA_OFFLINE_PORTS
 +	bool "Offline Ports support"
@@ -1707,7 +1731,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +#endif /* DPAA_DEBUGFS_H_ */
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c
-@@ -0,0 +1,1213 @@
+@@ -0,0 +1,1224 @@
 +/* Copyright 2008-2013 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -2485,6 +2509,17 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	/* Advertise NETIF_F_HW_ACCEL_MQ to avoid Tx timeout warnings */
 +	net_dev->features |= NETIF_F_HW_ACCEL_MQ;
 +
++#ifndef CONFIG_PPC
++	/* Due to the A010022 FMan errata, we can not use contig frames larger
++	 * than 4K, nor S/G frames. We need to stop advertising S/G and GSO
++	 * support.
++	 */
++	if (unlikely(dpaa_errata_a010022)) {
++		net_dev->hw_features &= ~NETIF_F_SG;
++		net_dev->features &= ~NETIF_F_GSO;
++	}
++#endif
++
 +	return dpa_netdev_init(net_dev, mac_addr, tx_timeout);
 +}
 +
@@ -2573,7 +2608,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	for (i = 0; i < count; i++) {
 +		int err;
-+		err = dpa_bp_alloc(&dpa_bp[i]);
++		err = dpa_bp_alloc(&dpa_bp[i], net_dev->dev.parent);
 +		if (err < 0) {
 +			dpa_bp_free(priv);
 +			priv->dpa_bp = NULL;
@@ -3792,7 +3827,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	for (i = 0; i < count; i++) {
 +		int err;
-+		err = dpa_bp_alloc(&dpa_bp[i]);
++		err = dpa_bp_alloc(&dpa_bp[i], net_dev->dev.parent);
 +		if (err < 0) {
 +			dpa_bp_free(priv);
 +			priv->dpa_bp = NULL;
@@ -3873,7 +3908,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +#endif /* __DPAA_ETH_BASE_H */
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c
-@@ -0,0 +1,1992 @@
+@@ -0,0 +1,2013 @@
 +/* Copyright 2008-2016 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -3945,24 +3980,27 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +static void ceetm_ern(struct qman_portal *portal, struct qman_fq *fq,
 +		      const struct qm_mr_entry *msg)
 +{
-+	struct net_device *net_dev;
-+	struct ceetm_class *cls;
++	struct dpa_percpu_priv_s *dpa_percpu_priv;
 +	struct ceetm_class_stats *cstats = NULL;
 +	const struct dpa_priv_s *dpa_priv;
-+	struct dpa_percpu_priv_s *dpa_percpu_priv;
-+	struct sk_buff *skb;
 +	struct qm_fd fd = msg->ern.fd;
++	struct net_device *net_dev;
++	struct ceetm_fq *ceetm_fq;
++	struct ceetm_class *cls;
++	struct sk_buff *skb;
 +
-+	net_dev = ((struct ceetm_fq *)fq)->net_dev;
++	ceetm_fq = container_of(fq, struct ceetm_fq, fq);
++	net_dev = ceetm_fq->net_dev;
 +	dpa_priv = netdev_priv(net_dev);
 +	dpa_percpu_priv = raw_cpu_ptr(dpa_priv->percpu_priv);
 +
 +	/* Increment DPA counters */
 +	dpa_percpu_priv->stats.tx_dropped++;
 +	dpa_percpu_priv->stats.tx_fifo_errors++;
++	count_ern(dpa_percpu_priv, msg);
 +
 +	/* Increment CEETM counters */
-+	cls = ((struct ceetm_fq *)fq)->ceetm_cls;
++	cls = ceetm_fq->ceetm_cls;
 +	switch (cls->type) {
 +	case CEETM_PRIO:
 +		cstats = this_cpu_ptr(cls->prio.cstats);
@@ -3975,11 +4013,15 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	if (cstats)
 +		cstats->ern_drop_count++;
 +
++	/* Release the buffers that were supposed to be recycled. */
 +	if (fd.bpid != 0xff) {
 +		dpa_fd_release(net_dev, &fd);
 +		return;
 +	}
 +
++	/* Release the frames that were supposed to return on the
++	 * confirmation path.
++	 */
 +	skb = _dpa_cleanup_tx_fd(dpa_priv, &fd);
 +	dev_kfree_skb_any(skb);
 +}
@@ -4001,16 +4043,16 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +		break;
 +	}
 +
++	ceetm_fq->congested = congested;
++
 +	if (congested) {
 +		dpa_priv->cgr_data.congestion_start_jiffies = jiffies;
-+		netif_tx_stop_all_queues(dpa_priv->net_dev);
 +		dpa_priv->cgr_data.cgr_congested_count++;
 +		if (cstats)
 +			cstats->congested_count++;
 +	} else {
 +		dpa_priv->cgr_data.congested_jiffies +=
 +			(jiffies - dpa_priv->cgr_data.congestion_start_jiffies);
-+		netif_tx_wake_all_queues(dpa_priv->net_dev);
 +	}
 +}
 +
@@ -4024,6 +4066,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	(*fq)->net_dev = dev;
 +	(*fq)->ceetm_cls = cls;
++	(*fq)->congested = 0;
 +	return 0;
 +}
 +
@@ -4061,9 +4104,9 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	/* Set the congestion state thresholds according to the link speed */
 +	if (dpa_priv->mac_dev->if_support & SUPPORTED_10000baseT_Full)
-+		cs_th = CONFIG_FSL_DPAA_CS_THRESHOLD_10G;
++		cs_th = CONFIG_FSL_DPAA_CEETM_CCS_THRESHOLD_10G;
 +	else
-+		cs_th = CONFIG_FSL_DPAA_CS_THRESHOLD_1G;
++		cs_th = CONFIG_FSL_DPAA_CEETM_CCS_THRESHOLD_1G;
 +
 +	qm_cgr_cs_thres_set64(&ccg_params.cs_thres_in, cs_th, 1);
 +	qm_cgr_cs_thres_set64(&ccg_params.cs_thres_out,
@@ -5784,17 +5827,22 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +int __hot ceetm_tx(struct sk_buff *skb, struct net_device *net_dev)
 +{
-+	int ret;
-+	bool act_drop = false;
-+	struct Qdisc *sch = net_dev->qdisc;
-+	struct ceetm_class *cl;
-+	struct dpa_priv_s *priv_dpa;
-+	struct qman_fq *egress_fq, *conf_fq;
-+	struct ceetm_qdisc *priv = qdisc_priv(sch);
-+	struct ceetm_qdisc_stats *qstats = this_cpu_ptr(priv->root.qstats);
-+	struct ceetm_class_stats *cstats;
 +	const int queue_mapping = dpa_get_queue_mapping(skb);
-+	spinlock_t *root_lock = qdisc_lock(sch);
++	struct Qdisc *sch = net_dev->qdisc;
++	struct ceetm_class_stats *cstats;
++	struct ceetm_qdisc_stats *qstats;
++	struct dpa_priv_s *priv_dpa;
++	struct ceetm_fq *ceetm_fq;
++	struct ceetm_qdisc *priv;
++	struct qman_fq *conf_fq;
++	struct ceetm_class *cl;
++	spinlock_t *root_lock;
++	bool act_drop = false;
++	int ret;
++
++	root_lock = qdisc_lock(sch);
++	priv = qdisc_priv(sch);
++	qstats = this_cpu_ptr(priv->root.qstats);
 +
 +	spin_lock(root_lock);
 +	cl = ceetm_classify(skb, sch, &ret, &act_drop);
@@ -5821,11 +5869,11 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	 */
 +	switch (cl->type) {
 +	case CEETM_PRIO:
-+		egress_fq = &cl->prio.fq->fq;
++		ceetm_fq = cl->prio.fq;
 +		cstats = this_cpu_ptr(cl->prio.cstats);
 +		break;
 +	case CEETM_WBFS:
-+		egress_fq = &cl->wbfs.fq->fq;
++		ceetm_fq = cl->wbfs.fq;
 +		cstats = this_cpu_ptr(cl->wbfs.cstats);
 +		break;
 +	default:
@@ -5833,8 +5881,16 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +		goto drop;
 +	}
 +
++	/* If the FQ is congested, avoid enqueuing the frame and dropping it
++	 * when it returns on the ERN path. Drop it here directly instead.
++	 */
++	if (unlikely(ceetm_fq->congested)) {
++		qstats->drops++;
++		goto drop;
++	}
++
 +	bstats_update(&cstats->bstats, skb);
-+	return dpa_tx_extended(skb, net_dev, egress_fq, conf_fq);
++	return dpa_tx_extended(skb, net_dev, &ceetm_fq->fq, conf_fq);
 +
 +drop:
 +	dev_kfree_skb_any(skb);
@@ -5868,7 +5924,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +module_exit(ceetm_unregister);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h
-@@ -0,0 +1,237 @@
+@@ -0,0 +1,238 @@
 +/* Copyright 2008-2016 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -5976,6 +6032,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	struct qman_fq fq;
 +	struct net_device *net_dev;
 +	struct ceetm_class *ceetm_cls;
++	int congested; /* Congestion status */
 +};
 +
 +struct root_q {
@@ -6108,7 +6165,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +#endif
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.c
-@@ -0,0 +1,1820 @@
+@@ -0,0 +1,1802 @@
 +/* Copyright 2008-2013 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -6350,8 +6407,8 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 + * Calculates the statistics for the given device by adding the statistics
 + * collected by each CPU.
 + */
-+void __cold
-+dpa_get_stats64(struct net_device *net_dev,
++struct rtnl_link_stats64 __cold
++*dpa_get_stats64(struct net_device *net_dev,
 +		struct rtnl_link_stats64 *stats)
 +{
 +	struct dpa_priv_s *priv = netdev_priv(net_dev);
@@ -6369,6 +6426,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +		for (j = 0; j < numstats; j++)
 +			netstats[j] += cpustats[j];
 +	}
++	return stats;
 +}
 +EXPORT_SYMBOL(dpa_get_stats64);
 +
@@ -6580,13 +6638,17 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +#ifdef CONFIG_FSL_DPAA_1588
 +	struct dpa_priv_s *priv = netdev_priv(dev);
 +#endif
-+	int ret = 0;
++	int ret = -EINVAL;
 +
-+	/* at least one timestamping feature must be enabled */
-+#ifdef CONFIG_FSL_DPAA_TS
 +	if (!netif_running(dev))
-+#endif
 +		return -EINVAL;
++
++	if (cmd == SIOCGMIIREG) {
++		if (!dev->phydev)
++			ret = -EINVAL;
++		else
++			ret = phy_mii_ioctl(dev->phydev, rq, cmd);
++	}
 +
 +#ifdef CONFIG_FSL_DPAA_TS
 +	if (cmd == SIOCSHWTSTAMP)
@@ -6822,11 +6884,10 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +EXPORT_SYMBOL(dpa_set_buffers_layout);
 +
 +int __attribute__((nonnull))
-+dpa_bp_alloc(struct dpa_bp *dpa_bp)
++dpa_bp_alloc(struct dpa_bp *dpa_bp, struct device *dev)
 +{
 +	int err;
 +	struct bman_pool_params	 bp_params;
-+	struct platform_device *pdev;
 +
 +	if (dpa_bp->size == 0 || dpa_bp->config_count == 0) {
 +		pr_err("Buffer pool is not properly initialized! Missing size or initial number of buffers");
@@ -6859,44 +6920,25 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	dpa_bp->bpid = (uint8_t)bman_get_params(dpa_bp->pool)->bpid;
 +
-+	pdev = platform_device_register_simple("dpaa_eth_bpool",
-+			dpa_bp->bpid, NULL, 0);
-+	if (IS_ERR(pdev)) {
-+		pr_err("platform_device_register_simple() failed\n");
-+		err = PTR_ERR(pdev);
-+		goto pdev_register_failed;
-+	}
-+	{
-+		struct dma_map_ops *ops = get_dma_ops(&pdev->dev);
-+		ops->dma_supported = NULL;
-+	}
-+	err = dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(40));
++	err = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(40));
 +	if (err) {
 +		pr_err("dma_coerce_mask_and_coherent() failed\n");
-+		goto pdev_mask_failed;
++		goto bman_free_pool;
 +	}
-+#ifdef CONFIG_FMAN_ARM
-+	/* force coherency */
-+	pdev->dev.archdata.dma_coherent = true;
-+	arch_setup_dma_ops(&pdev->dev, 0, 0, NULL, true);
-+#endif
 +
-+	dpa_bp->dev = &pdev->dev;
++	dpa_bp->dev = dev;
 +
 +	if (dpa_bp->seed_cb) {
 +		err = dpa_bp->seed_cb(dpa_bp);
 +		if (err)
-+			goto pool_seed_failed;
++			goto bman_free_pool;
 +	}
 +
 +	dpa_bpid2pool_map(dpa_bp->bpid, dpa_bp);
 +
 +	return 0;
 +
-+pool_seed_failed:
-+pdev_mask_failed:
-+	platform_device_unregister(pdev);
-+pdev_register_failed:
++bman_free_pool:
 +	bman_free_pool(dpa_bp->pool);
 +
 +	return err;
@@ -6958,9 +7000,6 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	dpa_bp_array[bp->bpid] = NULL;
 +	bman_free_pool(bp->pool);
-+
-+	if (bp->dev)
-+		platform_device_unregister(to_platform_device(bp->dev));
 +}
 +
 +void __cold __attribute__((nonnull))
@@ -8074,8 +8113,8 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +int __cold dpa_start(struct net_device *net_dev);
 +int __cold dpa_stop(struct net_device *net_dev);
 +void __cold dpa_timeout(struct net_device *net_dev);
-+void __cold
-+dpa_get_stats64(struct net_device *net_dev,
++struct rtnl_link_stats64 __cold
++*dpa_get_stats64(struct net_device *net_dev,
 +		struct rtnl_link_stats64 *stats);
 +int dpa_change_mtu(struct net_device *net_dev, int new_mtu);
 +int dpa_ndo_init(struct net_device *net_dev);
@@ -8098,7 +8137,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +void dpa_set_buffers_layout(struct mac_device *mac_dev,
 +		struct dpa_buffer_layout_s *layout);
 +int __attribute__((nonnull))
-+dpa_bp_alloc(struct dpa_bp *dpa_bp);
++dpa_bp_alloc(struct dpa_bp *dpa_bp, struct device *dev);
 +void __cold __attribute__((nonnull))
 +dpa_bp_free(struct dpa_priv_s *priv);
 +struct dpa_bp *dpa_bpid2pool(int bpid);
@@ -11972,7 +12011,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	[PHY_INTERFACE_MODE_RGMII_TXID]	= "rgmii-txid",
 +	[PHY_INTERFACE_MODE_RTBI]	= "rtbi",
 +	[PHY_INTERFACE_MODE_XGMII]	= "xgmii",
-+	[PHY_INTERFACE_MODE_SGMII_2500] = "sgmii-2500",
++	[PHY_INTERFACE_MODE_2500SGMII] = "sgmii-2500",
 +};
 +
 +static phy_interface_t __pure __attribute__((nonnull)) str2phy(const char *str)
@@ -11999,7 +12038,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +	[PHY_INTERFACE_MODE_RGMII_TXID]	= SPEED_1000,
 +	[PHY_INTERFACE_MODE_RTBI]	= SPEED_1000,
 +	[PHY_INTERFACE_MODE_XGMII]	= SPEED_10000,
-+	[PHY_INTERFACE_MODE_SGMII_2500] = SPEED_2500,
++	[PHY_INTERFACE_MODE_2500SGMII] = SPEED_2500,
 +};
 +
 +static struct mac_device * __cold
@@ -129503,7 +129542,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +#endif
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/fsl_usdpaa.c
-@@ -0,0 +1,1983 @@
+@@ -0,0 +1,2007 @@
 +/* Copyright (C) 2008-2012 Freescale Semiconductor, Inc.
 + * Authors: Andy Fleming <afleming@freescale.com>
 + *	    Timur Tabi <timur@freescale.com>
@@ -129877,6 +129916,16 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +#define DQRR_MAXFILL 15
 +
++
++/* Invalidate a portal */
++void dbci_portal(void *addr)
++{
++	int i;
++
++	for (i = 0; i < 0x4000; i += 64)
++		dcbi(addr + i);
++}
++
 +/* Reset a QMan portal to its default state */
 +static int init_qm_portal(struct qm_portal_config *config,
 +			  struct qm_portal *portal)
@@ -129889,6 +129938,13 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +	/* Make sure interrupts are inhibited */
 +	qm_out(IIR, 1);
++
++	/*
++	 * Invalidate the entire CE portal are to ensure no stale
++	 * cachelines are present.  This should be done on all
++	 * cores as the portal is mapped as M=0 (non-coherent).
++	 */
++	on_each_cpu(dbci_portal, portal->addr.addr_ce, 1);
 +
 +	/* Initialize the DQRR.  This will stop any dequeue
 +	   commands that are in progress */
@@ -129940,6 +129996,13 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +{
 +	portal->addr.addr_ce = config->addr_virt[DPA_PORTAL_CE];
 +	portal->addr.addr_ci = config->addr_virt[DPA_PORTAL_CI];
++
++	/*
++	 * Invalidate the entire CE portal are to ensure no stale
++	 * cachelines are present.  This should be done on all
++	 * cores as the portal is mapped as M=0 (non-coherent).
++	 */
++	on_each_cpu(dbci_portal, portal->addr.addr_ce, 1);
 +
 +	if (bm_rcr_init(portal, bm_rcr_pvb, bm_rcr_cce)) {
 +		pr_err("Bman RCR initialisation failed\n");
@@ -141348,7 +141411,7 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +}
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_low.h
-@@ -0,0 +1,1427 @@
+@@ -0,0 +1,1442 @@
 +/* Copyright 2008-2011 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -142446,11 +142509,26 @@ Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 +
 +static inline int qm_mc_init(struct qm_portal *portal)
 +{
++	u8 rr0, rr1;
 +	register struct qm_mc *mc = &portal->mc;
++
 +	mc->cr = portal->addr.addr_ce + QM_CL_CR;
 +	mc->rr = portal->addr.addr_ce + QM_CL_RR0;
-+	mc->rridx = (__raw_readb(&mc->cr->__dont_write_directly__verb) &
-+			QM_MCC_VERB_VBIT) ?  0 : 1;
++
++	/*
++	 * The expected valid bit polarity for the next CR command is 0
++	 * if RR1 contains a valid response, and is 1 if RR0 contains a
++	 * valid response. If both RR contain all 0, this indicates either
++	 * that no command has been executed since reset (in which case the
++	 * expected valid bit polarity is 1)
++	 */
++	rr0 = __raw_readb(&mc->rr->verb);
++	rr1 = __raw_readb(&(mc->rr+1)->verb);
++	if ((rr0 == 0 && rr1 == 0) || rr0 != 0)
++		mc->rridx = 1;
++	else
++		mc->rridx = 0;
++
 +	mc->vbit = mc->rridx ? QM_MCC_VERB_VBIT : 0;
 +#ifdef CONFIG_FSL_DPA_CHECKING
 +	mc->state = qman_mc_idle;
