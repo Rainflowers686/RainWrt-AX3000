@@ -1,307 +1,312 @@
-From 40b001913c4131b7532beacc13c811a9e39f3758 Mon Sep 17 00:00:00 2001
-From: Biwen Li <biwen.li@nxp.com>
-Date: Tue, 30 Oct 2018 18:26:08 +0800
-Subject: [PATCH 13/40] dpaa-ethernet: support layerscape
-This is an integrated patch of dpaa-ethernet for
- layerscape
+From b443452fe13292b12295757f57e04c04834b3fc0 Mon Sep 17 00:00:00 2001
+From: Yangbo Lu <yangbo.lu@nxp.com>
+Date: Wed, 22 May 2019 17:49:18 +0800
+Subject: [PATCH] dpaa-ethernet: support layerscape
+
+This is an integrated patch of dpaa-ethernet for layerscape
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Bhaskar Upadhaya <Bhaskar.Upadhaya@nxp.com>
+Signed-off-by: Biwen Li <biwen.li@nxp.com>
 Signed-off-by: Camelia Groza <camelia.groza@nxp.com>
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Gustavo A. R. Silva <garsilva@embeddedor.com>
+Signed-off-by: Florinel Iordache <florinel.iordache@nxp.com>
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 Signed-off-by: Ioana Radulescu <ruxandra.radulescu@nxp.com>
 Signed-off-by: Iordache Florinel-R70177 <florinel.iordache@nxp.com>
 Signed-off-by: Jake Moroni <mail@jakemoroni.com>
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 Signed-off-by: Madalin Bucur <madalin.bucur@nxp.com>
 Signed-off-by: Nipun Gupta <nipun.gupta@nxp.com>
 Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
 Signed-off-by: Roy Pledge <roy.pledge@nxp.com>
+Signed-off-by: Vakul Garg <vakul.garg@nxp.com>
 Signed-off-by: Vicentiu Galanopulo <vicentiu.galanopulo@nxp.com>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 Signed-off-by: Yangbo Lu <yangbo.lu@nxp.com>
 Signed-off-by: yuan linyu <Linyu.Yuan@alcatel-sbell.com.cn>
 Signed-off-by: Zhao Qiang <qiang.zhao@nxp.com>
-Signed-off-by: Biwen Li <biwen.li@nxp.com>
 ---
- .../net/ethernet/freescale/dpaa/dpaa_eth.c    |  399 +-
- .../ethernet/freescale/dpaa/dpaa_ethtool.c    |    2 +-
- drivers/net/ethernet/freescale/fman/Kconfig   |    1 -
- drivers/net/ethernet/freescale/fman/Makefile  |   12 +-
- .../net/ethernet/freescale/fman/fman_dtsec.c  |   19 +
- .../net/ethernet/freescale/fman/fman_dtsec.h  |    1 +
- .../net/ethernet/freescale/fman/fman_memac.c  |   32 +-
- .../net/ethernet/freescale/fman/fman_memac.h  |    1 +
- .../net/ethernet/freescale/fman/fman_port.c   |    2 +
- .../net/ethernet/freescale/fman/fman_tgec.c   |   33 +-
- .../net/ethernet/freescale/fman/fman_tgec.h   |    1 +
- drivers/net/ethernet/freescale/fman/mac.c     |  149 +-
- drivers/net/ethernet/freescale/fman/mac.h     |    8 +-
- .../net/ethernet/freescale/sdk_dpaa/Kconfig   |  195 +
- .../net/ethernet/freescale/sdk_dpaa/Makefile  |   46 +
- .../ethernet/freescale/sdk_dpaa/dpaa_1588.c   |  580 ++
- .../ethernet/freescale/sdk_dpaa/dpaa_1588.h   |  138 +
- .../freescale/sdk_dpaa/dpaa_debugfs.c         |  180 +
- .../freescale/sdk_dpaa/dpaa_debugfs.h         |   43 +
- .../ethernet/freescale/sdk_dpaa/dpaa_eth.c    | 1223 +++
- .../ethernet/freescale/sdk_dpaa/dpaa_eth.h    |  691 ++
- .../freescale/sdk_dpaa/dpaa_eth_base.c        |  205 +
- .../freescale/sdk_dpaa/dpaa_eth_base.h        |   49 +
- .../freescale/sdk_dpaa/dpaa_eth_ceetm.c       | 2099 +++++
- .../freescale/sdk_dpaa/dpaa_eth_ceetm.h       |  241 +
- .../freescale/sdk_dpaa/dpaa_eth_common.c      | 1776 ++++
- .../freescale/sdk_dpaa/dpaa_eth_common.h      |  226 +
- .../freescale/sdk_dpaa/dpaa_eth_proxy.c       |  381 +
- .../ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c | 1201 +++
- .../freescale/sdk_dpaa/dpaa_eth_sysfs.c       |  278 +
- .../freescale/sdk_dpaa/dpaa_eth_trace.h       |  144 +
- .../freescale/sdk_dpaa/dpaa_ethtool.c         |  542 ++
- .../ethernet/freescale/sdk_dpaa/dpaa_ptp.c    |  291 +
- .../net/ethernet/freescale/sdk_dpaa/mac-api.c |  931 ++
- drivers/net/ethernet/freescale/sdk_dpaa/mac.c |  489 ++
- drivers/net/ethernet/freescale/sdk_dpaa/mac.h |  135 +
- .../freescale/sdk_dpaa/offline_port.c         |  848 ++
- .../freescale/sdk_dpaa/offline_port.h         |   59 +
- .../net/ethernet/freescale/sdk_fman/Kconfig   |  153 +
- .../net/ethernet/freescale/sdk_fman/Makefile  |   11 +
- .../sdk_fman/Peripherals/FM/HC/Makefile       |   15 +
- .../freescale/sdk_fman/Peripherals/FM/HC/hc.c | 1232 +++
- .../sdk_fman/Peripherals/FM/MAC/Makefile      |   28 +
- .../sdk_fman/Peripherals/FM/MAC/dtsec.c       | 1504 ++++
- .../sdk_fman/Peripherals/FM/MAC/dtsec.h       |  228 +
- .../Peripherals/FM/MAC/dtsec_mii_acc.c        |   97 +
- .../Peripherals/FM/MAC/dtsec_mii_acc.h        |   42 +
- .../sdk_fman/Peripherals/FM/MAC/fm_mac.c      |  674 ++
- .../sdk_fman/Peripherals/FM/MAC/fm_mac.h      |  226 +
- .../sdk_fman/Peripherals/FM/MAC/fman_crc32.c  |  119 +
- .../sdk_fman/Peripherals/FM/MAC/fman_crc32.h  |   43 +
- .../sdk_fman/Peripherals/FM/MAC/fman_dtsec.c  |  847 ++
- .../Peripherals/FM/MAC/fman_dtsec_mii_acc.c   |  165 +
- .../sdk_fman/Peripherals/FM/MAC/fman_memac.c  |  532 ++
- .../Peripherals/FM/MAC/fman_memac_mii_acc.c   |  215 +
- .../sdk_fman/Peripherals/FM/MAC/fman_tgec.c   |  367 +
- .../sdk_fman/Peripherals/FM/MAC/memac.c       | 1153 +++
- .../sdk_fman/Peripherals/FM/MAC/memac.h       |  110 +
- .../Peripherals/FM/MAC/memac_mii_acc.c        |   78 +
- .../Peripherals/FM/MAC/memac_mii_acc.h        |   73 +
- .../sdk_fman/Peripherals/FM/MAC/tgec.c        | 1017 +++
- .../sdk_fman/Peripherals/FM/MAC/tgec.h        |  151 +
- .../Peripherals/FM/MAC/tgec_mii_acc.c         |  139 +
- .../Peripherals/FM/MAC/tgec_mii_acc.h         |   80 +
- .../sdk_fman/Peripherals/FM/MACSEC/Makefile   |   15 +
- .../Peripherals/FM/MACSEC/fm_macsec.c         |  237 +
- .../Peripherals/FM/MACSEC/fm_macsec.h         |  203 +
- .../Peripherals/FM/MACSEC/fm_macsec_guest.c   |   59 +
- .../Peripherals/FM/MACSEC/fm_macsec_master.c  | 1031 +++
- .../Peripherals/FM/MACSEC/fm_macsec_master.h  |  479 ++
- .../Peripherals/FM/MACSEC/fm_macsec_secy.c    |  883 ++
- .../Peripherals/FM/MACSEC/fm_macsec_secy.h    |  144 +
- .../sdk_fman/Peripherals/FM/Makefile          |   23 +
- .../sdk_fman/Peripherals/FM/Pcd/Makefile      |   26 +
- .../sdk_fman/Peripherals/FM/Pcd/crc64.h       |  360 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_cc.c       | 7582 +++++++++++++++++
- .../sdk_fman/Peripherals/FM/Pcd/fm_cc.h       |  399 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_kg.c       | 3242 +++++++
- .../sdk_fman/Peripherals/FM/Pcd/fm_kg.h       |  206 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_manip.c    | 5571 ++++++++++++
- .../sdk_fman/Peripherals/FM/Pcd/fm_manip.h    |  555 ++
- .../sdk_fman/Peripherals/FM/Pcd/fm_pcd.c      | 2095 +++++
- .../sdk_fman/Peripherals/FM/Pcd/fm_pcd.h      |  543 ++
- .../sdk_fman/Peripherals/FM/Pcd/fm_pcd_ipc.h  |  280 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_plcr.c     | 1847 ++++
- .../sdk_fman/Peripherals/FM/Pcd/fm_plcr.h     |  165 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_prs.c      |  423 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_prs.h      |  316 +
- .../sdk_fman/Peripherals/FM/Pcd/fm_replic.c   |  984 +++
- .../sdk_fman/Peripherals/FM/Pcd/fm_replic.h   |  101 +
- .../sdk_fman/Peripherals/FM/Pcd/fman_kg.c     |  890 ++
- .../sdk_fman/Peripherals/FM/Pcd/fman_prs.c    |  129 +
- .../sdk_fman/Peripherals/FM/Port/Makefile     |   15 +
- .../sdk_fman/Peripherals/FM/Port/fm_port.c    | 6436 ++++++++++++++
- .../sdk_fman/Peripherals/FM/Port/fm_port.h    |  999 +++
- .../Peripherals/FM/Port/fm_port_dsar.h        |  494 ++
- .../sdk_fman/Peripherals/FM/Port/fm_port_im.c |  753 ++
- .../sdk_fman/Peripherals/FM/Port/fman_port.c  | 1570 ++++
- .../sdk_fman/Peripherals/FM/Rtc/Makefile      |   15 +
- .../sdk_fman/Peripherals/FM/Rtc/fm_rtc.c      |  692 ++
- .../sdk_fman/Peripherals/FM/Rtc/fm_rtc.h      |   96 +
- .../sdk_fman/Peripherals/FM/Rtc/fman_rtc.c    |  334 +
- .../sdk_fman/Peripherals/FM/SP/Makefile       |   15 +
- .../sdk_fman/Peripherals/FM/SP/fm_sp.c        |  757 ++
- .../sdk_fman/Peripherals/FM/SP/fm_sp.h        |   85 +
- .../sdk_fman/Peripherals/FM/SP/fman_sp.c      |  197 +
- .../freescale/sdk_fman/Peripherals/FM/fm.c    | 5216 ++++++++++++
- .../freescale/sdk_fman/Peripherals/FM/fm.h    |  648 ++
- .../sdk_fman/Peripherals/FM/fm_ipc.h          |  465 +
- .../sdk_fman/Peripherals/FM/fm_muram.c        |  174 +
- .../freescale/sdk_fman/Peripherals/FM/fman.c  | 1400 +++
- .../sdk_fman/Peripherals/FM/inc/fm_common.h   | 1214 +++
- .../sdk_fman/Peripherals/FM/inc/fm_hc.h       |   93 +
- .../Peripherals/FM/inc/fm_sp_common.h         |  117 +
- .../ethernet/freescale/sdk_fman/etc/Makefile  |   12 +
- .../ethernet/freescale/sdk_fman/etc/error.c   |   95 +
- .../ethernet/freescale/sdk_fman/etc/list.c    |   71 +
- .../ethernet/freescale/sdk_fman/etc/memcpy.c  |  620 ++
- .../net/ethernet/freescale/sdk_fman/etc/mm.c  | 1155 +++
- .../net/ethernet/freescale/sdk_fman/etc/mm.h  |  105 +
- .../ethernet/freescale/sdk_fman/etc/sprint.c  |   81 +
- .../freescale/sdk_fman/fmanv3h_dflags.h       |   57 +
- .../freescale/sdk_fman/fmanv3l_dflags.h       |   56 +
- .../inc/Peripherals/crc_mac_addr_ext.h        |  364 +
- .../sdk_fman/inc/Peripherals/dpaa_ext.h       |  210 +
- .../sdk_fman/inc/Peripherals/fm_ext.h         | 1731 ++++
- .../sdk_fman/inc/Peripherals/fm_mac_ext.h     |  887 ++
- .../sdk_fman/inc/Peripherals/fm_macsec_ext.h  | 1271 +++
- .../sdk_fman/inc/Peripherals/fm_muram_ext.h   |  170 +
- .../sdk_fman/inc/Peripherals/fm_pcd_ext.h     | 3974 +++++++++
- .../sdk_fman/inc/Peripherals/fm_port_ext.h    | 2608 ++++++
- .../sdk_fman/inc/Peripherals/fm_rtc_ext.h     |  619 ++
- .../sdk_fman/inc/Peripherals/fm_vsp_ext.h     |  411 +
- .../sdk_fman/inc/Peripherals/mii_acc_ext.h    |   76 +
- .../freescale/sdk_fman/inc/core_ext.h         |   90 +
- .../freescale/sdk_fman/inc/cores/arm_ext.h    |   55 +
- .../freescale/sdk_fman/inc/cores/e500v2_ext.h |  476 ++
- .../freescale/sdk_fman/inc/cores/ppc_ext.h    |  141 +
- .../freescale/sdk_fman/inc/ddr_std_ext.h      |   77 +
- .../freescale/sdk_fman/inc/debug_ext.h        |  233 +
- .../freescale/sdk_fman/inc/endian_ext.h       |  447 +
- .../freescale/sdk_fman/inc/enet_ext.h         |  205 +
- .../freescale/sdk_fman/inc/error_ext.h        |  529 ++
- .../freescale/sdk_fman/inc/etc/list_ext.h     |  358 +
- .../freescale/sdk_fman/inc/etc/mem_ext.h      |  318 +
- .../freescale/sdk_fman/inc/etc/memcpy_ext.h   |  208 +
- .../freescale/sdk_fman/inc/etc/mm_ext.h       |  310 +
- .../freescale/sdk_fman/inc/etc/sprint_ext.h   |  118 +
- .../inc/flib/common/arch/ppc_access.h         |   37 +
- .../sdk_fman/inc/flib/common/general.h        |   52 +
- .../freescale/sdk_fman/inc/flib/fman_common.h |   78 +
- .../freescale/sdk_fman/inc/flib/fsl_enet.h    |  273 +
- .../freescale/sdk_fman/inc/flib/fsl_fman.h    |  825 ++
- .../sdk_fman/inc/flib/fsl_fman_dtsec.h        | 1096 +++
- .../inc/flib/fsl_fman_dtsec_mii_acc.h         |  107 +
- .../freescale/sdk_fman/inc/flib/fsl_fman_kg.h |  514 ++
- .../sdk_fman/inc/flib/fsl_fman_memac.h        |  434 +
- .../inc/flib/fsl_fman_memac_mii_acc.h         |   78 +
- .../sdk_fman/inc/flib/fsl_fman_port.h         |  593 ++
- .../sdk_fman/inc/flib/fsl_fman_prs.h          |  102 +
- .../sdk_fman/inc/flib/fsl_fman_rtc.h          |  449 +
- .../freescale/sdk_fman/inc/flib/fsl_fman_sp.h |  138 +
- .../sdk_fman/inc/flib/fsl_fman_tgec.h         |  479 ++
- .../FMANV3H/dpaa_integration_ext.h            |  291 +
- .../inc/integrations/FMANV3H/part_ext.h       |   71 +
- .../FMANV3H/part_integration_ext.h            |  304 +
- .../FMANV3L/dpaa_integration_ext.h            |  293 +
- .../inc/integrations/FMANV3L/part_ext.h       |   59 +
- .../FMANV3L/part_integration_ext.h            |  304 +
- .../LS1043/dpaa_integration_ext.h             |  291 +
- .../inc/integrations/LS1043/part_ext.h        |   64 +
- .../LS1043/part_integration_ext.h             |  185 +
- .../integrations/P1023/dpaa_integration_ext.h |  213 +
- .../inc/integrations/P1023/part_ext.h         |   82 +
- .../integrations/P1023/part_integration_ext.h |  635 ++
- .../P3040_P4080_P5020/dpaa_integration_ext.h  |  276 +
- .../integrations/P3040_P4080_P5020/part_ext.h |   83 +
- .../P3040_P4080_P5020/part_integration_ext.h  |  336 +
- .../freescale/sdk_fman/inc/math_ext.h         |  100 +
- .../freescale/sdk_fman/inc/ncsw_ext.h         |  435 +
- .../ethernet/freescale/sdk_fman/inc/net_ext.h |  430 +
- .../ethernet/freescale/sdk_fman/inc/std_ext.h |   48 +
- .../freescale/sdk_fman/inc/stdarg_ext.h       |   49 +
- .../freescale/sdk_fman/inc/stdlib_ext.h       |  162 +
- .../freescale/sdk_fman/inc/string_ext.h       |   56 +
- .../freescale/sdk_fman/inc/types_ext.h        |   62 +
- .../freescale/sdk_fman/inc/xx_common.h        |   56 +
- .../ethernet/freescale/sdk_fman/inc/xx_ext.h  |  791 ++
- .../freescale/sdk_fman/ls1043_dflags.h        |   56 +
- .../freescale/sdk_fman/ncsw_config.mk         |   53 +
- .../freescale/sdk_fman/p1023_dflags.h         |   65 +
- .../sdk_fman/p3040_4080_5020_dflags.h         |   62 +
- .../ethernet/freescale/sdk_fman/src/Makefile  |   11 +
- .../sdk_fman/src/inc/system/sys_ext.h         |  118 +
- .../sdk_fman/src/inc/system/sys_io_ext.h      |   46 +
- .../freescale/sdk_fman/src/inc/types_linux.h  |  208 +
- .../sdk_fman/src/inc/wrapper/fsl_fman_test.h  |   84 +
- .../sdk_fman/src/inc/wrapper/lnxwrp_exp_sym.h |  130 +
- .../sdk_fman/src/inc/wrapper/lnxwrp_fm_ext.h  |  163 +
- .../src/inc/wrapper/lnxwrp_fsl_fman.h         |  921 ++
- .../freescale/sdk_fman/src/inc/xx/xx.h        |   50 +
- .../freescale/sdk_fman/src/system/Makefile    |   10 +
- .../freescale/sdk_fman/src/system/sys_io.c    |  171 +
- .../freescale/sdk_fman/src/wrapper/Makefile   |   19 +
- .../sdk_fman/src/wrapper/fman_test.c          | 1665 ++++
- .../sdk_fman/src/wrapper/lnxwrp_fm.c          | 2908 +++++++
- .../sdk_fman/src/wrapper/lnxwrp_fm.h          |  294 +
- .../sdk_fman/src/wrapper/lnxwrp_fm_port.c     | 1512 ++++
- .../sdk_fman/src/wrapper/lnxwrp_ioctls_fm.c   | 4854 +++++++++++
- .../src/wrapper/lnxwrp_ioctls_fm_compat.c     | 1297 +++
- .../src/wrapper/lnxwrp_ioctls_fm_compat.h     |  755 ++
- .../sdk_fman/src/wrapper/lnxwrp_resources.h   |  121 +
- .../src/wrapper/lnxwrp_resources_ut.c         |  191 +
- .../src/wrapper/lnxwrp_resources_ut.h         |  144 +
- .../src/wrapper/lnxwrp_resources_ut.make      |   28 +
- .../sdk_fman/src/wrapper/lnxwrp_sysfs.c       |   60 +
- .../sdk_fman/src/wrapper/lnxwrp_sysfs.h       |   60 +
- .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm.c    | 1855 ++++
- .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm.h    |  136 +
- .../src/wrapper/lnxwrp_sysfs_fm_port.c        | 1268 +++
- .../src/wrapper/lnxwrp_sysfs_fm_port.h        |   56 +
- .../freescale/sdk_fman/src/xx/Makefile        |   18 +
- .../sdk_fman/src/xx/module_strings.c          |   46 +
- .../freescale/sdk_fman/src/xx/xx_arm_linux.c  |  905 ++
- .../freescale/sdk_fman/src/xx/xx_linux.c      |  918 ++
- drivers/staging/fsl_qbman/Kconfig             |  228 +
- drivers/staging/fsl_qbman/Makefile            |   28 +
- drivers/staging/fsl_qbman/bman_config.c       |  720 ++
- drivers/staging/fsl_qbman/bman_debugfs.c      |  119 +
- drivers/staging/fsl_qbman/bman_driver.c       |  559 ++
- drivers/staging/fsl_qbman/bman_high.c         | 1145 +++
- drivers/staging/fsl_qbman/bman_low.h          |  565 ++
- drivers/staging/fsl_qbman/bman_private.h      |  166 +
- drivers/staging/fsl_qbman/bman_test.c         |   56 +
- drivers/staging/fsl_qbman/bman_test.h         |   44 +
- drivers/staging/fsl_qbman/bman_test_high.c    |  183 +
- drivers/staging/fsl_qbman/bman_test_thresh.c  |  196 +
- drivers/staging/fsl_qbman/dpa_alloc.c         |  706 ++
- drivers/staging/fsl_qbman/dpa_sys.h           |  259 +
- drivers/staging/fsl_qbman/dpa_sys_arm.h       |   95 +
- drivers/staging/fsl_qbman/dpa_sys_arm64.h     |  102 +
- drivers/staging/fsl_qbman/dpa_sys_ppc32.h     |   70 +
- drivers/staging/fsl_qbman/dpa_sys_ppc64.h     |   79 +
- drivers/staging/fsl_qbman/fsl_usdpaa.c        | 2008 +++++
- drivers/staging/fsl_qbman/fsl_usdpaa_irq.c    |  289 +
- drivers/staging/fsl_qbman/qbman_driver.c      |   88 +
- drivers/staging/fsl_qbman/qman_config.c       | 1224 +++
- drivers/staging/fsl_qbman/qman_debugfs.c      | 1594 ++++
- drivers/staging/fsl_qbman/qman_driver.c       |  961 +++
- drivers/staging/fsl_qbman/qman_high.c         | 5652 ++++++++++++
- drivers/staging/fsl_qbman/qman_low.h          | 1445 ++++
- drivers/staging/fsl_qbman/qman_private.h      |  398 +
- drivers/staging/fsl_qbman/qman_test.c         |   57 +
- drivers/staging/fsl_qbman/qman_test.h         |   45 +
- drivers/staging/fsl_qbman/qman_test_high.c    |  216 +
- .../staging/fsl_qbman/qman_test_hotpotato.c   |  502 ++
- drivers/staging/fsl_qbman/qman_utility.c      |  129 +
- include/linux/fsl/svr.h                       |   97 +
- include/linux/fsl_bman.h                      |  532 ++
- include/linux/fsl_qman.h                      | 3900 +++++++++
- include/linux/fsl_usdpaa.h                    |  372 +
- include/linux/netdev_features.h               |    2 +
- include/uapi/linux/fmd/Kbuild                 |    5 +
- include/uapi/linux/fmd/Peripherals/Kbuild     |    4 +
- .../uapi/linux/fmd/Peripherals/fm_ioctls.h    |  628 ++
- .../linux/fmd/Peripherals/fm_pcd_ioctls.h     | 3084 +++++++
- .../linux/fmd/Peripherals/fm_port_ioctls.h    |  973 +++
- .../linux/fmd/Peripherals/fm_test_ioctls.h    |  208 +
- include/uapi/linux/fmd/integrations/Kbuild    |    1 +
- .../fmd/integrations/integration_ioctls.h     |   56 +
- include/uapi/linux/fmd/ioctls.h               |   96 +
- include/uapi/linux/fmd/net_ioctls.h           |  430 +
- net/sched/sch_generic.c                       |    7 +
- 273 files changed, 153944 insertions(+), 229 deletions(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c     |  616 +-
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.h     |    3 +
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |   41 +-
+ drivers/net/ethernet/freescale/fman/Kconfig        |    1 -
+ drivers/net/ethernet/freescale/fman/Makefile       |   12 +-
+ drivers/net/ethernet/freescale/fman/fman.c         |   38 +-
+ drivers/net/ethernet/freescale/fman/fman.h         |    5 +
+ drivers/net/ethernet/freescale/fman/fman_dtsec.c   |   46 +
+ drivers/net/ethernet/freescale/fman/fman_dtsec.h   |    2 +
+ drivers/net/ethernet/freescale/fman/fman_memac.c   |   37 +-
+ drivers/net/ethernet/freescale/fman/fman_memac.h   |    2 +
+ drivers/net/ethernet/freescale/fman/fman_port.c    |   28 +
+ drivers/net/ethernet/freescale/fman/fman_port.h    |    4 +
+ drivers/net/ethernet/freescale/fman/fman_tgec.c    |   54 +-
+ drivers/net/ethernet/freescale/fman/fman_tgec.h    |    2 +
+ drivers/net/ethernet/freescale/fman/mac.c          |  152 +-
+ drivers/net/ethernet/freescale/fman/mac.h          |    9 +-
+ drivers/net/ethernet/freescale/sdk_dpaa/Kconfig    |  184 +
+ drivers/net/ethernet/freescale/sdk_dpaa/Makefile   |   45 +
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_1588.c    |  580 ++
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_1588.h    |  138 +
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.c |  180 +
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_debugfs.h |   43 +
+ drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.c | 1223 ++++
+ drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h |  674 ++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_base.c    |  205 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_base.h    |   49 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c   | 2076 ++++++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.h   |  241 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_common.c  | 1745 +++++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_common.h  |  226 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_proxy.c   |  381 +
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c  | 1195 +++
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_sysfs.c   |  278 +
+ .../ethernet/freescale/sdk_dpaa/dpaa_eth_trace.h   |  144 +
+ .../net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c |  587 ++
+ drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c  |  931 +++
+ drivers/net/ethernet/freescale/sdk_dpaa/mac.c      |  490 ++
+ drivers/net/ethernet/freescale/sdk_dpaa/mac.h      |  134 +
+ .../net/ethernet/freescale/sdk_dpaa/offline_port.c |  848 +++
+ .../net/ethernet/freescale/sdk_dpaa/offline_port.h |   59 +
+ drivers/net/ethernet/freescale/sdk_fman/Kconfig    |  153 +
+ drivers/net/ethernet/freescale/sdk_fman/Makefile   |   11 +
+ .../freescale/sdk_fman/Peripherals/FM/HC/Makefile  |   15 +
+ .../freescale/sdk_fman/Peripherals/FM/HC/hc.c      | 1232 ++++
+ .../freescale/sdk_fman/Peripherals/FM/MAC/Makefile |   28 +
+ .../freescale/sdk_fman/Peripherals/FM/MAC/dtsec.c  | 1504 ++++
+ .../freescale/sdk_fman/Peripherals/FM/MAC/dtsec.h  |  228 +
+ .../sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.c    |   97 +
+ .../sdk_fman/Peripherals/FM/MAC/dtsec_mii_acc.h    |   42 +
+ .../freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.c |  674 ++
+ .../freescale/sdk_fman/Peripherals/FM/MAC/fm_mac.h |  226 +
+ .../sdk_fman/Peripherals/FM/MAC/fman_crc32.c       |  119 +
+ .../sdk_fman/Peripherals/FM/MAC/fman_crc32.h       |   43 +
+ .../sdk_fman/Peripherals/FM/MAC/fman_dtsec.c       |  847 +++
+ .../Peripherals/FM/MAC/fman_dtsec_mii_acc.c        |  165 +
+ .../sdk_fman/Peripherals/FM/MAC/fman_memac.c       |  532 ++
+ .../Peripherals/FM/MAC/fman_memac_mii_acc.c        |  215 +
+ .../sdk_fman/Peripherals/FM/MAC/fman_tgec.c        |  367 +
+ .../freescale/sdk_fman/Peripherals/FM/MAC/memac.c  | 1166 +++
+ .../freescale/sdk_fman/Peripherals/FM/MAC/memac.h  |  110 +
+ .../sdk_fman/Peripherals/FM/MAC/memac_mii_acc.c    |   78 +
+ .../sdk_fman/Peripherals/FM/MAC/memac_mii_acc.h    |   73 +
+ .../freescale/sdk_fman/Peripherals/FM/MAC/tgec.c   | 1017 +++
+ .../freescale/sdk_fman/Peripherals/FM/MAC/tgec.h   |  151 +
+ .../sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.c     |  139 +
+ .../sdk_fman/Peripherals/FM/MAC/tgec_mii_acc.h     |   80 +
+ .../sdk_fman/Peripherals/FM/MACSEC/Makefile        |   15 +
+ .../sdk_fman/Peripherals/FM/MACSEC/fm_macsec.c     |  237 +
+ .../sdk_fman/Peripherals/FM/MACSEC/fm_macsec.h     |  203 +
+ .../Peripherals/FM/MACSEC/fm_macsec_guest.c        |   59 +
+ .../Peripherals/FM/MACSEC/fm_macsec_master.c       | 1031 +++
+ .../Peripherals/FM/MACSEC/fm_macsec_master.h       |  479 ++
+ .../Peripherals/FM/MACSEC/fm_macsec_secy.c         |  883 +++
+ .../Peripherals/FM/MACSEC/fm_macsec_secy.h         |  144 +
+ .../freescale/sdk_fman/Peripherals/FM/Makefile     |   23 +
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/Makefile |   26 +
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/crc64.h  |  360 +
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.c  | 7582 ++++++++++++++++++++
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_cc.h  |  399 +
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.c  | 3242 +++++++++
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_kg.h  |  206 +
+ .../sdk_fman/Peripherals/FM/Pcd/fm_manip.c         | 5571 ++++++++++++++
+ .../sdk_fman/Peripherals/FM/Pcd/fm_manip.h         |  555 ++
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.c | 2095 ++++++
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_pcd.h |  543 ++
+ .../sdk_fman/Peripherals/FM/Pcd/fm_pcd_ipc.h       |  280 +
+ .../sdk_fman/Peripherals/FM/Pcd/fm_plcr.c          | 1847 +++++
+ .../sdk_fman/Peripherals/FM/Pcd/fm_plcr.h          |  165 +
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.c |  423 ++
+ .../freescale/sdk_fman/Peripherals/FM/Pcd/fm_prs.h |  316 +
+ .../sdk_fman/Peripherals/FM/Pcd/fm_replic.c        |  984 +++
+ .../sdk_fman/Peripherals/FM/Pcd/fm_replic.h        |  101 +
+ .../sdk_fman/Peripherals/FM/Pcd/fman_kg.c          |  890 +++
+ .../sdk_fman/Peripherals/FM/Pcd/fman_prs.c         |  129 +
+ .../sdk_fman/Peripherals/FM/Port/Makefile          |   15 +
+ .../sdk_fman/Peripherals/FM/Port/fm_port.c         | 6437 +++++++++++++++++
+ .../sdk_fman/Peripherals/FM/Port/fm_port.h         |  999 +++
+ .../sdk_fman/Peripherals/FM/Port/fm_port_dsar.h    |  494 ++
+ .../sdk_fman/Peripherals/FM/Port/fm_port_im.c      |  753 ++
+ .../sdk_fman/Peripherals/FM/Port/fman_port.c       | 1570 ++++
+ .../freescale/sdk_fman/Peripherals/FM/Rtc/Makefile |   15 +
+ .../freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.c |  692 ++
+ .../freescale/sdk_fman/Peripherals/FM/Rtc/fm_rtc.h |   96 +
+ .../sdk_fman/Peripherals/FM/Rtc/fman_rtc.c         |  334 +
+ .../freescale/sdk_fman/Peripherals/FM/SP/Makefile  |   15 +
+ .../freescale/sdk_fman/Peripherals/FM/SP/fm_sp.c   |  757 ++
+ .../freescale/sdk_fman/Peripherals/FM/SP/fm_sp.h   |   85 +
+ .../freescale/sdk_fman/Peripherals/FM/SP/fman_sp.c |  197 +
+ .../freescale/sdk_fman/Peripherals/FM/fm.c         | 5216 ++++++++++++++
+ .../freescale/sdk_fman/Peripherals/FM/fm.h         |  648 ++
+ .../freescale/sdk_fman/Peripherals/FM/fm_ipc.h     |  465 ++
+ .../freescale/sdk_fman/Peripherals/FM/fm_muram.c   |  174 +
+ .../freescale/sdk_fman/Peripherals/FM/fman.c       | 1400 ++++
+ .../sdk_fman/Peripherals/FM/inc/fm_common.h        | 1214 ++++
+ .../freescale/sdk_fman/Peripherals/FM/inc/fm_hc.h  |   93 +
+ .../sdk_fman/Peripherals/FM/inc/fm_sp_common.h     |  117 +
+ .../net/ethernet/freescale/sdk_fman/etc/Makefile   |   12 +
+ .../net/ethernet/freescale/sdk_fman/etc/error.c    |   95 +
+ drivers/net/ethernet/freescale/sdk_fman/etc/list.c |   71 +
+ .../net/ethernet/freescale/sdk_fman/etc/memcpy.c   |  620 ++
+ drivers/net/ethernet/freescale/sdk_fman/etc/mm.c   | 1155 +++
+ drivers/net/ethernet/freescale/sdk_fman/etc/mm.h   |  105 +
+ .../net/ethernet/freescale/sdk_fman/etc/sprint.c   |   81 +
+ .../ethernet/freescale/sdk_fman/fmanv3h_dflags.h   |   57 +
+ .../ethernet/freescale/sdk_fman/fmanv3l_dflags.h   |   56 +
+ .../sdk_fman/inc/Peripherals/crc_mac_addr_ext.h    |  364 +
+ .../freescale/sdk_fman/inc/Peripherals/dpaa_ext.h  |  210 +
+ .../freescale/sdk_fman/inc/Peripherals/fm_ext.h    | 1731 +++++
+ .../sdk_fman/inc/Peripherals/fm_mac_ext.h          |  887 +++
+ .../sdk_fman/inc/Peripherals/fm_macsec_ext.h       | 1271 ++++
+ .../sdk_fman/inc/Peripherals/fm_muram_ext.h        |  170 +
+ .../sdk_fman/inc/Peripherals/fm_pcd_ext.h          | 3974 ++++++++++
+ .../sdk_fman/inc/Peripherals/fm_port_ext.h         | 2608 +++++++
+ .../sdk_fman/inc/Peripherals/fm_rtc_ext.h          |  619 ++
+ .../sdk_fman/inc/Peripherals/fm_vsp_ext.h          |  411 ++
+ .../sdk_fman/inc/Peripherals/mii_acc_ext.h         |   76 +
+ .../net/ethernet/freescale/sdk_fman/inc/core_ext.h |   90 +
+ .../freescale/sdk_fman/inc/cores/arm_ext.h         |   55 +
+ .../freescale/sdk_fman/inc/cores/e500v2_ext.h      |  476 ++
+ .../freescale/sdk_fman/inc/cores/ppc_ext.h         |  141 +
+ .../ethernet/freescale/sdk_fman/inc/ddr_std_ext.h  |   77 +
+ .../ethernet/freescale/sdk_fman/inc/debug_ext.h    |  233 +
+ .../ethernet/freescale/sdk_fman/inc/endian_ext.h   |  447 ++
+ .../net/ethernet/freescale/sdk_fman/inc/enet_ext.h |  205 +
+ .../ethernet/freescale/sdk_fman/inc/error_ext.h    |  529 ++
+ .../ethernet/freescale/sdk_fman/inc/etc/list_ext.h |  358 +
+ .../ethernet/freescale/sdk_fman/inc/etc/mem_ext.h  |  318 +
+ .../freescale/sdk_fman/inc/etc/memcpy_ext.h        |  208 +
+ .../ethernet/freescale/sdk_fman/inc/etc/mm_ext.h   |  310 +
+ .../freescale/sdk_fman/inc/etc/sprint_ext.h        |  118 +
+ .../sdk_fman/inc/flib/common/arch/ppc_access.h     |   37 +
+ .../freescale/sdk_fman/inc/flib/common/general.h   |   52 +
+ .../freescale/sdk_fman/inc/flib/fman_common.h      |   78 +
+ .../freescale/sdk_fman/inc/flib/fsl_enet.h         |  273 +
+ .../freescale/sdk_fman/inc/flib/fsl_fman.h         |  825 +++
+ .../freescale/sdk_fman/inc/flib/fsl_fman_dtsec.h   | 1096 +++
+ .../sdk_fman/inc/flib/fsl_fman_dtsec_mii_acc.h     |  107 +
+ .../freescale/sdk_fman/inc/flib/fsl_fman_kg.h      |  514 ++
+ .../freescale/sdk_fman/inc/flib/fsl_fman_memac.h   |  434 ++
+ .../sdk_fman/inc/flib/fsl_fman_memac_mii_acc.h     |   78 +
+ .../freescale/sdk_fman/inc/flib/fsl_fman_port.h    |  593 ++
+ .../freescale/sdk_fman/inc/flib/fsl_fman_prs.h     |  102 +
+ .../freescale/sdk_fman/inc/flib/fsl_fman_rtc.h     |  449 ++
+ .../freescale/sdk_fman/inc/flib/fsl_fman_sp.h      |  138 +
+ .../freescale/sdk_fman/inc/flib/fsl_fman_tgec.h    |  479 ++
+ .../integrations/FMANV3H/dpaa_integration_ext.h    |  291 +
+ .../sdk_fman/inc/integrations/FMANV3H/part_ext.h   |   71 +
+ .../integrations/FMANV3H/part_integration_ext.h    |  304 +
+ .../integrations/FMANV3L/dpaa_integration_ext.h    |  293 +
+ .../sdk_fman/inc/integrations/FMANV3L/part_ext.h   |   59 +
+ .../integrations/FMANV3L/part_integration_ext.h    |  304 +
+ .../inc/integrations/LS1043/dpaa_integration_ext.h |  291 +
+ .../sdk_fman/inc/integrations/LS1043/part_ext.h    |   64 +
+ .../inc/integrations/LS1043/part_integration_ext.h |  185 +
+ .../inc/integrations/P1023/dpaa_integration_ext.h  |  213 +
+ .../sdk_fman/inc/integrations/P1023/part_ext.h     |   82 +
+ .../inc/integrations/P1023/part_integration_ext.h  |  635 ++
+ .../P3040_P4080_P5020/dpaa_integration_ext.h       |  276 +
+ .../inc/integrations/P3040_P4080_P5020/part_ext.h  |   83 +
+ .../P3040_P4080_P5020/part_integration_ext.h       |  336 +
+ .../net/ethernet/freescale/sdk_fman/inc/math_ext.h |  100 +
+ .../net/ethernet/freescale/sdk_fman/inc/ncsw_ext.h |  435 ++
+ .../net/ethernet/freescale/sdk_fman/inc/net_ext.h  |  430 ++
+ .../net/ethernet/freescale/sdk_fman/inc/std_ext.h  |   48 +
+ .../ethernet/freescale/sdk_fman/inc/stdarg_ext.h   |   49 +
+ .../ethernet/freescale/sdk_fman/inc/stdlib_ext.h   |  162 +
+ .../ethernet/freescale/sdk_fman/inc/string_ext.h   |   56 +
+ .../ethernet/freescale/sdk_fman/inc/types_ext.h    |   62 +
+ .../ethernet/freescale/sdk_fman/inc/xx_common.h    |   56 +
+ .../net/ethernet/freescale/sdk_fman/inc/xx_ext.h   |  791 ++
+ .../ethernet/freescale/sdk_fman/ls1043_dflags.h    |   56 +
+ .../net/ethernet/freescale/sdk_fman/ncsw_config.mk |   53 +
+ .../net/ethernet/freescale/sdk_fman/p1023_dflags.h |   65 +
+ .../freescale/sdk_fman/p3040_4080_5020_dflags.h    |   62 +
+ .../net/ethernet/freescale/sdk_fman/src/Makefile   |   11 +
+ .../freescale/sdk_fman/src/inc/system/sys_ext.h    |  118 +
+ .../freescale/sdk_fman/src/inc/system/sys_io_ext.h |   46 +
+ .../freescale/sdk_fman/src/inc/types_linux.h       |  208 +
+ .../sdk_fman/src/inc/wrapper/fsl_fman_test.h       |   84 +
+ .../sdk_fman/src/inc/wrapper/lnxwrp_exp_sym.h      |  130 +
+ .../sdk_fman/src/inc/wrapper/lnxwrp_fm_ext.h       |  163 +
+ .../sdk_fman/src/inc/wrapper/lnxwrp_fsl_fman.h     |  921 +++
+ .../ethernet/freescale/sdk_fman/src/inc/xx/xx.h    |   50 +
+ .../freescale/sdk_fman/src/system/Makefile         |   10 +
+ .../freescale/sdk_fman/src/system/sys_io.c         |  171 +
+ .../freescale/sdk_fman/src/wrapper/Makefile        |   19 +
+ .../freescale/sdk_fman/src/wrapper/fman_test.c     | 1665 +++++
+ .../freescale/sdk_fman/src/wrapper/lnxwrp_fm.c     | 2910 ++++++++
+ .../freescale/sdk_fman/src/wrapper/lnxwrp_fm.h     |  294 +
+ .../sdk_fman/src/wrapper/lnxwrp_fm_port.c          | 1512 ++++
+ .../sdk_fman/src/wrapper/lnxwrp_ioctls_fm.c        | 4854 +++++++++++++
+ .../sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.c | 1297 ++++
+ .../sdk_fman/src/wrapper/lnxwrp_ioctls_fm_compat.h |  755 ++
+ .../sdk_fman/src/wrapper/lnxwrp_resources.h        |  121 +
+ .../sdk_fman/src/wrapper/lnxwrp_resources_ut.c     |  191 +
+ .../sdk_fman/src/wrapper/lnxwrp_resources_ut.h     |  144 +
+ .../sdk_fman/src/wrapper/lnxwrp_resources_ut.make  |   28 +
+ .../freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.c  |   60 +
+ .../freescale/sdk_fman/src/wrapper/lnxwrp_sysfs.h  |   60 +
+ .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm.c         | 1855 +++++
+ .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm.h         |  136 +
+ .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.c    | 1268 ++++
+ .../sdk_fman/src/wrapper/lnxwrp_sysfs_fm_port.h    |   56 +
+ .../ethernet/freescale/sdk_fman/src/xx/Makefile    |   18 +
+ .../freescale/sdk_fman/src/xx/module_strings.c     |   46 +
+ .../freescale/sdk_fman/src/xx/xx_arm_linux.c       |  905 +++
+ .../ethernet/freescale/sdk_fman/src/xx/xx_linux.c  |  918 +++
+ drivers/staging/fsl_qbman/Kconfig                  |  228 +
+ drivers/staging/fsl_qbman/Makefile                 |   28 +
+ drivers/staging/fsl_qbman/bman_config.c            |  720 ++
+ drivers/staging/fsl_qbman/bman_debugfs.c           |  119 +
+ drivers/staging/fsl_qbman/bman_driver.c            |  559 ++
+ drivers/staging/fsl_qbman/bman_high.c              | 1145 +++
+ drivers/staging/fsl_qbman/bman_low.h               |  565 ++
+ drivers/staging/fsl_qbman/bman_private.h           |  166 +
+ drivers/staging/fsl_qbman/bman_test.c              |   56 +
+ drivers/staging/fsl_qbman/bman_test.h              |   44 +
+ drivers/staging/fsl_qbman/bman_test_high.c         |  183 +
+ drivers/staging/fsl_qbman/bman_test_thresh.c       |  196 +
+ drivers/staging/fsl_qbman/dpa_alloc.c              |  706 ++
+ drivers/staging/fsl_qbman/dpa_sys.h                |  259 +
+ drivers/staging/fsl_qbman/dpa_sys_arm.h            |   95 +
+ drivers/staging/fsl_qbman/dpa_sys_arm64.h          |  102 +
+ drivers/staging/fsl_qbman/dpa_sys_ppc32.h          |   70 +
+ drivers/staging/fsl_qbman/dpa_sys_ppc64.h          |   79 +
+ drivers/staging/fsl_qbman/fsl_usdpaa.c             | 2008 ++++++
+ drivers/staging/fsl_qbman/fsl_usdpaa_irq.c         |  289 +
+ drivers/staging/fsl_qbman/qbman_driver.c           |   88 +
+ drivers/staging/fsl_qbman/qman_config.c            | 1224 ++++
+ drivers/staging/fsl_qbman/qman_debugfs.c           | 1594 ++++
+ drivers/staging/fsl_qbman/qman_driver.c            |  961 +++
+ drivers/staging/fsl_qbman/qman_high.c              | 5655 +++++++++++++++
+ drivers/staging/fsl_qbman/qman_low.h               | 1445 ++++
+ drivers/staging/fsl_qbman/qman_private.h           |  398 +
+ drivers/staging/fsl_qbman/qman_test.c              |   57 +
+ drivers/staging/fsl_qbman/qman_test.h              |   45 +
+ drivers/staging/fsl_qbman/qman_test_high.c         |  216 +
+ drivers/staging/fsl_qbman/qman_test_hotpotato.c    |  502 ++
+ drivers/staging/fsl_qbman/qman_utility.c           |  129 +
+ include/linux/fsl/svr.h                            |   97 +
+ include/linux/fsl_bman.h                           |  532 ++
+ include/linux/fsl_qman.h                           | 3910 ++++++++++
+ include/linux/fsl_usdpaa.h                         |  372 +
+ include/linux/netdev_features.h                    |    2 +
+ include/uapi/linux/fmd/Kbuild                      |    5 +
+ include/uapi/linux/fmd/Peripherals/Kbuild          |    4 +
+ include/uapi/linux/fmd/Peripherals/fm_ioctls.h     |  628 ++
+ include/uapi/linux/fmd/Peripherals/fm_pcd_ioctls.h | 3084 ++++++++
+ .../uapi/linux/fmd/Peripherals/fm_port_ioctls.h    |  973 +++
+ .../uapi/linux/fmd/Peripherals/fm_test_ioctls.h    |  208 +
+ include/uapi/linux/fmd/integrations/Kbuild         |    1 +
+ .../linux/fmd/integrations/integration_ioctls.h    |   56 +
+ include/uapi/linux/fmd/ioctls.h                    |   96 +
+ include/uapi/linux/fmd/net_ioctls.h                |  430 ++
+ net/sched/sch_generic.c                            |    7 +
+ 276 files changed, 153982 insertions(+), 277 deletions(-)
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/Makefile
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_1588.c
@@ -321,7 +326,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sysfs.c
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_trace.h
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c
- create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ptp.c
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/mac.c
  create mode 100644 drivers/net/ethernet/freescale/sdk_dpaa/mac.h
@@ -563,7 +567,11 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 
 --- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
 +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -53,6 +53,9 @@
+@@ -50,9 +50,13 @@
+ #include <linux/highmem.h>
+ #include <linux/percpu.h>
+ #include <linux/dma-mapping.h>
++#include <linux/iommu.h>
  #include <linux/sort.h>
  #include <soc/fsl/bman.h>
  #include <soc/fsl/qman.h>
@@ -573,7 +581,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  #include "fman.h"
  #include "fman_port.h"
-@@ -73,6 +76,10 @@ static u16 tx_timeout = 1000;
+@@ -73,6 +77,10 @@ static u16 tx_timeout = 1000;
  module_param(tx_timeout, ushort, 0444);
  MODULE_PARM_DESC(tx_timeout, "The Tx timeout in ms");
  
@@ -584,7 +592,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  #define FM_FD_STAT_RX_ERRORS						\
  	(FM_FD_ERR_DMA | FM_FD_ERR_PHYSICAL	| \
  	 FM_FD_ERR_SIZE | FM_FD_ERR_CLS_DISCARD | \
-@@ -388,34 +395,19 @@ out:
+@@ -388,34 +396,19 @@ out:
  
  static struct mac_device *dpaa_mac_dev_get(struct platform_device *pdev)
  {
@@ -624,7 +632,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		return ERR_PTR(-EINVAL);
  	}
  
-@@ -472,6 +464,16 @@ static void dpaa_set_rx_mode(struct net_
+@@ -472,6 +465,16 @@ static void dpaa_set_rx_mode(struct net_
  				  err);
  	}
  
@@ -641,7 +649,25 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	err = priv->mac_dev->set_multi(net_dev, priv->mac_dev);
  	if (err < 0)
  		netif_err(priv, drv, net_dev, "mac_dev->set_multi() = %d\n",
-@@ -1500,7 +1502,19 @@ static int dpaa_bp_add_8_bufs(const stru
+@@ -1176,7 +1179,7 @@ static int dpaa_eth_init_tx_port(struct
+ 	buf_prefix_content.priv_data_size = buf_layout->priv_data_size;
+ 	buf_prefix_content.pass_prs_result = true;
+ 	buf_prefix_content.pass_hash_result = true;
+-	buf_prefix_content.pass_time_stamp = false;
++	buf_prefix_content.pass_time_stamp = true;
+ 	buf_prefix_content.data_align = DPAA_FD_DATA_ALIGNMENT;
+ 
+ 	params.specific_params.non_rx_params.err_fqid = errq->fqid;
+@@ -1218,7 +1221,7 @@ static int dpaa_eth_init_rx_port(struct
+ 	buf_prefix_content.priv_data_size = buf_layout->priv_data_size;
+ 	buf_prefix_content.pass_prs_result = true;
+ 	buf_prefix_content.pass_hash_result = true;
+-	buf_prefix_content.pass_time_stamp = false;
++	buf_prefix_content.pass_time_stamp = true;
+ 	buf_prefix_content.data_align = DPAA_FD_DATA_ALIGNMENT;
+ 
+ 	rx_p = &params.specific_params.rx_params;
+@@ -1500,7 +1503,19 @@ static int dpaa_bp_add_8_bufs(const stru
  	u8 i;
  
  	for (i = 0; i < 8; i++) {
@@ -661,7 +687,72 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		if (unlikely(!new_buf)) {
  			dev_err(dev, "netdev_alloc_frag() failed, size %zu\n",
  				dpaa_bp->raw_size);
-@@ -1645,9 +1659,13 @@ static struct sk_buff *dpaa_cleanup_tx_f
+@@ -1600,6 +1615,17 @@ static int dpaa_eth_refill_bpools(struct
+ 	return 0;
+ }
+ 
++static phys_addr_t dpaa_iova_to_phys(struct device *dev, dma_addr_t addr)
++{
++	struct iommu_domain *domain;
++
++	domain = iommu_get_domain_for_dev(dev);
++	if (domain)
++		return iommu_iova_to_phys(domain, addr);
++	else
++		return addr;
++}
++
+ /* Cleanup function for outgoing frame descriptors that were built on Tx path,
+  * either contiguous frames or scatter/gather ones.
+  * Skb freeing is not handled here.
+@@ -1615,24 +1641,41 @@ static struct sk_buff *dpaa_cleanup_tx_f
+ {
+ 	const enum dma_data_direction dma_dir = DMA_TO_DEVICE;
+ 	struct device *dev = priv->net_dev->dev.parent;
++	struct skb_shared_hwtstamps shhwtstamps;
+ 	dma_addr_t addr = qm_fd_addr(fd);
+ 	const struct qm_sg_entry *sgt;
+ 	struct sk_buff **skbh, *skb;
+ 	int nr_frags, i;
++	u64 ns;
+ 
+-	skbh = (struct sk_buff **)phys_to_virt(addr);
++	skbh = (struct sk_buff **)phys_to_virt(dpaa_iova_to_phys(dev, addr));
+ 	skb = *skbh;
+ 
++	if (priv->tx_tstamp && skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) {
++		memset(&shhwtstamps, 0, sizeof(shhwtstamps));
++
++		if (!fman_port_get_tstamp(priv->mac_dev->port[TX], (void *)skbh,
++					  &ns)) {
++			shhwtstamps.hwtstamp = ns_to_ktime(ns);
++			skb_tstamp_tx(skb, &shhwtstamps);
++		} else {
++			dev_warn(dev, "fman_port_get_tstamp failed!\n");
++		}
++	}
++
+ 	if (unlikely(qm_fd_get_format(fd) == qm_fd_sg)) {
+ 		nr_frags = skb_shinfo(skb)->nr_frags;
+-		dma_unmap_single(dev, addr,
+-				 qm_fd_get_offset(fd) + DPAA_SGT_SIZE,
+-				 dma_dir);
+ 
+ 		/* The sgt buffer has been allocated with netdev_alloc_frag(),
+ 		 * it's from lowmem.
+ 		 */
+-		sgt = phys_to_virt(addr + qm_fd_get_offset(fd));
++		sgt = phys_to_virt(dpaa_iova_to_phys(dev,
++						     addr +
++						     qm_fd_get_offset(fd)));
++
++		dma_unmap_single(dev, addr,
++				 qm_fd_get_offset(fd) + DPAA_SGT_SIZE,
++				 dma_dir);
+ 
+ 		/* sgt[0] is from lowmem, was dma_map_single()-ed */
+ 		dma_unmap_single(dev, qm_sg_addr(&sgt[0]),
+@@ -1645,9 +1688,13 @@ static struct sk_buff *dpaa_cleanup_tx_f
  			dma_unmap_page(dev, qm_sg_addr(&sgt[i]),
  				       qm_sg_entry_get_len(&sgt[i]), dma_dir);
  		}
@@ -674,11 +765,78 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		else
 +#endif
 +			/* Free the page frag that we allocated on Tx */
-+			skb_free_frag(phys_to_virt(addr));
++			skb_free_frag(skbh);
  	} else {
  		dma_unmap_single(dev, addr,
  				 skb_tail_pointer(skb) - (u8 *)skbh, dma_dir);
-@@ -1739,6 +1757,7 @@ static struct sk_buff *sg_fd_to_skb(cons
+@@ -1678,26 +1725,21 @@ static u8 rx_csum_offload(const struct d
+  * accommodate the shared info area of the skb.
+  */
+ static struct sk_buff *contig_fd_to_skb(const struct dpaa_priv *priv,
+-					const struct qm_fd *fd)
++					const struct qm_fd *fd,
++					struct dpaa_bp *dpaa_bp,
++					void *vaddr)
+ {
+ 	ssize_t fd_off = qm_fd_get_offset(fd);
+-	dma_addr_t addr = qm_fd_addr(fd);
+-	struct dpaa_bp *dpaa_bp;
+ 	struct sk_buff *skb;
+-	void *vaddr;
+ 
+-	vaddr = phys_to_virt(addr);
+ 	WARN_ON(!IS_ALIGNED((unsigned long)vaddr, SMP_CACHE_BYTES));
+ 
+-	dpaa_bp = dpaa_bpid2pool(fd->bpid);
+-	if (!dpaa_bp)
+-		goto free_buffer;
+-
+ 	skb = build_skb(vaddr, dpaa_bp->size +
+ 			SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
+ 	if (unlikely(!skb)) {
+ 		WARN_ONCE(1, "Build skb failure on Rx\n");
+-		goto free_buffer;
++		skb_free_frag(vaddr);
++		return NULL;
+ 	}
+ 	WARN_ON(fd_off != priv->rx_headroom);
+ 	skb_reserve(skb, fd_off);
+@@ -1706,10 +1748,6 @@ static struct sk_buff *contig_fd_to_skb(
+ 	skb->ip_summed = rx_csum_offload(priv, fd);
+ 
+ 	return skb;
+-
+-free_buffer:
+-	skb_free_frag(vaddr);
+-	return NULL;
+ }
+ 
+ /* Build an skb with the data of the first S/G entry in the linear portion and
+@@ -1718,14 +1756,14 @@ free_buffer:
+  * The page fragment holding the S/G Table is recycled here.
+  */
+ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
+-				    const struct qm_fd *fd)
++				    const struct qm_fd *fd,
++				    struct dpaa_bp *dpaa_bp,
++				    void *vaddr)
+ {
+ 	ssize_t fd_off = qm_fd_get_offset(fd);
+-	dma_addr_t addr = qm_fd_addr(fd);
+ 	const struct qm_sg_entry *sgt;
+ 	struct page *page, *head_page;
+-	struct dpaa_bp *dpaa_bp;
+-	void *vaddr, *sg_vaddr;
++	void *sg_vaddr;
+ 	int frag_off, frag_len;
+ 	struct sk_buff *skb;
+ 	dma_addr_t sg_addr;
+@@ -1734,29 +1772,33 @@ static struct sk_buff *sg_fd_to_skb(cons
+ 	int *count_ptr;
+ 	int i;
+ 
+-	vaddr = phys_to_virt(addr);
+ 	WARN_ON(!IS_ALIGNED((unsigned long)vaddr, SMP_CACHE_BYTES));
  
  	/* Iterate through the SGT entries and add data buffers to the skb */
  	sgt = vaddr + fd_off;
@@ -686,7 +844,25 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	for (i = 0; i < DPAA_SGT_MAX_ENTRIES; i++) {
  		/* Extension bit is not supported */
  		WARN_ON(qm_sg_entry_is_ext(&sgt[i]));
-@@ -1756,7 +1775,7 @@ static struct sk_buff *sg_fd_to_skb(cons
+ 
+ 		sg_addr = qm_sg_addr(&sgt[i]);
+-		sg_vaddr = phys_to_virt(sg_addr);
+-		WARN_ON(!IS_ALIGNED((unsigned long)sg_vaddr,
+-				    SMP_CACHE_BYTES));
+ 
+ 		/* We may use multiple Rx pools */
+ 		dpaa_bp = dpaa_bpid2pool(sgt[i].bpid);
+-		if (!dpaa_bp)
++		if (!dpaa_bp) {
++			pr_info("%s: fail to get dpaa_bp for sg bpid %d\n",
++				__func__, sgt[i].bpid);
+ 			goto free_buffers;
++		}
++		sg_vaddr = phys_to_virt(dpaa_iova_to_phys(dpaa_bp->dev,
++							  sg_addr));
++		WARN_ON(!IS_ALIGNED((unsigned long)sg_vaddr,
++				    SMP_CACHE_BYTES));
+ 
  		count_ptr = this_cpu_ptr(dpaa_bp->percpu_count);
  		dma_unmap_single(dpaa_bp->dev, sg_addr, dpaa_bp->size,
  				 DMA_FROM_DEVICE);
@@ -695,7 +871,21 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  			sz = dpaa_bp->size +
  				SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
  			skb = build_skb(sg_vaddr, sz);
-@@ -1909,16 +1928,28 @@ static int skb_to_sg_fd(struct dpaa_priv
+@@ -1823,10 +1865,11 @@ free_buffers:
+ 	/* free all the SG entries */
+ 	for (i = 0; i < DPAA_SGT_MAX_ENTRIES ; i++) {
+ 		sg_addr = qm_sg_addr(&sgt[i]);
+-		sg_vaddr = phys_to_virt(sg_addr);
+-		skb_free_frag(sg_vaddr);
+ 		dpaa_bp = dpaa_bpid2pool(sgt[i].bpid);
+ 		if (dpaa_bp) {
++			sg_addr = dpaa_iova_to_phys(dpaa_bp->dev, sg_addr);
++			sg_vaddr = phys_to_virt(sg_addr);
++			skb_free_frag(sg_vaddr);
+ 			count_ptr = this_cpu_ptr(dpaa_bp->percpu_count);
+ 			(*count_ptr)--;
+ 		}
+@@ -1909,16 +1952,28 @@ static int skb_to_sg_fd(struct dpaa_priv
  	size_t frag_len;
  	void *sgt_buf;
  
@@ -732,7 +922,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	 *
  	 * We must do this before dma_map_single(DMA_TO_DEVICE), because we may
  	 * need to write into the skb.
-@@ -2036,6 +2067,122 @@ static inline int dpaa_xmit(struct dpaa_
+@@ -2036,12 +2091,129 @@ static inline int dpaa_xmit(struct dpaa_
  	return 0;
  }
  
@@ -855,7 +1045,14 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  static int dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
  {
  	const int queue_mapping = skb_get_queue_mapping(skb);
-@@ -2069,19 +2216,32 @@ static int dpaa_start_xmit(struct sk_buf
+ 	bool nonlinear = skb_is_nonlinear(skb);
+ 	struct rtnl_link_stats64 *percpu_stats;
+ 	struct dpaa_percpu_priv *percpu_priv;
++	struct netdev_queue *txq;
+ 	struct dpaa_priv *priv;
+ 	struct qm_fd fd;
+ 	int offset = 0;
+@@ -2069,24 +2241,47 @@ static int dpaa_start_xmit(struct sk_buf
  	/* MAX_SKB_FRAGS is equal or larger than our dpaa_SGT_MAX_ENTRIES;
  	 * make sure we don't feed FMan with more fragments than it supports.
  	 */
@@ -872,8 +1069,9 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		 */
 -		if (unlikely(nonlinear) && __skb_linearize(skb))
 +		if (__skb_linearize(skb))
-+			goto enomem;
-+
+ 			goto enomem;
+ 
+-		/* Finally, create a contig FD from this skb */
 +		nonlinear = skb_is_nonlinear(skb);
 +	}
 +
@@ -881,12 +1079,11 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (unlikely(dpaa_errata_a010022)) {
 +		skb = dpaa_errata_a010022_prevent(skb, priv);
 +		if (!skb)
- 			goto enomem;
++			goto enomem;
 +		nonlinear = skb_is_nonlinear(skb);
 +	}
 +#endif
- 
--		/* Finally, create a contig FD from this skb */
++
 +	if (nonlinear) {
 +		/* Just create a S/G fd based on the skb */
 +		err = skb_to_sg_fd(priv, skb, &fd);
@@ -896,7 +1093,22 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		err = skb_to_contig_fd(priv, skb, &fd, &offset);
  	}
  	if (unlikely(err < 0))
-@@ -2218,14 +2378,8 @@ static enum qman_cb_dqrr_result rx_error
+ 		goto skb_to_fd_failed;
+ 
++	txq = netdev_get_tx_queue(net_dev, queue_mapping);
++
++	/* LLTX requires to do our own update of trans_start */
++	txq->trans_start = jiffies;
++
++	if (priv->tx_tstamp && skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) {
++		fd.cmd |= cpu_to_be32(FM_FD_CMD_UPD);
++		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
++	}
++
+ 	if (likely(dpaa_xmit(priv, percpu_stats, queue_mapping, &fd) == 0))
+ 		return NETDEV_TX_OK;
+ 
+@@ -2218,14 +2413,8 @@ static enum qman_cb_dqrr_result rx_error
  	if (dpaa_eth_napi_schedule(percpu_priv, portal))
  		return qman_cb_dqrr_stop;
  
@@ -913,7 +1125,64 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	return qman_cb_dqrr_consume;
  }
-@@ -2439,6 +2593,44 @@ static void dpaa_eth_napi_disable(struct
+@@ -2234,6 +2423,7 @@ static enum qman_cb_dqrr_result rx_defau
+ 						struct qman_fq *fq,
+ 						const struct qm_dqrr_entry *dq)
+ {
++	struct skb_shared_hwtstamps *shhwtstamps;
+ 	struct rtnl_link_stats64 *percpu_stats;
+ 	struct dpaa_percpu_priv *percpu_priv;
+ 	const struct qm_fd *fd = &dq->fd;
+@@ -2247,6 +2437,7 @@ static enum qman_cb_dqrr_result rx_defau
+ 	struct sk_buff *skb;
+ 	int *count_ptr;
+ 	void *vaddr;
++	u64 ns;
+ 
+ 	fd_status = be32_to_cpu(fd->status);
+ 	fd_format = qm_fd_get_format(fd);
+@@ -2289,12 +2480,12 @@ static enum qman_cb_dqrr_result rx_defau
+ 	if (!dpaa_bp)
+ 		return qman_cb_dqrr_consume;
+ 
+-	dma_unmap_single(dpaa_bp->dev, addr, dpaa_bp->size, DMA_FROM_DEVICE);
+-
+ 	/* prefetch the first 64 bytes of the frame or the SGT start */
+-	vaddr = phys_to_virt(addr);
++	vaddr = phys_to_virt(dpaa_iova_to_phys(dpaa_bp->dev, addr));
+ 	prefetch(vaddr + qm_fd_get_offset(fd));
+ 
++	dma_unmap_single(dpaa_bp->dev, addr, dpaa_bp->size, DMA_FROM_DEVICE);
++
+ 	/* The only FD types that we may receive are contig and S/G */
+ 	WARN_ON((fd_format != qm_fd_contig) && (fd_format != qm_fd_sg));
+ 
+@@ -2305,12 +2496,22 @@ static enum qman_cb_dqrr_result rx_defau
+ 	(*count_ptr)--;
+ 
+ 	if (likely(fd_format == qm_fd_contig))
+-		skb = contig_fd_to_skb(priv, fd);
++		skb = contig_fd_to_skb(priv, fd, dpaa_bp, vaddr);
+ 	else
+-		skb = sg_fd_to_skb(priv, fd);
++		skb = sg_fd_to_skb(priv, fd, dpaa_bp, vaddr);
+ 	if (!skb)
+ 		return qman_cb_dqrr_consume;
+ 
++	if (priv->rx_tstamp) {
++		shhwtstamps = skb_hwtstamps(skb);
++		memset(shhwtstamps, 0, sizeof(*shhwtstamps));
++
++		if (!fman_port_get_tstamp(priv->mac_dev->port[RX], vaddr, &ns))
++			shhwtstamps->hwtstamp = ns_to_ktime(ns);
++		else
++			dev_warn(net_dev->dev.parent, "fman_port_get_tstamp failed!\n");
++	}
++
+ 	skb->protocol = eth_type_trans(skb, net_dev);
+ 
+ 	if (net_dev->features & NETIF_F_RXHASH && priv->keygen_in_use &&
+@@ -2439,6 +2640,44 @@ static void dpaa_eth_napi_disable(struct
  	}
  }
  
@@ -958,7 +1227,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  static int dpaa_open(struct net_device *net_dev)
  {
  	struct mac_device *mac_dev;
-@@ -2449,12 +2641,9 @@ static int dpaa_open(struct net_device *
+@@ -2449,12 +2688,9 @@ static int dpaa_open(struct net_device *
  	mac_dev = priv->mac_dev;
  	dpaa_eth_napi_enable(priv);
  
@@ -973,7 +1242,69 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	for (i = 0; i < ARRAY_SIZE(mac_dev->port); i++) {
  		err = fman_port_enable(mac_dev->port[i]);
-@@ -2653,7 +2842,6 @@ static inline u16 dpaa_get_headroom(stru
+@@ -2495,11 +2731,58 @@ static int dpaa_eth_stop(struct net_devi
+ 	return err;
+ }
+ 
++static int dpaa_ts_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
++{
++	struct dpaa_priv *priv = netdev_priv(dev);
++	struct hwtstamp_config config;
++
++	if (copy_from_user(&config, rq->ifr_data, sizeof(config)))
++		return -EFAULT;
++
++	switch (config.tx_type) {
++	case HWTSTAMP_TX_OFF:
++		/* Couldn't disable rx/tx timestamping separately.
++		 * Do nothing here.
++		 */
++		priv->tx_tstamp = false;
++		break;
++	case HWTSTAMP_TX_ON:
++		priv->mac_dev->set_tstamp(priv->mac_dev->fman_mac, true);
++		priv->tx_tstamp = true;
++		break;
++	default:
++		return -ERANGE;
++	}
++
++	if (config.rx_filter == HWTSTAMP_FILTER_NONE) {
++		/* Couldn't disable rx/tx timestamping separately.
++		 * Do nothing here.
++		 */
++		priv->rx_tstamp = false;
++	} else {
++		priv->mac_dev->set_tstamp(priv->mac_dev->fman_mac, true);
++		priv->rx_tstamp = true;
++		/* TS is set for all frame types, not only those requested */
++		config.rx_filter = HWTSTAMP_FILTER_ALL;
++	}
++
++	return copy_to_user(rq->ifr_data, &config, sizeof(config)) ?
++			-EFAULT : 0;
++}
++
+ static int dpaa_ioctl(struct net_device *net_dev, struct ifreq *rq, int cmd)
+ {
+-	if (!net_dev->phydev)
+-		return -EINVAL;
+-	return phy_mii_ioctl(net_dev->phydev, rq, cmd);
++	int ret = -EINVAL;
++
++	if (cmd == SIOCGMIIREG) {
++		if (net_dev->phydev)
++			return phy_mii_ioctl(net_dev->phydev, rq, cmd);
++	}
++
++	if (cmd == SIOCSHWTSTAMP)
++		return dpaa_ts_ioctl(net_dev, rq, cmd);
++
++	return ret;
+ }
+ 
+ static const struct net_device_ops dpaa_ops = {
+@@ -2653,7 +2936,6 @@ static inline u16 dpaa_get_headroom(stru
  static int dpaa_eth_probe(struct platform_device *pdev)
  {
  	struct dpaa_bp *dpaa_bps[DPAA_BPS_NUM] = {NULL};
@@ -981,13 +1312,51 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	struct net_device *net_dev = NULL;
  	struct dpaa_fq *dpaa_fq, *tmp;
  	struct dpaa_priv *priv = NULL;
-@@ -2662,7 +2850,13 @@ static int dpaa_eth_probe(struct platfor
+@@ -2662,7 +2944,51 @@ static int dpaa_eth_probe(struct platfor
  	int err = 0, i, channel;
  	struct device *dev;
  
 -	dev = &pdev->dev;
++	err = bman_is_probed();
++	if (!err)
++		return -EPROBE_DEFER;
++	if (err < 0) {
++		dev_err(&pdev->dev, "failing probe due to bman probe error\n");
++		return -ENODEV;
++	}
++	err = qman_is_probed();
++	if (!err)
++		return -EPROBE_DEFER;
++	if (err < 0) {
++		dev_err(&pdev->dev, "failing probe due to qman probe error\n");
++		return -ENODEV;
++	}
++	err = bman_portals_probed();
++	if (!err)
++		return -EPROBE_DEFER;
++	if (err < 0) {
++		dev_err(&pdev->dev,
++			"failing probe due to bman portals probe error\n");
++		return -ENODEV;
++	}
++	err = qman_portals_probed();
++	if (!err)
++		return -EPROBE_DEFER;
++	if (err < 0) {
++		dev_err(&pdev->dev,
++			"failing probe due to qman portals probe error\n");
++		return -ENODEV;
++	}
++
++	mac_dev = dpaa_mac_dev_get(pdev);
++	if (IS_ERR(mac_dev)) {
++		dev_err(&pdev->dev, "dpaa_mac_dev_get() failed\n");
++		err = PTR_ERR(mac_dev);
++		goto probe_err;
++	}
++
 +	/* device used for DMA mapping */
-+	dev = pdev->dev.parent;
++	dev = fman_port_get_device(mac_dev->port[RX]);
 +	err = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(40));
 +	if (err) {
 +		dev_err(dev, "dma_coerce_mask_and_coherent() failed\n");
@@ -996,7 +1365,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	/* Allocate this early, so we can store relevant information in
  	 * the private area
-@@ -2670,7 +2864,7 @@ static int dpaa_eth_probe(struct platfor
+@@ -2670,7 +2996,7 @@ static int dpaa_eth_probe(struct platfor
  	net_dev = alloc_etherdev_mq(sizeof(*priv), DPAA_ETH_TXQ_NUM);
  	if (!net_dev) {
  		dev_err(dev, "alloc_etherdev_mq() failed\n");
@@ -1005,16 +1374,21 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	/* Do this here, so we can be verbose early */
-@@ -2686,7 +2880,7 @@ static int dpaa_eth_probe(struct platfor
- 	if (IS_ERR(mac_dev)) {
- 		dev_err(dev, "dpaa_mac_dev_get() failed\n");
- 		err = PTR_ERR(mac_dev);
--		goto mac_probe_failed;
-+		goto free_netdev;
- 	}
+@@ -2682,13 +3008,6 @@ static int dpaa_eth_probe(struct platfor
  
+ 	priv->msg_enable = netif_msg_init(debug, DPAA_MSG_DEFAULT);
+ 
+-	mac_dev = dpaa_mac_dev_get(pdev);
+-	if (IS_ERR(mac_dev)) {
+-		dev_err(dev, "dpaa_mac_dev_get() failed\n");
+-		err = PTR_ERR(mac_dev);
+-		goto mac_probe_failed;
+-	}
+-
  	/* If fsl_fm_max_frm is set to a higher value than the all-common 1500,
-@@ -2704,21 +2898,13 @@ static int dpaa_eth_probe(struct platfor
+ 	 * we choose conservatively and let the user explicitly set a higher
+ 	 * MTU via ifconfig. Otherwise, the user may end up with different MTUs
+@@ -2704,21 +3023,13 @@ static int dpaa_eth_probe(struct platfor
  	priv->buf_layout[RX].priv_data_size = DPAA_RX_PRIV_DATA_SIZE; /* Rx */
  	priv->buf_layout[TX].priv_data_size = DPAA_TX_PRIV_DATA_SIZE; /* Tx */
  
@@ -1040,7 +1414,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		/* the raw size of the buffers used for reception */
  		dpaa_bps[i]->raw_size = bpool_buffer_raw_size(i, DPAA_BPS_NUM);
  		/* avoid runtime computations by keeping the usable size here */
-@@ -2726,11 +2912,8 @@ static int dpaa_eth_probe(struct platfor
+@@ -2726,11 +3037,8 @@ static int dpaa_eth_probe(struct platfor
  		dpaa_bps[i]->dev = dev;
  
  		err = dpaa_bp_alloc_pool(dpaa_bps[i]);
@@ -1054,7 +1428,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		priv->dpaa_bps[i] = dpaa_bps[i];
  	}
  
-@@ -2741,7 +2924,7 @@ static int dpaa_eth_probe(struct platfor
+@@ -2741,7 +3049,7 @@ static int dpaa_eth_probe(struct platfor
  	err = dpaa_alloc_all_fqs(dev, &priv->dpaa_fq_list, &port_fqs);
  	if (err < 0) {
  		dev_err(dev, "dpaa_alloc_all_fqs() failed\n");
@@ -1063,7 +1437,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	priv->mac_dev = mac_dev;
-@@ -2750,12 +2933,12 @@ static int dpaa_eth_probe(struct platfor
+@@ -2750,12 +3058,12 @@ static int dpaa_eth_probe(struct platfor
  	if (channel < 0) {
  		dev_err(dev, "dpaa_get_channel() failed\n");
  		err = channel;
@@ -1078,7 +1452,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	 * and add this pool channel to each's dequeue mask.
  	 */
  	dpaa_eth_add_channel(priv->channel);
-@@ -2770,20 +2953,20 @@ static int dpaa_eth_probe(struct platfor
+@@ -2770,20 +3078,20 @@ static int dpaa_eth_probe(struct platfor
  	err = dpaa_eth_cgr_init(priv);
  	if (err < 0) {
  		dev_err(dev, "Error initializing CGR\n");
@@ -1102,7 +1476,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	priv->tx_headroom = dpaa_get_headroom(&priv->buf_layout[TX]);
-@@ -2793,7 +2976,7 @@ static int dpaa_eth_probe(struct platfor
+@@ -2793,7 +3101,7 @@ static int dpaa_eth_probe(struct platfor
  	err = dpaa_eth_init_ports(mac_dev, dpaa_bps, DPAA_BPS_NUM, &port_fqs,
  				  &priv->buf_layout[0], dev);
  	if (err)
@@ -1111,7 +1485,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	/* Rx traffic distribution based on keygen hashing defaults to on */
  	priv->keygen_in_use = true;
-@@ -2802,11 +2985,7 @@ static int dpaa_eth_probe(struct platfor
+@@ -2802,11 +3110,7 @@ static int dpaa_eth_probe(struct platfor
  	if (!priv->percpu_priv) {
  		dev_err(dev, "devm_alloc_percpu() failed\n");
  		err = -ENOMEM;
@@ -1124,7 +1498,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	priv->num_tc = 1;
-@@ -2815,11 +2994,11 @@ static int dpaa_eth_probe(struct platfor
+@@ -2815,11 +3119,11 @@ static int dpaa_eth_probe(struct platfor
  	/* Initialize NAPI */
  	err = dpaa_napi_add(net_dev);
  	if (err < 0)
@@ -1138,7 +1512,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	dpaa_eth_sysfs_init(&net_dev->dev);
  
-@@ -2828,32 +3007,21 @@ static int dpaa_eth_probe(struct platfor
+@@ -2828,32 +3132,21 @@ static int dpaa_eth_probe(struct platfor
  
  	return 0;
  
@@ -1165,7 +1539,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 -fq_probe_failed:
 -dev_mask_failed:
 -mac_probe_failed:
-+free_netdev:
  	dev_set_drvdata(dev, NULL);
  	free_netdev(net_dev);
 -alloc_etherdev_mq_failed:
@@ -1173,11 +1546,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 -		if (atomic_read(&dpaa_bps[i]->refs) == 0)
 -			devm_kfree(dev, dpaa_bps[i]);
 -	}
++probe_err:
 +
  	return err;
  }
  
-@@ -2890,6 +3058,23 @@ static int dpaa_remove(struct platform_d
+@@ -2890,6 +3183,23 @@ static int dpaa_remove(struct platform_d
  	return err;
  }
  
@@ -1201,7 +1575,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  static const struct platform_device_id dpaa_devtype[] = {
  	{
  		.name = "dpaa-ethernet",
-@@ -2914,6 +3099,10 @@ static int __init dpaa_load(void)
+@@ -2914,6 +3224,10 @@ static int __init dpaa_load(void)
  
  	pr_debug("FSL DPAA Ethernet driver\n");
  
@@ -1212,9 +1586,31 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	/* initialize dpaa_eth mirror values */
  	dpaa_rx_extra_headroom = fman_get_rx_extra_headroom();
  	dpaa_max_frm = fman_get_max_frm();
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.h
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.h
+@@ -182,6 +182,9 @@ struct dpaa_priv {
+ 
+ 	struct dpaa_buffer_layout buf_layout[2];
+ 	u16 rx_headroom;
++
++	bool tx_tstamp; /* Tx timestamping enabled */
++	bool rx_tstamp; /* Rx timestamping enabled */
+ };
+ 
+ /* from dpaa_ethtool.c */
 --- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
 +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -344,7 +344,7 @@ static void dpaa_get_ethtool_stats(struc
+@@ -32,6 +32,9 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <linux/string.h>
++#include <linux/of_platform.h>
++#include <linux/net_tstamp.h>
++#include <linux/fsl/ptp_qoriq.h>
+ 
+ #include "dpaa_eth.h"
+ #include "mac.h"
+@@ -344,7 +347,7 @@ static void dpaa_get_ethtool_stats(struc
  
  	/* gather congestion related counters */
  	cg_num    = 0;
@@ -1223,6 +1619,54 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	cg_time   = jiffies_to_msecs(priv->cgr_data.congested_jiffies);
  	if (qman_query_cgr_congested(&priv->cgr_data.cgr, &cg_status) == 0) {
  		cg_num    = priv->cgr_data.cgr_congested_count;
+@@ -515,6 +518,41 @@ static int dpaa_set_rxnfc(struct net_dev
+ 	return ret;
+ }
+ 
++static int dpaa_get_ts_info(struct net_device *net_dev,
++			    struct ethtool_ts_info *info)
++{
++	struct device *dev = net_dev->dev.parent;
++	struct device_node *mac_node = dev->of_node;
++	struct device_node *fman_node = NULL, *ptp_node = NULL;
++	struct platform_device *ptp_dev = NULL;
++	struct qoriq_ptp *ptp = NULL;
++
++	info->phc_index = -1;
++
++	fman_node = of_get_parent(mac_node);
++	if (fman_node)
++		ptp_node = of_parse_phandle(fman_node, "ptimer-handle", 0);
++
++	if (ptp_node)
++		ptp_dev = of_find_device_by_node(ptp_node);
++
++	if (ptp_dev)
++		ptp = platform_get_drvdata(ptp_dev);
++
++	if (ptp)
++		info->phc_index = ptp->phc_index;
++
++	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
++				SOF_TIMESTAMPING_RX_HARDWARE |
++				SOF_TIMESTAMPING_RAW_HARDWARE;
++	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
++			 (1 << HWTSTAMP_TX_ON);
++	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
++			   (1 << HWTSTAMP_FILTER_ALL);
++
++	return 0;
++}
++
+ const struct ethtool_ops dpaa_ethtool_ops = {
+ 	.get_drvinfo = dpaa_get_drvinfo,
+ 	.get_msglevel = dpaa_get_msglevel,
+@@ -530,4 +568,5 @@ const struct ethtool_ops dpaa_ethtool_op
+ 	.set_link_ksettings = dpaa_set_link_ksettings,
+ 	.get_rxnfc = dpaa_get_rxnfc,
+ 	.set_rxnfc = dpaa_set_rxnfc,
++	.get_ts_info = dpaa_get_ts_info,
+ };
 --- a/drivers/net/ethernet/freescale/fman/Kconfig
 +++ b/drivers/net/ethernet/freescale/fman/Kconfig
 @@ -2,7 +2,6 @@ config FSL_FMAN
@@ -1252,12 +1696,141 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +fsl_dpaa_fman-objs	:= fman_muram.o fman.o fman_sp.o fman_keygen.o
 +fsl_dpaa_fman_port-objs := fman_port.o
 +fsl_dpaa_mac-objs:= mac.o fman_dtsec.o fman_memac.o fman_tgec.o
---- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-@@ -1117,6 +1117,25 @@ int dtsec_add_hash_mac_address(struct fm
- 	return 0;
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -629,6 +629,7 @@ static void set_port_order_restoration(s
+ 	iowrite32be(tmp, &fpm_rg->fmfp_prc);
  }
  
++#ifdef CONFIG_PPC
+ static void set_port_liodn(struct fman *fman, u8 port_id,
+ 			   u32 liodn_base, u32 liodn_ofst)
+ {
+@@ -646,6 +647,27 @@ static void set_port_liodn(struct fman *
+ 	iowrite32be(tmp, &fman->dma_regs->fmdmplr[port_id / 2]);
+ 	iowrite32be(liodn_ofst, &fman->bmi_regs->fmbm_spliodn[port_id - 1]);
+ }
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++static void save_restore_port_icids(struct fman *fman, bool save)
++{
++	int port_idxes[] = {
++		0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa, 0xb, 0xc,
++		0xd, 0xe, 0xf, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
++		0x10, 0x11, 0x30, 0x31
++	};
++	int idx, i;
++
++	for (i = 0; i < ARRAY_SIZE(port_idxes); i++) {
++		idx = port_idxes[i];
++		if (save)
++			fman->sp_icids[idx] =
++				ioread32be(&fman->bmi_regs->fmbm_spliodn[idx]);
++		else
++			iowrite32be(fman->sp_icids[idx],
++				    &fman->bmi_regs->fmbm_spliodn[idx]);
++	}
++}
++#endif
+ 
+ static void enable_rams_ecc(struct fman_fpm_regs __iomem *fpm_rg)
+ {
+@@ -1914,7 +1936,10 @@ _return:
+ static int fman_init(struct fman *fman)
+ {
+ 	struct fman_cfg *cfg = NULL;
+-	int err = 0, i, count;
++	int err = 0, count;
++#ifdef CONFIG_PPC
++	int i;
++#endif
+ 
+ 	if (is_init_done(fman->cfg))
+ 		return -EINVAL;
+@@ -1934,6 +1959,7 @@ static int fman_init(struct fman *fman)
+ 	memset_io((void __iomem *)(fman->base_addr + CGP_OFFSET), 0,
+ 		  fman->state->fm_port_num_of_cg);
+ 
++#ifdef CONFIG_PPC
+ 	/* Save LIODN info before FMan reset
+ 	 * Skipping non-existent port 0 (i = 1)
+ 	 */
+@@ -1953,6 +1979,9 @@ static int fman_init(struct fman *fman)
+ 		}
+ 		fman->liodn_base[i] = liodn_base;
+ 	}
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	save_restore_port_icids(fman, true);
++#endif
+ 
+ 	err = fman_reset(fman);
+ 	if (err)
+@@ -2181,8 +2210,12 @@ int fman_set_port_params(struct fman *fm
+ 	if (err)
+ 		goto return_err;
+ 
++#ifdef CONFIG_PPC
+ 	set_port_liodn(fman, port_id, fman->liodn_base[port_id],
+ 		       fman->liodn_offset[port_id]);
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	save_restore_port_icids(fman, false);
++#endif
+ 
+ 	if (fman->state->rev_info.major < 6)
+ 		set_port_order_restoration(fman->fpm_regs, port_id);
+@@ -2800,7 +2833,8 @@ static struct fman *read_dts_node(struct
+ 
+ 	of_node_put(muram_node);
+ 
+-	err = devm_request_irq(&of_dev->dev, irq, fman_irq, 0, "fman", fman);
++	err = devm_request_irq(&of_dev->dev, irq, fman_irq, IRQF_SHARED,
++			       "fman", fman);
+ 	if (err < 0) {
+ 		dev_err(&of_dev->dev, "%s: irq %d allocation failed (error = %d)\n",
+ 			__func__, irq, err);
+--- a/drivers/net/ethernet/freescale/fman/fman.h
++++ b/drivers/net/ethernet/freescale/fman/fman.h
+@@ -41,6 +41,7 @@
+ /* Frame queue Context Override */
+ #define FM_FD_CMD_FCO                   0x80000000
+ #define FM_FD_CMD_RPD                   0x40000000  /* Read Prepended Data */
++#define FM_FD_CMD_UPD			0x20000000  /* Update Prepended Data */
+ #define FM_FD_CMD_DTC                   0x10000000  /* Do L4 Checksum */
+ 
+ /* TX-Port: Unsupported Format */
+@@ -345,8 +346,12 @@ struct fman {
+ 	unsigned long fifo_offset;
+ 	size_t fifo_size;
+ 
++#ifdef CONFIG_PPC
+ 	u32 liodn_base[64];
+ 	u32 liodn_offset[64];
++#elif defined(CONFIG_ARM) || defined(CONFIG_ARM64)
++	u32 sp_icids[64];
++#endif
+ 
+ 	struct fman_dts_params dts_params;
+ };
+--- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
++++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
+@@ -123,11 +123,13 @@
+ #define DTSEC_ECNTRL_R100M		0x00000008
+ #define DTSEC_ECNTRL_QSGMIIM		0x00000001
+ 
++#define TCTRL_TTSE			0x00000040
+ #define TCTRL_GTS			0x00000020
+ 
+ #define RCTRL_PAL_MASK			0x001f0000
+ #define RCTRL_PAL_SHIFT			16
+ #define RCTRL_GHTX			0x00000400
++#define RCTRL_RTSE			0x00000040
+ #define RCTRL_GRS			0x00000020
+ #define RCTRL_MPROM			0x00000008
+ #define RCTRL_RSF			0x00000004
+@@ -1116,6 +1118,50 @@ int dtsec_add_hash_mac_address(struct fm
+ 
+ 	return 0;
+ }
++
 +int dtsec_set_allmulti(struct fman_mac *dtsec, bool enable)
 +{
 +	u32 tmp;
@@ -1277,16 +1850,41 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	return 0;
 +}
 +
++int dtsec_set_tstamp(struct fman_mac *dtsec, bool enable)
++{
++	struct dtsec_regs __iomem *regs = dtsec->regs;
++	u32 rctrl, tctrl;
++
++	if (!is_init_done(dtsec->dtsec_drv_param))
++		return -EINVAL;
++
++	rctrl = ioread32be(&regs->rctrl);
++	tctrl = ioread32be(&regs->tctrl);
++
++	if (enable) {
++		rctrl |= RCTRL_RTSE;
++		tctrl |= TCTRL_TTSE;
++	} else {
++		rctrl &= ~RCTRL_RTSE;
++		tctrl &= ~TCTRL_TTSE;
++	}
++
++	iowrite32be(rctrl, &regs->rctrl);
++	iowrite32be(tctrl, &regs->tctrl);
++
++	return 0;
++}
+ 
  int dtsec_del_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr)
  {
- 	struct dtsec_regs __iomem *regs = dtsec->regs;
 --- a/drivers/net/ethernet/freescale/fman/fman_dtsec.h
 +++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.h
-@@ -55,5 +55,6 @@ int dtsec_set_exception(struct fman_mac
+@@ -55,5 +55,7 @@ int dtsec_set_exception(struct fman_mac
  int dtsec_add_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr);
  int dtsec_del_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr);
  int dtsec_get_version(struct fman_mac *dtsec, u32 *mac_version);
 +int dtsec_set_allmulti(struct fman_mac *dtsec, bool enable);
++int dtsec_set_tstamp(struct fman_mac *dtsec, bool enable);
  
  #endif /* __DTSEC_H */
 --- a/drivers/net/ethernet/freescale/fman/fman_memac.c
@@ -1299,7 +1897,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  };
  
  static void add_addr_in_paddr(struct memac_regs __iomem *regs, u8 *adr,
-@@ -940,6 +941,29 @@ int memac_add_hash_mac_address(struct fm
+@@ -940,6 +941,34 @@ int memac_add_hash_mac_address(struct fm
  	return 0;
  }
  
@@ -1326,10 +1924,15 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	return 0;
 +}
 +
++int memac_set_tstamp(struct fman_mac *memac, bool enable)
++{
++	return 0; /* Always enabled. */
++}
++
  int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr)
  {
  	struct memac_regs __iomem *regs = memac->regs;
-@@ -963,8 +987,12 @@ int memac_del_hash_mac_address(struct fm
+@@ -963,8 +992,12 @@ int memac_del_hash_mac_address(struct fm
  			break;
  		}
  	}
@@ -1346,11 +1949,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  }
 --- a/drivers/net/ethernet/freescale/fman/fman_memac.h
 +++ b/drivers/net/ethernet/freescale/fman/fman_memac.h
-@@ -57,5 +57,6 @@ int memac_set_exception(struct fman_mac
+@@ -57,5 +57,7 @@ int memac_set_exception(struct fman_mac
  			enum fman_mac_exceptions exception, bool enable);
  int memac_add_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr);
  int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr);
 +int memac_set_allmulti(struct fman_mac *memac, bool enable);
++int memac_set_tstamp(struct fman_mac *memac, bool enable);
  
  #endif /* __MEMAC_H */
 --- a/drivers/net/ethernet/freescale/fman/fman_port.c
@@ -1366,9 +1970,70 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	default:
  		set_dflt_cfg(port, params);
  	}
+@@ -1728,6 +1730,20 @@ u32 fman_port_get_qman_channel_id(struct
+ }
+ EXPORT_SYMBOL(fman_port_get_qman_channel_id);
+ 
++/**
++ * fman_port_get_device
++ * port:	Pointer to the FMan port device
++ *
++ * Get the 'struct device' associated to the specified FMan port device
++ *
++ * Return: pointer to associated 'struct device'
++ */
++struct device *fman_port_get_device(struct fman_port *port)
++{
++	return port->dev;
++}
++EXPORT_SYMBOL(fman_port_get_device);
++
+ int fman_port_get_hash_result_offset(struct fman_port *port, u32 *offset)
+ {
+ 	if (port->buffer_offsets.hash_result_offset == ILLEGAL_BASE)
+@@ -1739,6 +1755,18 @@ int fman_port_get_hash_result_offset(str
+ }
+ EXPORT_SYMBOL(fman_port_get_hash_result_offset);
+ 
++int fman_port_get_tstamp(struct fman_port *port, const void *data, u64 *tstamp)
++{
++	if (port->buffer_offsets.time_stamp_offset == ILLEGAL_BASE)
++		return -EINVAL;
++
++	*tstamp = be64_to_cpu(*(__be64 *)(data +
++			port->buffer_offsets.time_stamp_offset));
++
++	return 0;
++}
++EXPORT_SYMBOL(fman_port_get_tstamp);
++
+ static int fman_port_probe(struct platform_device *of_dev)
+ {
+ 	struct fman_port *port;
+--- a/drivers/net/ethernet/freescale/fman/fman_port.h
++++ b/drivers/net/ethernet/freescale/fman/fman_port.h
+@@ -153,6 +153,10 @@ u32 fman_port_get_qman_channel_id(struct
+ 
+ int fman_port_get_hash_result_offset(struct fman_port *port, u32 *offset);
+ 
++int fman_port_get_tstamp(struct fman_port *port, const void *data, u64 *tstamp);
++
+ struct fman_port *fman_port_bind(struct device *dev);
+ 
++struct device *fman_port_get_device(struct fman_port *port);
++
+ #endif /* __FMAN_PORT_H */
 --- a/drivers/net/ethernet/freescale/fman/fman_tgec.c
 +++ b/drivers/net/ethernet/freescale/fman/fman_tgec.c
-@@ -217,6 +217,7 @@ struct fman_mac {
+@@ -44,6 +44,7 @@
+ #define TGEC_TX_IPG_LENGTH_MASK	0x000003ff
+ 
+ /* Command and Configuration Register (COMMAND_CONFIG) */
++#define CMD_CFG_EN_TIMESTAMP		0x00100000
+ #define CMD_CFG_NO_LEN_CHK		0x00020000
+ #define CMD_CFG_PAUSE_IGNORE		0x00000100
+ #define CMF_CFG_CRC_FWD			0x00000040
+@@ -217,6 +218,7 @@ struct fman_mac {
  	struct tgec_cfg *cfg;
  	void *fm;
  	struct fman_rev_info fm_rev_info;
@@ -1376,7 +2041,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  };
  
  static void set_mac_address(struct tgec_regs __iomem *regs, u8 *adr)
-@@ -564,6 +565,29 @@ int tgec_add_hash_mac_address(struct fma
+@@ -564,6 +566,49 @@ int tgec_add_hash_mac_address(struct fma
  	return 0;
  }
  
@@ -1403,10 +2068,30 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	return 0;
 +}
 +
++int tgec_set_tstamp(struct fman_mac *tgec, bool enable)
++{
++	struct tgec_regs __iomem *regs = tgec->regs;
++	u32 tmp;
++
++	if (!is_init_done(tgec->cfg))
++		return -EINVAL;
++
++	tmp = ioread32be(&regs->command_config);
++
++	if (enable)
++		tmp |= CMD_CFG_EN_TIMESTAMP;
++	else
++		tmp &= ~CMD_CFG_EN_TIMESTAMP;
++
++	iowrite32be(tmp, &regs->command_config);
++
++	return 0;
++}
++
  int tgec_del_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr)
  {
  	struct tgec_regs __iomem *regs = tgec->regs;
-@@ -591,9 +615,12 @@ int tgec_del_hash_mac_address(struct fma
+@@ -591,9 +636,12 @@ int tgec_del_hash_mac_address(struct fma
  			break;
  		}
  	}
@@ -1424,11 +2109,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  }
 --- a/drivers/net/ethernet/freescale/fman/fman_tgec.h
 +++ b/drivers/net/ethernet/freescale/fman/fman_tgec.h
-@@ -51,5 +51,6 @@ int tgec_set_exception(struct fman_mac *
+@@ -51,5 +51,7 @@ int tgec_set_exception(struct fman_mac *
  int tgec_add_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr);
  int tgec_del_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr);
  int tgec_get_version(struct fman_mac *tgec, u32 *mac_version);
 +int tgec_set_allmulti(struct fman_mac *tgec, bool enable);
++int tgec_set_tstamp(struct fman_mac *tgec, bool enable);
  
  #endif /* __TGEC_H */
 --- a/drivers/net/ethernet/freescale/fman/mac.c
@@ -1551,11 +2237,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	mac_dev->init			= dtsec_initialization;
  	mac_dev->set_promisc		= dtsec_set_promiscuous;
  	mac_dev->change_addr		= dtsec_modify_mac_address;
-@@ -525,17 +470,17 @@ static void setup_dtsec(struct mac_devic
+@@ -525,17 +470,18 @@ static void setup_dtsec(struct mac_devic
  	mac_dev->set_tx_pause		= dtsec_set_tx_pause_frames;
  	mac_dev->set_rx_pause		= dtsec_accept_rx_pause_frames;
  	mac_dev->set_exception		= dtsec_set_exception;
 +	mac_dev->set_allmulti		= dtsec_set_allmulti;
++	mac_dev->set_tstamp		= dtsec_set_tstamp;
  	mac_dev->set_multi		= set_multi;
  	mac_dev->start			= start;
  	mac_dev->stop			= stop;
@@ -1571,11 +2258,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	mac_dev->init			= tgec_initialization;
  	mac_dev->set_promisc		= tgec_set_promiscuous;
  	mac_dev->change_addr		= tgec_modify_mac_address;
-@@ -544,17 +489,17 @@ static void setup_tgec(struct mac_device
+@@ -544,17 +490,18 @@ static void setup_tgec(struct mac_device
  	mac_dev->set_tx_pause		= tgec_set_tx_pause_frames;
  	mac_dev->set_rx_pause		= tgec_accept_rx_pause_frames;
  	mac_dev->set_exception		= tgec_set_exception;
 +	mac_dev->set_allmulti		= tgec_set_allmulti;
++	mac_dev->set_tstamp		= tgec_set_tstamp;
  	mac_dev->set_multi		= set_multi;
  	mac_dev->start			= start;
  	mac_dev->stop			= stop;
@@ -1591,11 +2279,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	mac_dev->init			= memac_initialization;
  	mac_dev->set_promisc		= memac_set_promiscuous;
  	mac_dev->change_addr		= memac_modify_mac_address;
-@@ -563,10 +508,11 @@ static void setup_memac(struct mac_devic
+@@ -563,10 +510,12 @@ static void setup_memac(struct mac_devic
  	mac_dev->set_tx_pause		= memac_set_tx_pause_frames;
  	mac_dev->set_rx_pause		= memac_accept_rx_pause_frames;
  	mac_dev->set_exception		= memac_set_exception;
 +	mac_dev->set_allmulti		= memac_set_allmulti;
++	mac_dev->set_tstamp		= memac_set_tstamp;
  	mac_dev->set_multi		= set_multi;
  	mac_dev->start			= start;
  	mac_dev->stop			= stop;
@@ -1604,7 +2293,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	mac_dev->priv->enable		= memac_enable;
  	mac_dev->priv->disable		= memac_disable;
  }
-@@ -599,8 +545,7 @@ static const u16 phy2speed[] = {
+@@ -599,8 +548,7 @@ static const u16 phy2speed[] = {
  };
  
  static struct platform_device *dpaa_eth_add_device(int fman_id,
@@ -1614,7 +2303,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  {
  	struct platform_device *pdev;
  	struct dpaa_eth_data data;
-@@ -613,19 +558,15 @@ static struct platform_device *dpaa_eth_
+@@ -613,19 +561,15 @@ static struct platform_device *dpaa_eth_
  	data.mac_dev = mac_dev;
  	data.mac_hw_id = priv->cell_index;
  	data.fman_hw_id = fman_id;
@@ -1634,7 +2323,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	ret = platform_device_add_data(pdev, &data, sizeof(data));
  	if (ret)
-@@ -676,7 +617,6 @@ static int mac_probe(struct platform_dev
+@@ -676,7 +620,6 @@ static int mac_probe(struct platform_dev
  	mac_dev = devm_kzalloc(dev, sizeof(*mac_dev), GFP_KERNEL);
  	if (!mac_dev) {
  		err = -ENOMEM;
@@ -1642,7 +2331,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		goto _return;
  	}
  	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -706,9 +646,6 @@ static int mac_probe(struct platform_dev
+@@ -706,9 +649,6 @@ static int mac_probe(struct platform_dev
  		goto _return;
  	}
  
@@ -1652,7 +2341,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	INIT_LIST_HEAD(&priv->mc_addr_list);
  
  	/* Get the FM node */
-@@ -717,7 +654,7 @@ static int mac_probe(struct platform_dev
+@@ -717,7 +657,7 @@ static int mac_probe(struct platform_dev
  		dev_err(dev, "of_get_parent(%pOF) failed\n",
  			mac_node);
  		err = -EINVAL;
@@ -1661,7 +2350,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	of_dev = of_find_device_by_node(dev_node);
-@@ -751,7 +688,7 @@ static int mac_probe(struct platform_dev
+@@ -751,7 +691,7 @@ static int mac_probe(struct platform_dev
  	if (err < 0) {
  		dev_err(dev, "of_address_to_resource(%pOF) = %d\n",
  			mac_node, err);
@@ -1670,7 +2359,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	mac_dev->res = __devm_request_region(dev,
-@@ -761,7 +698,7 @@ static int mac_probe(struct platform_dev
+@@ -761,7 +701,7 @@ static int mac_probe(struct platform_dev
  	if (!mac_dev->res) {
  		dev_err(dev, "__devm_request_mem_region(mac) failed\n");
  		err = -EBUSY;
@@ -1679,7 +2368,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	priv->vaddr = devm_ioremap(dev, mac_dev->res->start,
-@@ -769,16 +706,12 @@ static int mac_probe(struct platform_dev
+@@ -769,16 +709,12 @@ static int mac_probe(struct platform_dev
  	if (!priv->vaddr) {
  		dev_err(dev, "devm_ioremap() failed\n");
  		err = -EIO;
@@ -1699,7 +2388,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	/* Get the cell-index */
-@@ -786,7 +719,7 @@ static int mac_probe(struct platform_dev
+@@ -786,7 +722,7 @@ static int mac_probe(struct platform_dev
  	if (err) {
  		dev_err(dev, "failed to read cell-index for %pOF\n", mac_node);
  		err = -EINVAL;
@@ -1708,7 +2397,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  	priv->cell_index = (u8)val;
  
-@@ -795,7 +728,7 @@ static int mac_probe(struct platform_dev
+@@ -795,7 +731,7 @@ static int mac_probe(struct platform_dev
  	if (!mac_addr) {
  		dev_err(dev, "of_get_mac_address(%pOF) failed\n", mac_node);
  		err = -EINVAL;
@@ -1717,7 +2406,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  	memcpy(mac_dev->addr, mac_addr, sizeof(mac_dev->addr));
  
-@@ -805,14 +738,14 @@ static int mac_probe(struct platform_dev
+@@ -805,14 +741,14 @@ static int mac_probe(struct platform_dev
  		dev_err(dev, "of_count_phandle_with_args(%pOF, fsl,fman-ports) failed\n",
  			mac_node);
  		err = nph;
@@ -1734,7 +2423,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	for (i = 0; i < ARRAY_SIZE(mac_dev->port); i++) {
-@@ -851,13 +784,13 @@ static int mac_probe(struct platform_dev
+@@ -851,13 +787,13 @@ static int mac_probe(struct platform_dev
  			 mac_node);
  		phy_if = PHY_INTERFACE_MODE_SGMII;
  	}
@@ -1751,7 +2440,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		mac_dev->if_support &= ~(SUPPORTED_10baseT_Half |
  					SUPPORTED_100baseT_Half);
  
-@@ -866,30 +799,31 @@ static int mac_probe(struct platform_dev
+@@ -866,30 +802,31 @@ static int mac_probe(struct platform_dev
  		mac_dev->if_support |= SUPPORTED_1000baseT_Full;
  
  	/* The 10G interface only supports one mode */
@@ -1791,7 +2480,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  		}
  
  		priv->fixed_link->link = phy->link;
-@@ -904,8 +838,8 @@ static int mac_probe(struct platform_dev
+@@ -904,8 +841,8 @@ static int mac_probe(struct platform_dev
  	err = mac_dev->init(mac_dev);
  	if (err < 0) {
  		dev_err(dev, "mac_dev->init() = %d\n", err);
@@ -1802,7 +2491,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	}
  
  	/* pause frame autonegotiation enabled */
-@@ -926,7 +860,7 @@ static int mac_probe(struct platform_dev
+@@ -926,7 +863,7 @@ static int mac_probe(struct platform_dev
  		 mac_dev->addr[0], mac_dev->addr[1], mac_dev->addr[2],
  		 mac_dev->addr[3], mac_dev->addr[4], mac_dev->addr[5]);
  
@@ -1811,7 +2500,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	if (IS_ERR(priv->eth_dev)) {
  		dev_err(dev, "failed to add Ethernet platform device for MAC %d\n",
  			priv->cell_index);
-@@ -937,9 +871,8 @@ static int mac_probe(struct platform_dev
+@@ -937,9 +874,8 @@ static int mac_probe(struct platform_dev
  
  _return_of_node_put:
  	of_node_put(dev_node);
@@ -1833,7 +2522,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  
  	bool autoneg_pause;
  	bool rx_pause_req;
-@@ -57,14 +59,15 @@ struct mac_device {
+@@ -57,14 +59,16 @@ struct mac_device {
  	bool rx_pause_active;
  	bool tx_pause_active;
  	bool promisc;
@@ -1848,10 +2537,11 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	int (*set_promisc)(struct fman_mac *mac_dev, bool enable);
  	int (*change_addr)(struct fman_mac *mac_dev, enet_addr_t *enet_addr);
 +	int (*set_allmulti)(struct fman_mac *mac_dev, bool enable);
++	int (*set_tstamp)(struct fman_mac *mac_dev, bool enable);
  	int (*set_multi)(struct net_device *net_dev,
  			 struct mac_device *mac_dev);
  	int (*set_rx_pause)(struct fman_mac *mac_dev, bool en);
-@@ -82,7 +85,6 @@ struct mac_device {
+@@ -82,7 +86,6 @@ struct mac_device {
  };
  
  struct dpaa_eth_data {
@@ -1861,7 +2551,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
  	int fman_hw_id;
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/Kconfig
-@@ -0,0 +1,195 @@
+@@ -0,0 +1,184 @@
 +menuconfig FSL_SDK_DPAA_ETH
 +	tristate "DPAA Ethernet"
 +	depends on (FSL_SOC || ARM64 || ARM) && FSL_SDK_BMAN && FSL_SDK_QMAN && FSL_SDK_FMAN && !FSL_DPAA_ETH
@@ -1888,7 +2578,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	hex "CEETM egress congestion threshold on 1G ports"
 +	depends on FSL_DPAA_CEETM
 +	range 0x1000 0x10000000
-+	default "0x000a0000"
++	default "0x00005000"
 +	help
 +	  The size in bytes of the CEETM egress Class Congestion State threshold on 1G ports.
 +	  The threshold needs to be configured keeping in mind the following factors:
@@ -1902,7 +2592,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	hex "CEETM egress congestion threshold on 10G ports"
 +	depends on FSL_DPAA_CEETM
 +	range 0x1000 0x20000000
-+	default "0x00640000"
++	default "0x00032000"
 +	help
 +	  The size in bytes of the CEETM egress Class Congestion State threshold on 10G ports.
 +	  See FSL_DPAA_CEETM_CCS_THRESHOLD_1G for details.
@@ -1959,17 +2649,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +        default n
 +        help
 +         Enable IEEE1588 support code.
-+
-+config FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
-+	bool "Use driver's Tx queue selection mechanism"
-+	default y
-+	depends on FSL_SDK_DPAA_ETH
-+	help
-+	  The DPAA-Ethernet driver defines a ndo_select_queue() callback for optimal selection
-+	  of the egress FQ. That will override the XPS support for this netdevice.
-+	  If for whatever reason you want to be in control of the egress FQ-to-CPU selection and mapping,
-+	  or simply don't want to use the driver's ndo_select_queue() callback, then unselect this
-+	  and use the standard XPS support instead.
 +
 +config FSL_DPAA_ETH_MAX_BUF_COUNT
 +	int "Maximum nuber of buffers in private bpool"
@@ -2042,7 +2721,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +config FSL_DPAA_DBG_LOOP
 +	bool "DPAA Ethernet Debug loopback"
-+	depends on FSL_DPAA_ETH_DEBUGFS && FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
++	depends on FSL_DPAA_ETH_DEBUGFS
 +	default n
 +	help
 +	  This option allows to divert all received traffic on a certain interface A towards a
@@ -2059,7 +2738,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +endif # FSL_SDK_DPAA_ETH
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/Makefile
-@@ -0,0 +1,46 @@
+@@ -0,0 +1,45 @@
 +#
 +# Makefile for the Freescale Ethernet controllers
 +#
@@ -2071,7 +2750,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +ccflags-y += -I$(NET_DPA)
 +
 +obj-$(CONFIG_FSL_SDK_DPAA_ETH) += fsl_mac.o fsl_dpa.o
-+obj-$(CONFIG_PTP_1588_CLOCK_DPAA) += dpaa_ptp.o
 +
 +fsl_dpa-objs += dpaa_ethtool.o dpaa_eth_sysfs.o dpaa_eth.o dpaa_eth_sg.o dpaa_eth_common.o
 +ifeq ($(CONFIG_FSL_DPAA_DBG_LOOP),y)
@@ -3742,7 +4420,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	.ndo_get_stats64 = dpa_get_stats64,
 +	.ndo_set_mac_address = dpa_set_mac_address,
 +	.ndo_validate_addr = eth_validate_addr,
-+#ifdef CONFIG_FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
++#ifdef CONFIG_FMAN_PFC
 +	.ndo_select_queue = dpa_select_queue,
 +#endif
 +	.ndo_set_rx_mode = dpa_set_rx_mode,
@@ -4287,7 +4965,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +module_exit(dpa_unload);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth.h
-@@ -0,0 +1,691 @@
+@@ -0,0 +1,674 @@
 +/* Copyright 2008-2012 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -4925,33 +5603,15 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	}
 +}
 +
-+#ifdef CONFIG_FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
-+/* Use in lieu of skb_get_queue_mapping() */
 +#ifdef CONFIG_FMAN_PFC
++/* Use in lieu of skb_get_queue_mapping() */
 +#define dpa_get_queue_mapping(skb) \
 +	(((skb)->priority < CONFIG_FMAN_PFC_COS_COUNT) ? \
 +		((skb)->priority * dpa_num_cpus + smp_processor_id()) : \
 +		((CONFIG_FMAN_PFC_COS_COUNT - 1) * \
 +			dpa_num_cpus + smp_processor_id()));
-+
 +#else
-+#define dpa_get_queue_mapping(skb) \
-+	raw_smp_processor_id()
-+#endif
-+#else
-+/* Use the queue selected by XPS */
-+#define dpa_get_queue_mapping(skb) \
-+	skb_get_queue_mapping(skb)
-+#endif
-+
-+#ifdef CONFIG_PTP_1588_CLOCK_DPAA
-+struct ptp_priv_s {
-+	struct device_node *node;
-+	struct platform_device *of_dev;
-+	struct ptp_clock *clock;
-+	struct mac_device *mac_dev;
-+};
-+extern struct ptp_priv_s ptp_priv;
++#define dpa_get_queue_mapping(skb) skb_get_queue_mapping(skb)
 +#endif
 +
 +static inline void _dpa_bp_free_pf(void *addr)
@@ -4961,9 +5621,10 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +/* LS1043A SoC has a HW issue regarding FMan DMA transactions; The issue
 + * manifests itself at high traffic rates when frames cross 4K memory
-+ * boundaries or when they are not aligned to 16 bytes; For the moment, we
-+ * use a SW workaround that realigns frames to 256 bytes. Scatter/Gather
-+ * frames aren't supported on egress.
++ * boundaries, when they are not aligned to 16 bytes or when they have
++ * Scatter/Gather fragments; For the moment, we use a SW workaround that
++ * realigns frames to 256 bytes. Scatter/Gather frames aren't supported
++ * on egress.
 + */
 +
 +#ifndef CONFIG_PPC
@@ -5241,7 +5902,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#endif /* __DPAA_ETH_BASE_H */
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_ceetm.c
-@@ -0,0 +1,2099 @@
+@@ -0,0 +1,2076 @@
 +/* Copyright 2008-2016 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -5930,16 +6591,13 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	/* Validate inputs */
 +	if (sch->parent != TC_H_ROOT) {
-+		pr_err("CEETM: a root ceetm qdisc can not be attached to a class\n");
-+		tcf_block_put(priv->block);
-+		qdisc_class_hash_destroy(&priv->clhash);
++		pr_err("CEETM: a root ceetm qdisc must be root\n");
 +		return -EINVAL;
 +	}
 +
 +	if (!mac_dev) {
 +		pr_err("CEETM: the interface is lacking a mac\n");
-+		err = -EINVAL;
-+		goto err_init_root;
++		return -EINVAL;
 +	}
 +
 +	/* Pre-allocate underlying pfifo qdiscs.
@@ -5956,8 +6614,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +				    sizeof(priv->root.qdiscs[0]),
 +				    GFP_KERNEL);
 +	if (!priv->root.qdiscs) {
-+		err = -ENOMEM;
-+		goto err_init_root;
++		return -ENOMEM;
 +	}
 +
 +	for (i = 0; i < dev->num_tx_queues; i++) {
@@ -5967,10 +6624,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +		qdisc = qdisc_create_dflt(dev_queue, &pfifo_qdisc_ops,
 +					  parent_id);
-+		if (!qdisc) {
-+			err = -ENOMEM;
-+			goto err_init_root;
-+		}
++		if (!qdisc)
++			return -ENOMEM;
 +
 +		priv->root.qdiscs[i] = qdisc;
 +		qdisc->flags |= TCQ_F_ONETXQUEUE;
@@ -5982,8 +6637,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (!priv->root.qstats) {
 +		pr_err(KBUILD_BASENAME " : %s : alloc_percpu() failed\n",
 +		       __func__);
-+		err = -ENOMEM;
-+		goto err_init_root;
++		return -ENOMEM;
 +	}
 +
 +	priv->shaped = qopt->shaped;
@@ -5997,7 +6651,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (err) {
 +		pr_err(KBUILD_BASENAME " : %s : failed to claim the SP\n",
 +		       __func__);
-+		goto err_init_root;
++		return err;
 +	}
 +
 +	priv->root.sp = sp;
@@ -6009,7 +6663,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (err) {
 +		pr_err(KBUILD_BASENAME " : %s : failed to claim the LNI\n",
 +		       __func__);
-+		goto err_init_root;
++		return err;
 +	}
 +
 +	priv->root.lni = lni;
@@ -6018,7 +6672,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (err) {
 +		pr_err(KBUILD_BASENAME " : %s : failed to link the SP and LNI\n",
 +		       __func__);
-+		goto err_init_root;
++		return err;
 +	}
 +
 +	lni->sp = sp;
@@ -6029,7 +6683,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to configure the LNI shaper\n",
 +			       __func__);
-+			goto err_init_root;
++			return err;
 +		}
 +
 +		bps = priv->root.rate << 3; /* Bps -> bps */
@@ -6037,7 +6691,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to configure the LNI shaper\n",
 +			       __func__);
-+			goto err_init_root;
++			return err;
 +		}
 +
 +		bps = priv->root.ceil << 3; /* Bps -> bps */
@@ -6045,7 +6699,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to configure the LNI shaper\n",
 +			       __func__);
-+			goto err_init_root;
++			return err;
 +		}
 +	}
 +
@@ -6053,10 +6707,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	dpa_enable_ceetm(dev);
 +	return 0;
-+
-+err_init_root:
-+	ceetm_destroy(sch);
-+	return err;
 +}
 +
 +/* Configure a prio ceetm qdisc */
@@ -6073,15 +6723,13 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	if (sch->parent == TC_H_ROOT) {
 +		pr_err("CEETM: a prio ceetm qdisc can not be root\n");
-+		err = -EINVAL;
-+		goto err_init_prio;
++		return -EINVAL;
 +	}
 +
 +	parent_qdisc = qdisc_lookup(dev, TC_H_MAJ(sch->parent));
 +	if (strcmp(parent_qdisc->ops->id, ceetm_qdisc_ops.id)) {
 +		pr_err("CEETM: a ceetm qdisc can not be attached to other qdisc/class types\n");
-+		err = -EINVAL;
-+		goto err_init_prio;
++		return -EINVAL;
 +	}
 +
 +	/* Obtain the parent root ceetm_class */
@@ -6089,8 +6737,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	if (!parent_cl || parent_cl->type != CEETM_ROOT) {
 +		pr_err("CEETM: a prio ceetm qdiscs can be added only under a root ceetm class\n");
-+		err = -EINVAL;
-+		goto err_init_prio;
++		return -EINVAL;
 +	}
 +
 +	priv->prio.parent = parent_cl;
@@ -6106,8 +6753,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (!child_cl) {
 +			pr_err(KBUILD_BASENAME " : %s : kzalloc() failed\n",
 +			       __func__);
-+			err = -ENOMEM;
-+			goto err_init_prio;
++			return -ENOMEM;
 +		}
 +
 +		child_cl->prio.cstats = alloc_percpu(struct ceetm_class_stats);
@@ -6150,8 +6796,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +err_init_prio_cls:
 +	ceetm_cls_destroy(sch, child_cl);
-+err_init_prio:
-+	ceetm_destroy(sch);
++	/* Note: ceetm_destroy() will be called by our caller */
 +	return err;
 +}
 +
@@ -6171,16 +6816,14 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	/* Validate inputs */
 +	if (sch->parent == TC_H_ROOT) {
 +		pr_err("CEETM: a wbfs ceetm qdiscs can not be root\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	/* Obtain the parent prio ceetm qdisc */
 +	parent_qdisc = qdisc_lookup(dev, TC_H_MAJ(sch->parent));
 +	if (strcmp(parent_qdisc->ops->id, ceetm_qdisc_ops.id)) {
 +		pr_err("CEETM: a ceetm qdisc can not be attached to other qdisc/class types\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	/* Obtain the parent prio ceetm class */
@@ -6189,28 +6832,24 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	if (!parent_cl || parent_cl->type != CEETM_PRIO) {
 +		pr_err("CEETM: a wbfs ceetm qdiscs can be added only under a prio ceetm class\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	if (!qopt->qcount || !qopt->qweight[0]) {
 +		pr_err("CEETM: qcount and qweight are mandatory for a wbfs ceetm qdisc\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	priv->shaped = parent_cl->shaped;
 +
 +	if (!priv->shaped && (qopt->cr || qopt->er)) {
 +		pr_err("CEETM: CR/ER can be enabled only for shaped wbfs ceetm qdiscs\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	if (priv->shaped && !(qopt->cr || qopt->er)) {
 +		pr_err("CEETM: either CR or ER must be enabled for shaped wbfs ceetm qdiscs\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	/* Obtain the parent root ceetm class */
@@ -6218,16 +6857,14 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if ((root_cl->root.wbfs_grp_a && root_cl->root.wbfs_grp_b) ||
 +	    root_cl->root.wbfs_grp_large) {
 +		pr_err("CEETM: no more wbfs classes are available\n");
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	if ((root_cl->root.wbfs_grp_a || root_cl->root.wbfs_grp_b) &&
 +	    qopt->qcount == CEETM_MAX_WBFS_QCOUNT) {
 +		pr_err("CEETM: only %d wbfs classes are available\n",
 +		       CEETM_MIN_WBFS_QCOUNT);
-+		err = -EINVAL;
-+		goto err_init_wbfs;
++		return -EINVAL;
 +	}
 +
 +	priv->wbfs.parent = parent_cl;
@@ -6256,7 +6893,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to get group details\n",
 +			       __func__);
-+			goto err_init_wbfs;
++			return err;
 +		}
 +
 +		small_group = true;
@@ -6274,7 +6911,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to get group details\n",
 +			       __func__);
-+			goto err_init_wbfs;
++			return err;
 +		}
 +
 +		small_group = true;
@@ -6287,7 +6924,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	err = qman_ceetm_channel_set_group(priv->wbfs.ch, small_group, prio_a,
 +					   prio_b);
 +	if (err)
-+		goto err_init_wbfs;
++		return err;
 +
 +	if (priv->shaped) {
 +		err = qman_ceetm_channel_set_group_cr_eligibility(priv->wbfs.ch,
@@ -6296,7 +6933,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to set group CR eligibility\n",
 +			       __func__);
-+			goto err_init_wbfs;
++			return err;
 +		}
 +
 +		err = qman_ceetm_channel_set_group_er_eligibility(priv->wbfs.ch,
@@ -6305,7 +6942,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (err) {
 +			pr_err(KBUILD_BASENAME " : %s : failed to set group ER eligibility\n",
 +			       __func__);
-+			goto err_init_wbfs;
++			return err;
 +		}
 +	}
 +
@@ -6315,8 +6952,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		if (!child_cl) {
 +			pr_err(KBUILD_BASENAME " : %s : kzalloc() failed\n",
 +			       __func__);
-+			err = -ENOMEM;
-+			goto err_init_wbfs;
++			return -ENOMEM;
 +		}
 +
 +		child_cl->wbfs.cstats = alloc_percpu(struct ceetm_class_stats);
@@ -6373,8 +7009,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +err_init_wbfs_cls:
 +	ceetm_cls_destroy(sch, child_cl);
-+err_init_wbfs:
-+	ceetm_destroy(sch);
++	/* Note: ceetm_destroy() will be called by our caller */
 +	return err;
 +}
 +
@@ -6444,7 +7079,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		break;
 +	default:
 +		pr_err(KBUILD_BASENAME " : %s : invalid qdisc\n", __func__);
-+		ceetm_destroy(sch);
++		/* Note: ceetm_destroy() will be called by our caller */
 +		ret = -EINVAL;
 +	}
 +
@@ -6789,7 +7424,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	}
 +
 +	if (!cl && priv->type != CEETM_ROOT) {
-+		pr_err("CEETM: only root ceetm classes can be attached to the root ceetm qdisc\n");
++		pr_err("CEETM: root ceetm classes can be attached to the root ceetm qdisc only\n");
 +		return -EINVAL;
 +	}
 +
@@ -7246,7 +7881,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +int __hot ceetm_tx(struct sk_buff *skb, struct net_device *net_dev)
 +{
-+	const int queue_mapping = dpa_get_queue_mapping(skb);
++	int queue_mapping = dpa_get_queue_mapping(skb);
 +	struct Qdisc *sch = net_dev->qdisc;
 +	struct ceetm_class_stats *cstats;
 +	struct ceetm_qdisc_stats *qstats;
@@ -7279,6 +7914,9 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		qstats->drops++;
 +		goto drop;
 +	}
++
++	if (unlikely(queue_mapping >= DPAA_ETH_TX_QUEUES))
++		queue_mapping = queue_mapping % DPAA_ETH_TX_QUEUES;
 +
 +	priv_dpa = netdev_priv(net_dev);
 +	conf_fq = priv_dpa->conf_fqs[queue_mapping];
@@ -7587,7 +8225,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#endif
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_common.c
-@@ -0,0 +1,1776 @@
+@@ -0,0 +1,1745 @@
 +/* Copyright 2008-2013 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -7644,10 +8282,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +/* Size in bytes of the FQ taildrop threshold */
 +#define DPA_FQ_TD		0x200000
-+
-+#ifdef CONFIG_PTP_1588_CLOCK_DPAA
-+struct ptp_priv_s ptp_priv;
-+#endif
 +
 +static struct dpa_bp *dpa_bp_array[64];
 +
@@ -7900,7 +8534,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +u64 dpa_get_timestamp_ns(const struct dpa_priv_s *priv, enum port_type rx_tx,
 +			const void *data)
 +{
-+	u64 *ts, ns;
++	u64 *ts;
 +
 +	ts = fm_port_get_buffer_time_stamp(priv->mac_dev->port_dev[rx_tx],
 +					   data);
@@ -7910,10 +8544,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +	be64_to_cpus(ts);
 +
-+	/* multiple DPA_PTP_NOMINAL_FREQ_PERIOD_NS for case of non power of 2 */
-+	ns = *ts << DPA_PTP_NOMINAL_FREQ_PERIOD_SHIFT;
-+
-+	return ns;
++	return *ts;
 +}
 +
 +int dpa_get_ts(const struct dpa_priv_s *priv, enum port_type rx_tx,
@@ -7937,8 +8568,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	struct dpa_priv_s *priv = netdev_priv(dev);
 +	struct mac_device *mac_dev = priv->mac_dev;
 +
-+	if (mac_dev->fm_rtc_enable)
-+		mac_dev->fm_rtc_enable(get_fm_handle(dev));
 +	if (mac_dev->ptp_enable)
 +		mac_dev->ptp_enable(mac_dev->get_mac_handle(mac_dev));
 +
@@ -7970,8 +8599,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	struct dpa_priv_s *priv = netdev_priv(dev);
 +	struct mac_device *mac_dev = priv->mac_dev;
 +
-+	if (mac_dev->fm_rtc_enable)
-+		mac_dev->fm_rtc_enable(get_fm_handle(dev));
 +	if (mac_dev->ptp_enable)
 +		mac_dev->ptp_enable(mac_dev->get_mac_handle(mac_dev));
 +
@@ -8169,23 +8796,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	}
 +#endif
 +
-+#ifdef CONFIG_PTP_1588_CLOCK_DPAA
-+	if ((mac_dev->phy_if != PHY_INTERFACE_MODE_SGMII) ||
-+	    ((mac_dev->phy_if == PHY_INTERFACE_MODE_SGMII) &&
-+			 (mac_dev->speed == SPEED_1000))) {
-+		ptp_priv.node = of_parse_phandle(mac_node, "ptp-timer", 0);
-+		if (ptp_priv.node) {
-+			ptp_priv.of_dev = of_find_device_by_node(ptp_priv.node);
-+			if (unlikely(ptp_priv.of_dev == NULL)) {
-+				dev_err(dpa_dev,
-+			"Cannot find device represented by timer_node\n");
-+				of_node_put(ptp_priv.node);
-+				return ERR_PTR(-EINVAL);
-+			}
-+			ptp_priv.mac_dev = mac_dev;
-+		}
-+	}
-+#endif
 +	return mac_dev;
 +}
 +EXPORT_SYMBOL(dpa_mac_probe);
@@ -8431,13 +9041,12 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	return false;
 +}
 +
-+#ifdef CONFIG_FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
++#ifdef CONFIG_FMAN_PFC
 +u16 dpa_select_queue(struct net_device *net_dev, struct sk_buff *skb,
 +		     void *accel_priv, select_queue_fallback_t fallback)
 +{
 +	return dpa_get_queue_mapping(skb);
 +}
-+EXPORT_SYMBOL(dpa_select_queue);
 +#endif
 +
 +struct dpa_fq *dpa_fq_alloc(struct device *dev,
@@ -8855,8 +9464,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		memset(&initfq, 0, sizeof(initfq));
 +
 +		initfq.we_mask = QM_INITFQ_WE_FQCTRL;
-+		/* FIXME: why would we want to keep an empty FQ in cache? */
-+		initfq.fqd.fq_ctrl = QM_FQCTRL_PREFERINCACHE;
 +
 +		/* Try to reduce the number of portal interrupts for
 +		 * Tx Confirmation FQs.
@@ -9541,7 +10148,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +void dpa_bpid2pool_map(int bpid, struct dpa_bp *dpa_bp);
 +bool dpa_bpid2pool_use(int bpid);
 +void dpa_bp_drain(struct dpa_bp *bp);
-+#ifdef CONFIG_FSL_DPAA_ETH_USE_NDO_SELECT_QUEUE
++#ifdef CONFIG_FMAN_PFC
 +u16 dpa_select_queue(struct net_device *net_dev, struct sk_buff *skb,
 +		     void *accel_priv, select_queue_fallback_t fallback);
 +#endif
@@ -9979,7 +10586,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +module_exit(dpa_proxy_unload);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_eth_sg.c
-@@ -0,0 +1,1201 @@
+@@ -0,0 +1,1195 @@
 +/* Copyright 2012 Freescale Semiconductor Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -10557,6 +11164,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		return 0; /* loop disabled by default */
 +
 +	skb_push(skb, ETH_HLEN); /* compensate for eth_type_trans */
++	/* Save the current CPU ID in order to maintain core affinity */
++	skb_set_queue_mapping(skb, raw_smp_processor_id());
 +	dpa_tx(skb, dpa_loop_netdevs[priv->loop_to]);
 +
 +	return 1; /* Frame Tx on the selected interface */
@@ -10629,6 +11238,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		return;
 +	}
 +#endif
++
++	skb_record_rx_queue(skb, raw_smp_processor_id());
 +
 +	if (use_gro) {
 +		gro_result_t gro_result;
@@ -10750,16 +11361,17 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +#ifndef CONFIG_PPC
 +/* Verify the conditions that trigger the A010022 errata: data unaligned to
-+ * 16 bytes and 4K memory address crossings.
++ * 16 bytes, 4K memory address crossings and S/G fragments.
 + */
 +static bool a010022_check_skb(struct sk_buff *skb, struct dpa_priv_s *priv)
 +{
-+	int nr_frags, i = 0;
-+	skb_frag_t *frag;
-+
 +	/* Check if the headroom is aligned */
 +	if (((uintptr_t)skb->data - priv->tx_headroom) %
 +	    priv->buf_layout[TX].data_align != 0)
++		return true;
++
++	/* Check for paged data in the skb. We do not support S/G fragments */
++	if (skb_is_nonlinear(skb))
 +		return true;
 +
 +	/* Check if the headroom crosses a boundary */
@@ -10773,20 +11385,6 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	/* Check if the entire linear skb crosses a boundary */
 +	if (HAS_DMA_ISSUE(skb->head, skb_end_offset(skb)))
 +		return true;
-+
-+	nr_frags = skb_shinfo(skb)->nr_frags;
-+
-+	while (i < nr_frags) {
-+		frag = &skb_shinfo(skb)->frags[i];
-+
-+		/* Check if a paged fragment crosses a boundary from its
-+		 * offset to its end.
-+		 */
-+		if (HAS_DMA_ISSUE(frag->page_offset, frag->size))
-+			return true;
-+
-+		i++;
-+	}
 +
 +	return false;
 +}
@@ -11015,7 +11613,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +int __hot dpa_tx(struct sk_buff *skb, struct net_device *net_dev)
 +{
 +	struct dpa_priv_s	*priv;
-+	const int queue_mapping = dpa_get_queue_mapping(skb);
++	int queue_mapping = dpa_get_queue_mapping(skb);
 +	struct qman_fq *egress_fq, *conf_fq;
 +
 +#ifdef CONFIG_FSL_DPAA_HOOKS
@@ -11032,6 +11630,9 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	if (priv->ceetm_en)
 +		return ceetm_tx(skb, net_dev);
 +#endif
++
++	if (unlikely(queue_mapping >= DPAA_ETH_TX_QUEUES))
++		queue_mapping = queue_mapping % DPAA_ETH_TX_QUEUES;
 +
 +	egress_fq = priv->egress_fqs[queue_mapping];
 +	conf_fq = priv->conf_fqs[queue_mapping];
@@ -11611,7 +12212,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#include <trace/define_trace.h>
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ethtool.c
-@@ -0,0 +1,542 @@
+@@ -0,0 +1,587 @@
 +/* Copyright 2008-2012 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -11653,6 +12254,9 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#endif
 +
 +#include <linux/string.h>
++#include <linux/of_platform.h>
++#include <linux/net_tstamp.h>
++#include <linux/fsl/ptp_qoriq.h>
 +
 +#include "dpaa_eth.h"
 +#include "mac.h"                /* struct mac_device */
@@ -12133,6 +12737,47 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	memcpy(strings, dpa_stats_global, size);
 +}
 +
++static int dpaa_get_ts_info(struct net_device *net_dev,
++			    struct ethtool_ts_info *info)
++{
++	struct dpa_priv_s *priv = netdev_priv(net_dev);
++	struct device *dev = priv->mac_dev->dev;
++	struct device_node *mac_node = dev->of_node;
++	struct device_node *fman_node = NULL, *ptp_node = NULL;
++	struct platform_device *ptp_dev = NULL;
++	struct qoriq_ptp *ptp = NULL;
++
++	info->phc_index = -1;
++
++	fman_node = of_get_parent(mac_node);
++	if (fman_node)
++		ptp_node = of_parse_phandle(fman_node, "ptimer-handle", 0);
++
++	if (ptp_node)
++		ptp_dev = of_find_device_by_node(ptp_node);
++
++	if (ptp_dev)
++		ptp = platform_get_drvdata(ptp_dev);
++
++	if (ptp)
++		info->phc_index = ptp->phc_index;
++
++#ifdef CONFIG_FSL_DPAA_TS
++	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
++				SOF_TIMESTAMPING_RX_HARDWARE |
++				SOF_TIMESTAMPING_RAW_HARDWARE;
++	info->tx_types = (1 << HWTSTAMP_TX_OFF) |
++			 (1 << HWTSTAMP_TX_ON);
++	info->rx_filters = (1 << HWTSTAMP_FILTER_NONE) |
++			   (1 << HWTSTAMP_FILTER_ALL);
++#else
++	info->so_timestamping = SOF_TIMESTAMPING_RX_SOFTWARE |
++				SOF_TIMESTAMPING_SOFTWARE;
++#endif
++
++	return 0;
++}
++
 +const struct ethtool_ops dpa_ethtool_ops = {
 +	.get_link_ksettings = dpa_get_ksettings,
 +	.set_link_ksettings = dpa_set_ksettings,
@@ -12153,301 +12798,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	.get_wol = dpa_get_wol,
 +	.set_wol = dpa_set_wol,
 +#endif
++	.get_ts_info = dpaa_get_ts_info,
 +};
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/sdk_dpaa/dpaa_ptp.c
-@@ -0,0 +1,291 @@
-+/*
-+ * DPAA Ethernet Driver -- PTP 1588 clock using the dTSEC
-+ *
-+ * Author: Yangbo Lu <yangbo.lu@freescale.com>
-+ *
-+ * Copyright 2014 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License as published by the
-+ * Free Software Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
-+*/
-+
-+#include <linux/device.h>
-+#include <linux/hrtimer.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/timex.h>
-+#include <linux/io.h>
-+
-+#include <linux/ptp_clock_kernel.h>
-+
-+#include "dpaa_eth.h"
-+#include "mac.h"
-+
-+static struct mac_device *mac_dev;
-+static u32 freqCompensation;
-+
-+/* Bit definitions for the TMR_CTRL register */
-+#define ALM1P                 (1<<31) /* Alarm1 output polarity */
-+#define ALM2P                 (1<<30) /* Alarm2 output polarity */
-+#define FS                    (1<<28) /* FIPER start indication */
-+#define PP1L                  (1<<27) /* Fiper1 pulse loopback mode enabled. */
-+#define PP2L                  (1<<26) /* Fiper2 pulse loopback mode enabled. */
-+#define TCLK_PERIOD_SHIFT     (16) /* 1588 timer reference clock period. */
-+#define TCLK_PERIOD_MASK      (0x3ff)
-+#define RTPE                  (1<<15) /* Record Tx Timestamp to PAL Enable. */
-+#define FRD                   (1<<14) /* FIPER Realignment Disable */
-+#define ESFDP                 (1<<11) /* External Tx/Rx SFD Polarity. */
-+#define ESFDE                 (1<<10) /* External Tx/Rx SFD Enable. */
-+#define ETEP2                 (1<<9) /* External trigger 2 edge polarity */
-+#define ETEP1                 (1<<8) /* External trigger 1 edge polarity */
-+#define COPH                  (1<<7) /* Generated clock output phase. */
-+#define CIPH                  (1<<6) /* External oscillator input clock phase */
-+#define TMSR                  (1<<5) /* Timer soft reset. */
-+#define BYP                   (1<<3) /* Bypass drift compensated clock */
-+#define TE                    (1<<2) /* 1588 timer enable. */
-+#define CKSEL_SHIFT           (0)    /* 1588 Timer reference clock source */
-+#define CKSEL_MASK            (0x3)
-+
-+/* Bit definitions for the TMR_TEVENT register */
-+#define ETS2                  (1<<25) /* External trigger 2 timestamp sampled */
-+#define ETS1                  (1<<24) /* External trigger 1 timestamp sampled */
-+#define ALM2                  (1<<17) /* Current time = alarm time register 2 */
-+#define ALM1                  (1<<16) /* Current time = alarm time register 1 */
-+#define PP1                   (1<<7)  /* periodic pulse generated on FIPER1 */
-+#define PP2                   (1<<6)  /* periodic pulse generated on FIPER2 */
-+#define PP3                   (1<<5)  /* periodic pulse generated on FIPER3 */
-+
-+/* Bit definitions for the TMR_TEMASK register */
-+#define ETS2EN                (1<<25) /* External trigger 2 timestamp enable */
-+#define ETS1EN                (1<<24) /* External trigger 1 timestamp enable */
-+#define ALM2EN                (1<<17) /* Timer ALM2 event enable */
-+#define ALM1EN                (1<<16) /* Timer ALM1 event enable */
-+#define PP1EN                 (1<<7) /* Periodic pulse event 1 enable */
-+#define PP2EN                 (1<<6) /* Periodic pulse event 2 enable */
-+
-+/* Bit definitions for the TMR_PEVENT register */
-+#define TXP2                  (1<<9) /* PTP transmitted timestamp im TXTS2 */
-+#define TXP1                  (1<<8) /* PTP transmitted timestamp in TXTS1 */
-+#define RXP                   (1<<0) /* PTP frame has been received */
-+
-+/* Bit definitions for the TMR_PEMASK register */
-+#define TXP2EN                (1<<9) /* Transmit PTP packet event 2 enable */
-+#define TXP1EN                (1<<8) /* Transmit PTP packet event 1 enable */
-+#define RXPEN                 (1<<0) /* Receive PTP packet event enable */
-+
-+/* Bit definitions for the TMR_STAT register */
-+#define STAT_VEC_SHIFT        (0) /* Timer general purpose status vector */
-+#define STAT_VEC_MASK         (0x3f)
-+
-+/* Bit definitions for the TMR_PRSC register */
-+#define PRSC_OCK_SHIFT        (0) /* Output clock division/prescale factor. */
-+#define PRSC_OCK_MASK         (0xffff)
-+
-+
-+#define N_EXT_TS	2
-+
-+static void set_alarm(void)
-+{
-+	u64 ns;
-+
-+	if (mac_dev->fm_rtc_get_cnt)
-+		mac_dev->fm_rtc_get_cnt(mac_dev->fm_dev, &ns);
-+	ns += 1500000000ULL;
-+	ns = div_u64(ns, 1000000000UL) * 1000000000ULL;
-+	ns -= DPA_PTP_NOMINAL_FREQ_PERIOD_NS;
-+	if (mac_dev->fm_rtc_set_alarm)
-+		mac_dev->fm_rtc_set_alarm(mac_dev->fm_dev, 0, ns);
-+}
-+
-+static void set_fipers(void)
-+{
-+	u64 fiper;
-+
-+	if (mac_dev->fm_rtc_disable)
-+		mac_dev->fm_rtc_disable(mac_dev->fm_dev);
-+
-+	set_alarm();
-+	fiper = 1000000000ULL - DPA_PTP_NOMINAL_FREQ_PERIOD_NS;
-+	if (mac_dev->fm_rtc_set_fiper)
-+		mac_dev->fm_rtc_set_fiper(mac_dev->fm_dev, 0, fiper);
-+
-+	if (mac_dev->fm_rtc_enable)
-+		mac_dev->fm_rtc_enable(mac_dev->fm_dev);
-+}
-+
-+/* PTP clock operations */
-+
-+static int ptp_dpa_adjfreq(struct ptp_clock_info *ptp, s32 ppb)
-+{
-+	u64 adj;
-+	u32 diff, tmr_add;
-+	int neg_adj = 0;
-+
-+	if (ppb < 0) {
-+		neg_adj = 1;
-+		ppb = -ppb;
-+	}
-+
-+	tmr_add = freqCompensation;
-+	adj = tmr_add;
-+	adj *= ppb;
-+	diff = div_u64(adj, 1000000000ULL);
-+
-+	tmr_add = neg_adj ? tmr_add - diff : tmr_add + diff;
-+
-+	if (mac_dev->fm_rtc_set_drift)
-+		mac_dev->fm_rtc_set_drift(mac_dev->fm_dev, tmr_add);
-+
-+	return 0;
-+}
-+
-+static int ptp_dpa_adjtime(struct ptp_clock_info *ptp, s64 delta)
-+{
-+	s64 now;
-+
-+	if (mac_dev->fm_rtc_get_cnt)
-+		mac_dev->fm_rtc_get_cnt(mac_dev->fm_dev, &now);
-+
-+	now += delta;
-+
-+	if (mac_dev->fm_rtc_set_cnt)
-+		mac_dev->fm_rtc_set_cnt(mac_dev->fm_dev, now);
-+	set_fipers();
-+
-+	return 0;
-+}
-+
-+static int ptp_dpa_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
-+{
-+	u64 ns;
-+	u32 remainder;
-+
-+	if (mac_dev->fm_rtc_get_cnt)
-+		mac_dev->fm_rtc_get_cnt(mac_dev->fm_dev, &ns);
-+
-+	ts->tv_sec = div_u64_rem(ns, 1000000000, &remainder);
-+	ts->tv_nsec = remainder;
-+	return 0;
-+}
-+
-+static int ptp_dpa_settime(struct ptp_clock_info *ptp,
-+			       const struct timespec64 *ts)
-+{
-+	u64 ns;
-+
-+	ns = ts->tv_sec * 1000000000ULL;
-+	ns += ts->tv_nsec;
-+
-+	if (mac_dev->fm_rtc_set_cnt)
-+		mac_dev->fm_rtc_set_cnt(mac_dev->fm_dev, ns);
-+	set_fipers();
-+	return 0;
-+}
-+
-+static int ptp_dpa_enable(struct ptp_clock_info *ptp,
-+			      struct ptp_clock_request *rq, int on)
-+{
-+	u32 bit;
-+
-+	switch (rq->type) {
-+	case PTP_CLK_REQ_EXTTS:
-+		switch (rq->extts.index) {
-+		case 0:
-+			bit = ETS1EN;
-+			break;
-+		case 1:
-+			bit = ETS2EN;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (on) {
-+			if (mac_dev->fm_rtc_enable_interrupt)
-+				mac_dev->fm_rtc_enable_interrupt(
-+					mac_dev->fm_dev, bit);
-+		} else {
-+			if (mac_dev->fm_rtc_disable_interrupt)
-+				mac_dev->fm_rtc_disable_interrupt(
-+					mac_dev->fm_dev, bit);
-+		}
-+		return 0;
-+
-+	case PTP_CLK_REQ_PPS:
-+		if (on) {
-+			if (mac_dev->fm_rtc_enable_interrupt)
-+				mac_dev->fm_rtc_enable_interrupt(
-+					mac_dev->fm_dev, PP1EN);
-+		} else {
-+			if (mac_dev->fm_rtc_disable_interrupt)
-+				mac_dev->fm_rtc_disable_interrupt(
-+					mac_dev->fm_dev, PP1EN);
-+		}
-+		return 0;
-+
-+	default:
-+		break;
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
-+static struct ptp_clock_info ptp_dpa_caps = {
-+	.owner		= THIS_MODULE,
-+	.name		= "dpaa clock",
-+	.max_adj	= 512000,
-+	.n_alarm	= 0,
-+	.n_ext_ts	= N_EXT_TS,
-+	.n_per_out	= 0,
-+	.pps		= 1,
-+	.adjfreq	= ptp_dpa_adjfreq,
-+	.adjtime	= ptp_dpa_adjtime,
-+	.gettime64	= ptp_dpa_gettime,
-+	.settime64	= ptp_dpa_settime,
-+	.enable		= ptp_dpa_enable,
-+};
-+
-+static int __init __cold dpa_ptp_load(void)
-+{
-+	struct device *ptp_dev;
-+	struct timespec64 now;
-+	struct ptp_clock *clock = ptp_priv.clock;
-+	int dpa_phc_index;
-+	int err;
-+
-+	if (!(ptp_priv.of_dev && ptp_priv.mac_dev))
-+		return -ENODEV;
-+
-+	ptp_dev = &ptp_priv.of_dev->dev;
-+	mac_dev = ptp_priv.mac_dev;
-+
-+	if (mac_dev->fm_rtc_get_drift)
-+		mac_dev->fm_rtc_get_drift(mac_dev->fm_dev, &freqCompensation);
-+
-+	getnstimeofday64(&now);
-+	ptp_dpa_settime(&ptp_dpa_caps, &now);
-+
-+	clock = ptp_clock_register(&ptp_dpa_caps, ptp_dev);
-+	if (IS_ERR(clock)) {
-+		err = PTR_ERR(clock);
-+		return err;
-+	}
-+	dpa_phc_index = ptp_clock_index(clock);
-+	return 0;
-+}
-+module_init(dpa_ptp_load);
-+
-+static void __exit __cold dpa_ptp_unload(void)
-+{
-+	struct ptp_clock *clock = ptp_priv.clock;
-+
-+	if (mac_dev->fm_rtc_disable_interrupt)
-+		mac_dev->fm_rtc_disable_interrupt(mac_dev->fm_dev, 0xffffffff);
-+	ptp_clock_unregister(clock);
-+}
-+module_exit(dpa_ptp_unload);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac-api.c
 @@ -0,0 +1,931 @@
@@ -13384,7 +13736,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +};
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac.c
-@@ -0,0 +1,489 @@
+@@ -0,0 +1,490 @@
 +/* Copyright 2008-2012 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -13773,6 +14125,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		mac_dev->fixed_link->duplex = phy->duplex;
 +		mac_dev->fixed_link->pause = phy->pause;
 +		mac_dev->fixed_link->asym_pause = phy->asym_pause;
++		printk(KERN_INFO "Setting up fixed link, speed %d duplex %d\n", mac_dev->fixed_link->speed, mac_dev->fixed_link->duplex);
 +	}
 +
 +	_errno = mac_dev->init(mac_dev);
@@ -13876,7 +14229,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +module_exit(mac_unload);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_dpaa/mac.h
-@@ -0,0 +1,135 @@
+@@ -0,0 +1,134 @@
 +/* Copyright 2008-2011 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -13976,10 +14329,9 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	int (*fm_rtc_set_alarm)(struct fm *fm_dev, uint32_t id, uint64_t time);
 +	int (*fm_rtc_set_fiper)(struct fm *fm_dev, uint32_t id,
 +				uint64_t fiper);
-+#ifdef CONFIG_PTP_1588_CLOCK_DPAA
 +	int (*fm_rtc_enable_interrupt)(struct fm *fm_dev, uint32_t events);
 +	int (*fm_rtc_disable_interrupt)(struct fm *fm_dev, uint32_t events);
-+#endif
++
 +	int (*set_wol)(struct fm_port *port, struct fm_mac_dev *fm_mac_dev,
 +			bool en);
 +	int (*dump_mac_regs)(struct mac_device *h_mac, char *buf, int nn);
@@ -21479,7 +21831,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +}
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/MAC/memac.c
-@@ -0,0 +1,1153 @@
+@@ -0,0 +1,1166 @@
 +/*
 + * Copyright 2008-2012 Freescale Semiconductor Inc.
 + *
@@ -21518,6 +21870,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 + @Description   FM mEMAC driver
 +*//***************************************************************************/
++#include <../../../../sdk_dpaa/mac.h>
++#include <linux/phy_fixed.h>
 +
 +#include "std_ext.h"
 +#include "string_ext.h"
@@ -21529,6 +21883,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#include "fm_common.h"
 +#include "memac.h"
 +
++
++static t_Error MemacAdjustLink(t_Handle h_Memac, e_EnetSpeed speed, bool fullDuplex);
 +
 +/*****************************************************************************/
 +/*                      Internal routines                                    */
@@ -21758,10 +22114,19 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +{
 +    t_Memac     *p_Memac = (t_Memac *)h_Memac;
 +
++    struct mac_device *mac_dev = (struct mac_device *)p_Memac->h_App;
++
 +    SANITY_CHECK_RETURN_ERROR(p_Memac, E_INVALID_HANDLE);
 +    SANITY_CHECK_RETURN_ERROR(!p_Memac->p_MemacDriverParam, E_INVALID_STATE);
 +
 +    fman_memac_enable(p_Memac->p_MemMap, (mode & e_COMM_MODE_RX), (mode & e_COMM_MODE_TX));
++
++    if (ENET_INTERFACE_FROM_MODE(p_Memac->enetMode) == e_ENET_IF_RGMII) {
++	if (mac_dev->fixed_link) {
++		printk(KERN_INFO "This is a fixed-link, forcing speed %d duplex %d\n",mac_dev->fixed_link->speed,mac_dev->fixed_link->duplex);
++		MemacAdjustLink(h_Memac,mac_dev->fixed_link->speed,mac_dev->fixed_link->duplex);
++	}
++    }
 +
 +    return E_OK;
 +}
@@ -53194,7 +53559,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +fsl-ncsw-Pcd-objs	:=   fm_port.o fm_port_im.o fman_port.o
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/Peripherals/FM/Port/fm_port.c
-@@ -0,0 +1,6436 @@
+@@ -0,0 +1,6437 @@
 +/*
 + * Copyright 2008-2012 Freescale Semiconductor Inc.
 + *
@@ -53778,7 +54143,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +    p_FmPort->rxPoolsParams.numOfPools = p_ExtBufPools->numOfPoolsUsed;
 +    p_FmPort->rxPoolsParams.largestBufSize =
 +            sizesArray[orderedArray[p_ExtBufPools->numOfPoolsUsed - 1]];
-+    p_FmPort->rxPoolsParams.secondLargestBufSize =
++    if (p_ExtBufPools->numOfPoolsUsed > 1)
++        p_FmPort->rxPoolsParams.secondLargestBufSize =
 +            sizesArray[orderedArray[p_ExtBufPools->numOfPoolsUsed - 2]];
 +
 +    /* FMBM_RMPD reg. - pool depletion */
@@ -108201,7 +108567,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +module_exit(fmt_unload);
 --- /dev/null
 +++ b/drivers/net/ethernet/freescale/sdk_fman/src/wrapper/lnxwrp_fm.c
-@@ -0,0 +1,2908 @@
+@@ -0,0 +1,2910 @@
 +/*
 + * Copyright 2008-2012 Freescale Semiconductor Inc.
 + *
@@ -108455,7 +108821,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#ifdef CONFIG_PM_SLEEP
 +    if (fman_get_normal_pending(p_Fm->p_FmFpmRegs) & INTR_EN_WAKEUP)
 +    {
-+        pm_wakeup_event(p_LnxWrpFmDev->dev, 200);        
++        pm_wakeup_event(p_LnxWrpFmDev->dev, 200);
 +    }
 +#endif
 +    FM_EventIsr(p_LnxWrpFmDev->h_Dev);
@@ -108886,6 +109252,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +        }
 +    }
 +
++#if 0
 +    /* Get the RTC base address and size */
 +    memset(ids, 0, sizeof(ids));
 +    if (WARN_ON(strlen("ptp-timer") >= sizeof(ids[0].name)))
@@ -108908,6 +109275,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +            p_LnxWrpFmDev->fmRtcMemSize = res.end + 1 - res.start;
 +        }
 +    }
++#endif
 +
 +#if (DPAA_VERSION >= 11)
 +    /* Get the VSP base address */
@@ -109081,7 +109449,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +    if (unlikely(_errno < 0))
 +        RETURN_ERROR(MAJOR, E_INVALID_STATE, ("can_request_irq() = %d", _errno));
 +#endif
-+    _errno = devm_request_irq(p_LnxWrpFmDev->dev, p_LnxWrpFmDev->irq, fm_irq, 0, "fman", p_LnxWrpFmDev);
++    _errno = devm_request_irq(p_LnxWrpFmDev->dev, p_LnxWrpFmDev->irq, fm_irq, IRQF_SHARED, "fman", p_LnxWrpFmDev);
 +    if (unlikely(_errno < 0))
 +        RETURN_ERROR(MAJOR, E_INVALID_STATE, ("request_irq(%d) = %d", p_LnxWrpFmDev->irq, _errno));
 +
@@ -109311,7 +109679,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +        p_LnxWrpFmDev->fmDevSettings.param.fmMacClkRatio =
 +            !!(get_rcwsr(4) & 0x1); /* RCW[FM_MAC_RAT1] */
 +
-+    {   
++    {
 +    /* T4 Devices ClkRatio is always 1 regardless of RCW[FM_MAC_RAT1] */
 +        uint32_t svr;
 +        svr = mfspr(SPRN_SVR);
@@ -109524,7 +109892,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +MODULE_DEVICE_TABLE(of, fm_match);
 +#endif /* !MODULE */
 +
-+#ifdef CONFIG_PM
++#if defined CONFIG_PM && (defined CONFIG_PPC || defined CONFIG_PPC64)
 +
 +#define SCFG_FMCLKDPSLPCR_ADDR 0xFFE0FC00C
 +#define SCFG_FMCLKDPSLPCR_DS_VAL 0x48402000
@@ -109577,11 +109945,11 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +
 +#define FM_PM_OPS (&fm_pm_ops)
 +
-+#else /* CONFIG_PM */
++#else /* CONFIG_PM && (CONFIG_PPC || CONFIG_PPC64) */
 +
 +#define FM_PM_OPS NULL
 +
-+#endif /* CONFIG_PM */
++#endif /* CONFIG_PM && (CONFIG_PPC || CONFIG_PPC64) */
 +
 +static struct platform_driver fm_driver = {
 +    .driver = {
@@ -137243,7 +137611,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#endif
 --- /dev/null
 +++ b/drivers/staging/fsl_qbman/qman_high.c
-@@ -0,0 +1,5652 @@
+@@ -0,0 +1,5655 @@
 +/* Copyright 2008-2012 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -137821,6 +138189,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	char buf[16];
 +	int ret;
 +	u32 isdr;
++	struct platform_device_info pdev_info;
 +
 +	if (!portal) {
 +		portal = kmalloc(sizeof(*portal), GFP_KERNEL);
@@ -137917,27 +138286,22 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	portal->dqrr_disable_ref = 0;
 +	portal->cb_dc_ern = NULL;
 +	sprintf(buf, "qportal-%d", config->public_cfg.channel);
-+	portal->pdev = platform_device_alloc(buf, -1);
++
++	memset(&pdev_info, 0, sizeof(pdev_info));
++	pdev_info.name = buf;
++	pdev_info.id = PLATFORM_DEVID_NONE;
++	pdev_info.dma_mask = DMA_BIT_MASK(40);
++
++	portal->pdev = platform_device_register_full(&pdev_info);
 +	if (!portal->pdev) {
 +		pr_err("qman_portal - platform_device_alloc() failed\n");
-+		goto fail_devalloc;
++		goto fail_devregister;
 +	}
-+#if defined(CONFIG_ARM) || defined(CONFIG_ARM64)
-+	portal->pdev->dev.coherent_dma_mask = DMA_BIT_MASK(40);
-+	portal->pdev->dev.dma_mask = &portal->pdev->dev.coherent_dma_mask;
-+#else
-+	if (dma_set_mask(&portal->pdev->dev, DMA_BIT_MASK(40))) {
-+		pr_err("qman_portal - dma_set_mask() failed\n");
-+		goto fail_devadd;
-+	}
-+#endif
++
++	arch_setup_dma_ops(&portal->pdev->dev, 0, 0, NULL, true);
++
 +	portal->pdev->dev.pm_domain = &qman_portal_device_pm_domain;
 +	portal->pdev->dev.platform_data = portal;
-+	ret = platform_device_add(portal->pdev);
-+	if (ret) {
-+		pr_err("qman_portal - platform_device_add() failed\n");
-+		goto fail_devadd;
-+	}
 +	dpa_rbtree_init(&portal->retire_table);
 +	isdr = 0xffffffff;
 +	qm_isr_disable_write(__p, isdr);
@@ -137997,10 +138361,8 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +fail_affinity:
 +	free_irq(config->public_cfg.irq, portal);
 +fail_irq:
-+	platform_device_del(portal->pdev);
-+fail_devadd:
-+	platform_device_put(portal->pdev);
-+fail_devalloc:
++	platform_device_unregister(portal->pdev);
++fail_devregister:
 +	if (num_ceetms)
 +		for (ret = 0; ret < num_ceetms; ret++)
 +			kfree(portal->ccgrs[ret]);
@@ -138098,8 +138460,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +	qm_dqrr_finish(&qm->p);
 +	qm_eqcr_finish(&qm->p);
 +
-+	platform_device_del(qm->pdev);
-+	platform_device_put(qm->pdev);
++	platform_device_unregister(qm->pdev);
 +
 +	qm->config = NULL;
 +	if (qm->alloced)
@@ -139055,6 +139416,16 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +		} else {
 +			phys_fq = dma_map_single(&p->pdev->dev, fq, sizeof(*fq),
 +						DMA_TO_DEVICE);
++			if (dma_mapping_error(&p->pdev->dev, phys_fq)) {
++				dev_err(&p->pdev->dev,
++					"dma_map_single failed for fqid: %u\n",
++					fq->fqid);
++				FQUNLOCK(fq);
++				PORTAL_IRQ_UNLOCK(p, irqflags);
++				put_affine_portal();
++				return -EIO;
++			}
++
 +			qm_fqd_stashing_set64(&mcc->initfq.fqd, phys_fq);
 +		}
 +	}
@@ -146346,7 +146717,7 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +#endif /* FSL_BMAN_H */
 --- /dev/null
 +++ b/include/linux/fsl_qman.h
-@@ -0,0 +1,3900 @@
+@@ -0,0 +1,3910 @@
 +/* Copyright 2008-2012 Freescale Semiconductor, Inc.
 + *
 + * Redistribution and use in source and binary forms, with or without
@@ -150242,6 +150613,16 @@ Signed-off-by: Biwen Li <biwen.li@nxp.com>
 +int qman_p_enqueue_precommit(struct qman_portal *p, struct qman_fq *fq,
 +				const struct qm_fd *fd, u32 flags,
 +				qman_cb_precommit cb, void *cb_arg);
++
++static inline int qman_is_probed(void) {
++	return 1;
++}
++
++
++static inline int qman_portals_probed(void) {
++	return 1;
++}
++
 +#ifdef __cplusplus
 +}
 +#endif
