@@ -1,7 +1,7 @@
-From 004fa06eecc1162dcb717bdce943a08c25c0922c Mon Sep 17 00:00:00 2001
+From de205caf53ef335d29f3d68f18f7bf996d1e0728 Mon Sep 17 00:00:00 2001
 From: popcornmix <popcornmix@gmail.com>
 Date: Mon, 3 Sep 2012 17:10:23 +0100
-Subject: [PATCH 091/703] net: Add non-mainline source for rtl8192cu wlan
+Subject: [PATCH 091/725] net: Add non-mainline source for rtl8192cu wlan
 
 We are now syncing with version from:
 https://github.com/pvaret/rtl8192cu-fixes
