@@ -196,6 +196,10 @@ platform_do_upgrade() {
 		remove_oem_ubi_volume wifi_fw
 		nand_do_upgrade "$1"
 		;;
+	xiaomi,cr880x-m79-v1|\
+	xiaomi,cr880x-m81)
+		nand_do_upgrade "$1"
+		;;
 	glinet,gl-b3000)
 		glinet_do_upgrade "$1"
 		;;
