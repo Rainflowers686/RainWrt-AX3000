@@ -13,6 +13,7 @@ PKG_CONFIG_DEPENDS += \
 	CONFIG_ATH10K_LEDS \
 	CONFIG_ATH10K_THERMAL \
 	CONFIG_ATH11K_THERMAL \
+	CONFIG_ATH11K_SMALLBUFFERS \
 	CONFIG_ATH12K_THERMAL \
 	CONFIG_ATH_USER_REGD
 
@@ -349,6 +350,11 @@ chipsets.
 endef
 
 define KernelPackage/ath11k/config
+
+       config ATH11K_SMALLBUFFERS
+               bool "Use the hardware-verified CR8808 low-memory ring profile"
+               depends on PACKAGE_kmod-ath11k && TARGET_qualcommax_ipq50xx_DEVICE_redmi_ax3000
+               default n
 
        config ATH11K_THERMAL
                bool "Enable thermal sensors and throttling support"

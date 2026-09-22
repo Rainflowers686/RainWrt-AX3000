@@ -1,0 +1,49 @@
+From: hzy <hzyitc@outlook.com>
+Subject: [PATCH] ath11k: preserve the verified CR8808 low-memory budget
+
+Based on hzyitc 07ee56dee43a (kmiit 911-ath11k-reduce-dma-buffer-to-save-memeory)
+and 4032fbc94b8c (smallbuffers). RainWrt exposes a boolean opt-in for the
+CR8808 profile instead of the recursive package PROVIDES variant. Preserve
+the known-good mode-2 peer/vdev limits as well. Other profiles are unchanged.
+
+--- a/drivers/net/wireless/ath/ath11k/dp.h
++++ b/drivers/net/wireless/ath/ath11k/dp.h
+@@ -206,7 +206,7 @@ struct ath11k_pdev_dp {
+ #define DP_WBM_RELEASE_RING_SIZE	64
+ #define DP_TCL_DATA_RING_SIZE		512
+ #define DP_TCL_DATA_RING_SIZE_WCN6750	2048
+-#define DP_TX_COMP_RING_SIZE		32768
++#define DP_TX_COMP_RING_SIZE		(IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 2048 : 32768)
+ #define DP_TX_IDR_SIZE			DP_TX_COMP_RING_SIZE
+ #define DP_TCL_CMD_RING_SIZE		32
+ #define DP_TCL_STATUS_RING_SIZE		32
+@@ -217,12 +217,12 @@ struct ath11k_pdev_dp {
+ #define DP_REO_EXCEPTION_RING_SIZE	128
+ #define DP_REO_CMD_RING_SIZE		256
+ #define DP_REO_STATUS_RING_SIZE		2048
+-#define DP_RXDMA_BUF_RING_SIZE		4096
++#define DP_RXDMA_BUF_RING_SIZE		(IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 1024 : 4096)
+ #define DP_RXDMA_REFILL_RING_SIZE	2048
+ #define DP_RXDMA_ERR_DST_RING_SIZE	1024
+-#define DP_RXDMA_MON_STATUS_RING_SIZE	1024
+-#define DP_RXDMA_MONITOR_BUF_RING_SIZE	4096
+-#define DP_RXDMA_MONITOR_DST_RING_SIZE	2048
++#define DP_RXDMA_MON_STATUS_RING_SIZE	(IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 512 : 1024)
++#define DP_RXDMA_MONITOR_BUF_RING_SIZE	(IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 128 : 4096)
++#define DP_RXDMA_MONITOR_DST_RING_SIZE	(IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 128 : 2048)
+ #define DP_RXDMA_MONITOR_DESC_RING_SIZE	4096
+ 
+ #define DP_RX_RELEASE_RING_NUM	3
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -2673,8 +2673,8 @@ static int ath11k_init_hw_params(struct ath11k_base *ab)
+ 		} else if (fw_mem_mode == 2) {
+ 			ab->hw_params.fw_mem_mode = 2;
+-			ab->hw_params.num_vdevs = 8;
+-			ab->hw_params.num_peers = 128;
++			ab->hw_params.num_vdevs = IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 4 : 8;
++			ab->hw_params.num_peers = IS_ENABLED(CONFIG_ATH11K_SMALLBUFFERS) ? 32 : 128;
+ 			ab->hw_params.coldboot_cal_mm = false;
+ 			ab->hw_params.coldboot_cal_ftm = false;
+ 		} else
+ 			ath11k_info(ab, "Unsupported FW memory mode: %u\n", fw_mem_mode);
