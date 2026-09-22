@@ -33,6 +33,9 @@ GOOD = {
 OLD = copy.deepcopy(GOOD)
 OLD.update(kernel='6.6.137', identity={}, boot_id='old')
 OLD['release'] = {'release': '24.10-SNAPSHOT', 'revision': 'r0-2b3c0919', 'target': 'qualcommax/ipq50xx'}
+PROFILE = {'handoff': [853122, 848, 4], 'stage2': [4066552, 4196, 74]}
+MEMORY = {'mem_kib': 30000, 'tmp_kib': 90000, 'anon_kib': 7000,
+          'observer_anon_kib': 500, 'locked_kib': 0, 'swap_kib': 0}
 
 
 class Fake:
@@ -109,6 +112,28 @@ class RunnerTests(unittest.TestCase):
                 r.private_write(marker, 'second-attempt\n')
             self.assertEqual(marker.read_text(), 'first-attempt\n')
 
+    def test_nonexecutable_start_link_is_not_enabled(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / 'rc.d').mkdir()
+            for name, mode in [('runnable', 0o755), ('not-executable', 0o644)]:
+                script = root / name
+                script.write_text('#!/bin/sh\nexit 0\n')
+                script.chmod(mode)
+                (root / 'rc.d' / ('S01' + name)).symlink_to(script)
+            (root / 'rc.d/S02missing').symlink_to(root / 'missing')
+            output = subprocess.check_output(['sh', '-c', r.ENABLED_SERVICES.replace('/etc/rc.d', str(root / 'rc.d'))])
+            self.assertEqual(output.decode().splitlines(), [str(root / 'runnable')])
+
+    def test_detector_library_optional_unset_is_isolated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            helper = pathlib.Path(tmp) / 'layout.sh'
+            for result, success in [('rainwrt-single-slot', True), ('unknown', False)]:
+                helper.write_text('[ -z "$IPKG_INSTROOT" ] || exit 1\nmi_layout_detect() { echo ' + result + '; }\n')
+                script = 'set -eu\nunset IPKG_INSTROOT\n' + r.detector_check(str(helper))
+                got = subprocess.run(['sh'], input=script.encode(), capture_output=True)
+                self.assertEqual(got.returncode == 0, success)
+
     def test_246_disconnect_new_system(self):
         fake = Fake([OLD, r.Stop('offline'), GOOD])
         control = fake.controller()
@@ -159,27 +184,43 @@ class RunnerTests(unittest.TestCase):
             Fake([r.Stop('SSH_HOST_KEY_CHANGED')]).controller().execute('sysupgrade')
 
     def test_resource_budget_measured_not_tmpfs_only(self):
-        reserve = r.reserve_kib(GOOD, 1024 * 1024)
-        self.assertEqual(reserve, 8000 + 8192 + 2048)
-        for mem, tmp in ((1, 50000), (50000, 1)):
-            self.assertFalse(mem >= reserve and tmp >= reserve)
+        budget = r.phase_requirements(PROFILE, MEMORY, 18152)
+        self.assertEqual(budget['physical_required_kib'], 18152 + 848 + 8192)
+        self.assertEqual(budget['tmp_required_kib'], 18152 + 2 * 4196)
+        self.assertNotEqual(budget['physical_required_kib'], budget['tmp_required_kib'])
         with self.assertRaises(r.Stop):
-            r.reserve_kib(dict(GOOD, stage2_kib=0))
+            r.phase_requirements({'handoff': [0, 0], 'stage2': [0, 0]}, MEMORY)
+
+    def test_reclaim_credit_never_covers_transient_margin(self):
+        budget = r.phase_requirements(PROFILE, dict(MEMORY, anon_kib=900000))
+        self.assertEqual(budget['deferred_file_credit_kib'], 4196)
+        self.assertGreaterEqual(budget['physical_required_kib'], 8192 + 848)
+        for sample in (dict(MEMORY, anon_kib=0), dict(MEMORY, locked_kib=1), dict(MEMORY, swap_kib=1)):
+            b = r.phase_requirements(PROFILE, sample)
+            self.assertEqual(b['deferred_file_credit_kib'], 0)
+            self.assertEqual(b['physical_required_kib'], 4196 + 8192)
+
+    def test_config_and_image_charged_at_correct_phases(self):
+        before = r.phase_requirements(PROFILE, MEMORY, 18152, 4097)
+        after = r.phase_requirements(PROFILE, MEMORY, 0, 4097, staged=True)
+        self.assertEqual(before['pending_config_kib'], 16)
+        self.assertEqual(after['pending_config_kib'], 8)
+        self.assertEqual(before['physical_required_kib'] - after['physical_required_kib'], 18152 + 8)
 
     def resource_wait(self, values, passes, expected_time):
         now, samples, events = [0], iter(values), []
         def sample(timeout):
             self.assertLessEqual(timeout, 10)
             mem, tmp = next(samples)
-            return {'mem_kib': mem, 'tmp_kib': tmp}
+            return dict(MEMORY, mem_kib=mem, tmp_kib=tmp)
         def sleep(seconds):
             now[0] += seconds
-        args = (sample, 18000, 16000, lambda *event: events.append(event), 'fixture')
+        args = (sample, 18000, PROFILE, lambda *event: events.append(event), 'fixture')
         kwargs = {'clock': lambda: now[0], 'sleep': sleep}
         if passes:
             result = r.wait_resources(*args, **kwargs)
-            self.assertGreaterEqual(result['mem_kib'], 34000)
-            self.assertGreaterEqual(result['tmp_kib'], 34000)
+            self.assertGreaterEqual(result['mem_kib'], 27040)
+            self.assertGreaterEqual(result['tmp_kib'], 26392)
             self.assertEqual(events[-1][0], 'RESOURCE_PASS')
         else:
             with self.assertRaisesRegex(r.Stop, 'PRECHECK_FAILED: resource stability timeout'):
@@ -193,7 +234,7 @@ class RunnerTests(unittest.TestCase):
         self.resource_wait([(10000, 50000), (50000, 10000), (34000, 34000), (35000, 35000)], True, 15)
 
     def test_resource_oscillating_never_two_consecutive(self):
-        self.resource_wait([(35000, 35000), (33999, 50000)] * 12, False, 120)
+        self.resource_wait([(35000, 35000), (27039, 50000)] * 12, False, 120)
 
     def test_resource_timeout_low_memory(self):
         self.resource_wait([(14000, 90000)] * 24, False, 120)
@@ -202,10 +243,32 @@ class RunnerTests(unittest.TestCase):
         now = [0]
         def sample(timeout):
             now[0] += 120
-            return {'mem_kib': 50000, 'tmp_kib': 50000}
+            return dict(MEMORY, mem_kib=50000, tmp_kib=50000)
         with self.assertRaisesRegex(r.Stop, 'resource stability timeout'):
-            r.wait_resources(sample, 18000, 16000, lambda *a: None, 'fixture',
+            r.wait_resources(sample, 18000, PROFILE, lambda *a: None, 'fixture',
                              clock=lambda: now[0], sleep=lambda _: self.fail('past deadline'))
+
+    def test_stage2_order_and_no_safe_abort_assumption(self):
+        stage = (ROOT / 'package/base-files/files/lib/upgrade/stage2').read_text()
+        positions = [stage.rindex(s) for s in ('indicate_upgrade', 'kill_remaining TERM', 'kill_remaining KILL 1',
+                     'echo 3 > /proc/sys/vm/drop_caches', 'platform_pre_upgrade "$IMAGE"', 'switch_to_ramfs', 'exec /bin/busybox')]
+        self.assertEqual(positions, sorted(positions))
+        self.assertNotIn('set -e', stage)
+        upgrade = (ROOT / 'package/base-files/files/sbin/sysupgrade').read_text()
+        self.assertLess(upgrade.index('install_bin /sbin/upgraded'), upgrade.index('ubus call system sysupgrade'))
+
+    def test_shell_final_gate_matches_python_model(self):
+        helper = (ROOT / r.MEMORY_TOOL).read_text()
+        # Host fixture for numeric jsonfilter expressions, not a router command.
+        jsonfilter = "jsonfilter() { python3 -c 'import json,sys; print(json.load(sys.stdin)[sys.argv[1][2:]])' \"$2\"; }\n"
+        for mem, tmp, anon, locked in ((9100, 90000, 7000, 0), (9000, 90000, 7000, 0),
+                                     (20000, 8000, 7000, 0), (10000, 90000, 7000, 1), (13000, 90000, 0, 0)):
+            sample = dict(MEMORY, mem_kib=mem, tmp_kib=tmp, anon_kib=anon, locked_kib=locked)
+            budget = r.phase_requirements(PROFILE, sample, archive_bytes=4096, staged=True)
+            should_pass = mem >= budget['physical_required_kib'] and tmp >= budget['tmp_required_kib']
+            script = helper + '\n' + jsonfilter + "memory_sample() { printf '%s' '" + json.dumps(sample) + "'; }\nmemory_pre_handoff 4196 848 4\n"
+            result = subprocess.run(['sh'], input=script.encode(), capture_output=True)
+            self.assertEqual(result.returncode == 0, should_pass)
 
     def test_archive_integrity_core_keys_and_stale_state(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -1,7 +1,60 @@
 # hwtest1 checkpoint — 2026-09-22
 
-Status: `BUILD_READY`, `STATIC_STRUCTURE_PASS`, `NOT_READY_FOR_ONE_COMMAND_HARDWARE_TEST`.
+Current status: `BUILD_READY`, `STATIC_STRUCTURE_PASS`, `READY_FOR_ONE_COMMAND_HARDWARE_TEST`.
 No router flash/reboot/recovery was performed by this audit.
+
+## Phase-aware follow-up (2026-09-22)
+
+This supersedes the resource blocker below; the earlier evidence is retained.
+SYSUPGRADE_MEMORY_MODEL.md independently compares pinned upstream and installed
+24.10 first-write lifecycles. Full ramfs construction follows service cleanup;
+only upgraded's smaller closure is copied before handoff. The original 8 MiB
+operational margin remains. Tmpfs capacity and physical availability are now
+separate gates, with bounded credit only for deferred files after userspace
+cleanup. No manual service/cache/VM changes or stage2 abort hook were added.
+
+Live default dry-run completed LOCAL_PREFLIGHT_PASS, all fingerprints, eight
+existing helper hashes, config list/archive collection, opaque migration,
+candidate transfer and SHA, detector=rainwrt-single-slot, sysupgrade -T,
+board/target metadata, stage2 helper checks, post-upload memory, IPv4/IPv6
+DNS/HTTPS baseline, PREFLIGHT_PASS and DRY_RUN_COMPLETE. The final repeat reused
+the exact already-uploaded image by SHA instead of making a second tmpfs copy.
+No execute marker was created and no execute/reboot flag was supplied.
+
+Actual archive audit: five core configs and two SSH host keys byte-preserved,
+old opkg/APK/upgrade/rc.d state excluded, five members removed, one preserved
+custom enabled service prepared, 73 final members / 23,222 compressed bytes.
+Private archive content and service names are not in this document or delivery.
+Gzip CRC and tar parsing passed. Private archive hashes remain in private/local
+test evidence, not in the public candidate.
+
+Pre-payload upload passed at MemAvailable 32,432 / 31,532 KiB against 27,240
+KiB physical and 26,592 KiB capacity requirements. Post-upload passed at 23,388 /
+17,896 KiB; pre-handoff passed at 16,320 / 16,200 KiB, tmpfs free 73,816 KiB.
+Post-upload requirements were 9,064 KiB physical / 8,416 KiB capacity; even with
+zero projected anonymous-memory credit, both final samples exceed the full
+12,412 KiB ramfs-phase requirement. A fresh equivalent shell guard also passed.
+
+Two generic runner bugs surfaced only after clearing the original resource gate:
+non-executable S-link targets are not enabled boot services (procd execlp would
+fail), and OpenWrt libraries intentionally reference unset optional variables,
+so detector sourcing now runs in a nounset-disabled subshell while the outer
+guard remains strict. Regression cases cover both. Package audit also corrected
+the probe identity parser to work with the candidate's regex-free jq build.
+
+31 runner tests, shell suites, syntax/ShellCheck, source-order and cross-language
+memory-gate tests PASS. Frozen candidate structure/module/feed audit PASS.
+Optional diagnostics plus exclusive dependencies save only 736,874 bytes in a
+non-bootable differential SquashFS experiment; selection and all firmware bytes
+remain unchanged. Twelve optional-package dependency APKs fetched from matching
+signed local indexes without bypassing trust. CI lint/packaging includes the new
+memory helper and model; hosted CI was not run.
+
+Readiness is for an attended hardware experiment, not hardware validation or
+public-release approval. Anonymous-memory release is projected, not measured
+after an actual handoff; workloads can change. Existing firmware/device risks
+and the distinct public-release blockers remain. Recovery assets retain their
+known-good hashes; no recovery write was performed.
 
 ## Resource follow-up (2026-09-22, 11:44–11:51 UTC)
 

@@ -7,7 +7,8 @@ board="$(cat /tmp/sysinfo/board_name)"
 kernel="$(uname -r)"
 identity='{}'
 if [ -f /etc/rainwrt-release ]; then
-    identity="$(jq -Rn '[inputs | capture("^(?<key>RAINWRT_[A-Z_]+)=\u0027(?<value>[a-zA-Z0-9,._/-]+)\u0027$")] | from_entries' < /etc/rainwrt-release)"
+    # jq's minimal build has no regex engine. Exact identity is checked on host.
+    identity="$(jq -Rn '[inputs | split("=") | {key:.[0],value:(.[1] | .[1:-1])}] | from_entries' < /etc/rainwrt-release)"
 fi
 release="$(ubus call system board | jq '{release: .release.version, revision: .release.revision, target: .release.target}')"
 mtd="$(cat /proc/mtd)"

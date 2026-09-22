@@ -30,7 +30,7 @@ jobs:
           sh tests/mi_dualboot_test.sh
           sh tests/platform_write_scope_test.sh
           sh tests/attended_install_state_test.sh
-          shellcheck scripts/attended-cr8808-hardware-test.sh scripts/lib/cr8808-probe.sh scripts/performance-audit.sh scripts/build-rainwrt.sh scripts/audit-public-release.sh
+          shellcheck scripts/attended-cr8808-hardware-test.sh scripts/lib/cr8808-probe.sh scripts/lib/upgrade-memory.sh scripts/performance-audit.sh scripts/build-rainwrt.sh scripts/audit-public-release.sh
           sh scripts/audit-public-release.sh
       - name: Build
         run: JOBS=4 sh scripts/build-rainwrt.sh

@@ -100,6 +100,7 @@ def main():
         shutil.copyfile(target / name, out / name)
     shutil.copyfile(build / 'rainwrt-build-identity.json', out / 'source-identity.json')
     shutil.copyfile(ROOT / 'docs/HARDWARE_TEST_25_12.md', out / 'HARDWARE_TEST_25_12.md')
+    shutil.copyfile(ROOT / 'docs/SYSUPGRADE_MEMORY_MODEL.md', out / 'SYSUPGRADE_MEMORY_MODEL.md')
     host = build / 'staging_dir/host/bin'
     image = out / names[0]
     subprocess.run([str(host / 'fwtool'), '-i', str(out / 'image-metadata.json'), str(image)], check=True)
@@ -151,6 +152,7 @@ def main():
     require(len(licenses) == 1, 'vendor firmware notice missing')
     shutil.copyfile(licenses[0], out / 'QUALCOMM-FIRMWARE-LICENSE.txt')
     tool_names = ['scripts/attended-cr8808-hardware-test.sh', 'scripts/hardware_test.py', 'scripts/lib/cr8808-probe.sh',
+                  'scripts/lib/upgrade-memory.sh',
                   'scripts/performance-audit.sh', 'target/linux/qualcommax/ipq50xx/base-files/lib/upgrade/mi_layout.sh']
     for name in tool_names:
         destination = out / 'runner' / name

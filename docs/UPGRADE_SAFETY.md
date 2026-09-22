@@ -26,16 +26,20 @@ after handoff is indeterminate, not immediate failure. One write attempt only;
 new build identity. A normal reboot is allowed only with `--validate-reboot`
 and after all first-boot critical gates pass. It is never a recovery action.
 
-RAM budget is measured, not inferred from tmpfs capacity: twice the stage2
-binary/library/script closure plus 8 MiB transient headroom plus two config
-archive copies. Before upload, add image size. Both MemAvailable and tmpfs
-free space must pass. This is a conservative lower bound, not an OOM guarantee.
-Each preflight resource gate requires two consecutive passing samples at least
-five seconds apart, with a 120-second deadline; a low sample resets the streak.
-Sampling waits do not change the reserve, reclaim caches, or stop services.
-The image is counted only before upload (and only if its exact bytes are not
-already staged); after upload its memory is already reflected in MemAvailable.
-The streamed original configuration archive remains only on the local host;
-only the migrated archive goes to `/tmp`. Two archive-copy allowances cover
-the staged input and sysupgrade's configuration copy. Stage2's second closure
-allowance is intentional allocation/copy margin, not a second image charge.
+RAM checks now use the phase model in SYSUPGRADE_MEMORY_MODEL.md, superseding
+the original overlapping-userspace/full-ramfs formula. Tmpfs capacity and
+physical availability have separate requirements. The 8 MiB operational margin
+remains; anticipated userspace anonymous-memory release can cover only deferred
+ramfs files, with a hard cap at their measured size. No kernel/slab, Wi-Fi DMA,
+or page-cache reclamation credit is added. This is not an OOM guarantee.
+
+Each gate requires two passing samples five seconds apart, bounded by 120
+seconds. No service quiesce, manual drop_caches or overlay staging is used.
+The image is charged once before upload and already resident afterward. The
+original archive streams to WSL; the migrated archive is staged, then copied
+once by sysupgrade -f. The small upgraded ELF closure is copied before handoff;
+the rest of RAM_ROOT is copied only after upstream userspace cleanup.
+
+There is no new platform_pre_upgrade memory-abort hook: plain return is not a
+stage2 abort, and explicit exit can lead upgraded to reboot after services and
+SSH have already gone. Final refusal belongs before the handoff instead.

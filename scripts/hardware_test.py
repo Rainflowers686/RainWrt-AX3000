@@ -23,11 +23,13 @@ MIBIB = 'b0c9f1a0239bd150e121063278d123b30e7697a6959ea4543cce8e83aa47ca54'
 APPSBL = 'a92f08878499bb697e67cfb5f597bb5757e48b4846f4f250fbc612ea166ad4f3'
 RECOVERY = '7b48d723d93612c6fb8857ec4f05ac7faf62242f6848e5686f53fc8ff6752e69'
 DETECTOR = 'target/linux/qualcommax/ipq50xx/base-files/lib/upgrade/mi_layout.sh'
+MEMORY_TOOL = 'scripts/lib/upgrade-memory.sh'
 BASELINE_HELPERS = {'/sbin/sysupgrade', '/lib/upgrade/stage2', '/lib/upgrade/do_stage2',
                     '/lib/upgrade/platform.sh', '/lib/upgrade/mi_layout.sh', '/lib/upgrade/mi_dualboot.sh',
                     '/lib/upgrade/nand.sh', '/lib/upgrade/common.sh'}
 SERVICE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z')
 HANDOFF = re.compile(r'Commencing upgrade|Closing all shell sessions|RAINWRT_SYSUPGRADE_INVOKED')
+ENABLED_SERVICES = 'for p in /etc/rc.d/S*; do [ -L "$p" ] && [ -x "$p" ] || continue; readlink "$p"; done\n'
 
 
 class Stop(Exception):
@@ -63,18 +65,40 @@ def layout_checks(p):
     }
 
 
-def reserve_kib(probe, archive_bytes=0):
-    # Measured shared-library closure + 100% copy/allocator margin, 8 MiB
-    # userspace/kernel transient headroom, and two config archive copies.
-    measured = probe['stage2_kib']
-    if not isinstance(measured, int) or measured < 512:
-        raise Stop('PRECHECK_FAILED: invalid stage2 measurement')
-    return 2 * measured + 8192 + (2 * archive_bytes + 1023) // 1024
+def detector_check(path):
+    # OpenWrt libraries intentionally use unset optional variables. Isolate
+    # their shell semantics; keep nounset on the outer verification script.
+    return '[ "$(set +u; . ' + shlex.quote(path) + '; mi_layout_detect)" = rainwrt-single-slot ]\n'
 
 
-def wait_resources(sample, image_kib, reserve, emit, phase,
+def phase_requirements(profile, sample, image_kib=0, archive_bytes=0, staged=False):
+    """See SYSUPGRADE_MEMORY_MODEL.md; no kernel/cache reclamation credit.
+
+    The original 8 MiB operational margin remains in every physical gate.
+    Anonymous-memory credit is capped to deferred RAM_ROOT files only, never
+    spent on that margin or the running-system upload/validation phase.
+    """
+    h, r = profile['handoff'][1], profile['stage2'][1]
+    if any(type(n) is not int for n in (h, r)) or not 128 <= h <= r <= 16384:
+        raise Stop('PRECHECK_FAILED: invalid measured upgrade closure')
+    keys = ('mem_kib', 'tmp_kib', 'anon_kib', 'observer_anon_kib', 'locked_kib', 'swap_kib')
+    if any(type(sample.get(k)) is not int or sample[k] < 0 for k in keys):
+        raise Stop('PRECHECK_FAILED: invalid resource sample')
+    config_kib = (archive_bytes + 4095) // 4096 * 4
+    pending_config = config_kib if staged else 2 * config_kib
+    credit = 0 if sample['locked_kib'] or sample['swap_kib'] else min(r, max(0, sample['anon_kib'] - sample['observer_anon_kib']))
+    running = h + 8192 + pending_config
+    after_cleanup = r + 8192 + pending_config
+    return {'physical_required_kib': image_kib + max(running, after_cleanup - credit),
+            'tmp_required_kib': image_kib + 2 * r + pending_config,
+            'running_phase_kib': running, 'ramfs_phase_kib': after_cleanup,
+            'deferred_file_credit_kib': credit, 'pending_config_kib': pending_config,
+            'handoff_file_kib': h, 'ramfs_file_kib': r, 'transient_margin_kib': 8192}
+
+
+def wait_resources(sample, image_kib, profile, emit, phase, archive_bytes=0, staged=False,
                    clock=time.monotonic, sleep=time.sleep):
-    """Unchanged budget; two fresh samples five seconds apart within 120 s.
+    """Phase-aware budget; two fresh samples five seconds apart within 120 s.
 
     Only the light resource probe is repeated, not the stage2 library scan.
     The monotonic deadline includes SSH sampling time. No reclaim or writes.
@@ -82,23 +106,20 @@ def wait_resources(sample, image_kib, reserve, emit, phase,
     start = clock()
     end = start + 120
     consecutive = 0
-    required = image_kib + reserve
     while clock() < end:
         p = sample(timeout=min(10, end - clock()))
-        if any(type(p.get(k)) is not int or p[k] < 0 for k in ('mem_kib', 'tmp_kib')):
-            raise Stop('PRECHECK_FAILED: invalid resource sample')
-        consecutive = consecutive + 1 if p['mem_kib'] >= required and p['tmp_kib'] >= required else 0
+        budget = phase_requirements(profile, p, image_kib, archive_bytes, staged)
+        consecutive = consecutive + 1 if p['mem_kib'] >= budget['physical_required_kib'] and p['tmp_kib'] >= budget['tmp_required_kib'] else 0
         emit('RESOURCE_SAMPLE', {'phase': phase, 'elapsed_seconds': round(clock() - start, 3),
                                 'mem_kib': p['mem_kib'], 'tmp_kib': p['tmp_kib'],
-                                'image_upload_kib': image_kib, 'reserve_kib': reserve,
-                                'required_kib': required, 'consecutive': consecutive})
+                                'image_upload_kib': image_kib, **budget, 'consecutive': consecutive})
         if clock() >= end:
             break
         if consecutive >= 2:
-            emit('RESOURCE_PASS', {'phase': phase, 'required_kib': required})
+            emit('RESOURCE_PASS', {'phase': phase, **budget})
             return p
         sleep(min(5, end - clock()))
-    raise Stop('PRECHECK_FAILED: resource stability timeout (120 seconds; thresholds unchanged)')
+    raise Stop('PRECHECK_FAILED: resource stability timeout (120 seconds; phase-aware budgets)')
 
 
 def required_checks(p, expected, baseline):
@@ -279,11 +300,10 @@ class Transport:
         return json.loads(self.checked((ROOT / 'scripts/lib/cr8808-probe.sh').read_text()))
 
     def resources(self, timeout):
-        return json.loads(self.checked('''set -eu
-mem=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
-tmp=$(df -Pk /tmp | awk 'NR==2 {print $4}')
-printf '{"mem_kib":%s,"tmp_kib":%s}\\n' "$mem" "$tmp"
-''', timeout=timeout))
+        return json.loads(self.checked((ROOT / MEMORY_TOOL).read_text() + '\nmemory_sample\n', timeout=timeout))
+
+    def memory_profile(self):
+        return json.loads(self.checked((ROOT / MEMORY_TOOL).read_text() + '\nmemory_profile\n'))
 
 
 class Controller:
@@ -397,15 +417,15 @@ def main():
         for name, digest in expected['tools'].items():
             if '..' in pathlib.PurePosixPath(name).parts or not (name.startswith('scripts/') or name == DETECTOR) or sha(ROOT / name) != digest:
                 raise Stop('PRECHECK_FAILED: runner/helper version mismatch')
-        if DETECTOR not in expected['tools']:
-            raise Stop('PRECHECK_FAILED: unbound layout detector')
+        if not {DETECTOR, MEMORY_TOOL} <= expected['tools'].keys():
+            raise Stop('PRECHECK_FAILED: unbound layout or memory tool')
         helpers = expected.get('baseline_helpers', {})
         if set(helpers) != BASELINE_HELPERS or not all(re.fullmatch('[0-9a-f]{64}', h) for h in helpers.values()):
             raise Stop('PRECHECK_FAILED: current-system stage2 helper hashes are not bound')
         reference_verify = 'set -eu\n' + ''.join(
             f'[ "$(sha256sum {path} | cut -d\' \' -f1)" = {digest} ]\n' for path, digest in sorted(helpers.items()))
         subprocess.run(['shellcheck', str(ROOT / 'scripts/attended-cr8808-hardware-test.sh'),
-                        str(ROOT / 'scripts/lib/cr8808-probe.sh'), str(ROOT / 'scripts/performance-audit.sh')], check=True)
+                        str(ROOT / 'scripts/lib/cr8808-probe.sh'), str(ROOT / MEMORY_TOOL), str(ROOT / 'scripts/performance-audit.sh')], check=True)
         image = candidate / expected['image']
         if shutil.disk_usage(state).free < image.stat().st_size * 4 + 64 * 1024 * 1024:
             raise Stop('PRECHECK_FAILED: local state storage too small')
@@ -432,25 +452,26 @@ def main():
         emit('fingerprint', checks)
         if not all(checks.values()):
             raise Stop('PRECHECK_FAILED: fingerprint')
+        transport.checked(reference_verify)
+        emit('EXISTING_HELPER_HASH_PASS', {'count': len(helpers)})
+        profile = transport.memory_profile()
+        emit('MEMORY_PROFILE', profile)
         # Exact stable remote path allows reuse after a previous dry run, never
         # deletes another task's staging and avoids duplicate images in tmpfs.
         remote = '/tmp/rainwrt-hwtest-' + expected['files'][expected['image']][:16]
         remote_image = remote + '/candidate.bin'
         current = transport.run('sha256sum ' + remote_image + ' 2>/dev/null\n')
         reused = current.returncode == 0 and current.stdout.decode().split()[0] == expected['files'][expected['image']]
-        image_kib = 0 if reused else (image.stat().st_size + 1023) // 1024
-        reserve = reserve_kib(baseline)
-        emit('resources', {'mem_kib': baseline['mem_kib'], 'tmp_kib': baseline['tmp_kib'],
-                           'image_upload_kib': image_kib, 'stage2_kib': baseline['stage2_kib'], 'reserve_kib': reserve})
-        wait_resources(transport.resources, image_kib, reserve, emit, 'pre_upload')
-        transport.checked(reference_verify)
-        emit('EXISTING_HELPER_HASH_PASS', {'count': len(helpers)})
+        image_kib = 0 if reused else (image.stat().st_size + 4095) // 4096 * 4
+        wait_resources(transport.resources, image_kib, profile, emit, 'PRE_UPLOAD_CAPACITY_PHYSICAL_GATE')
         transport.checked('set -eu\numask 077\n[ ! -L ' + remote + ' ]\nmkdir -p ' + remote + '\nchmod 700 ' + remote +
                           '\nfor f in candidate.bin config.tgz mi_layout.sh metadata.json; do [ ! -L ' + remote + '/$f ]; done\n')
         listing = transport.checked('sysupgrade -l\n')
         private_write(run / 'sysupgrade-list.txt', listing)
         emit('SYSUPGRADE_LIST_COLLECTED', {'count': len(listing.splitlines())})
-        services = transport.checked('for p in /etc/rc.d/S*; do [ -L "$p" ] || continue; readlink "$p"; done\n')
+        # procd rcS execlp() cannot run non-executable targets. A stale S link
+        # alone must not turn an upstream-disabled service into enabled state.
+        services = transport.checked(ENABLED_SERVICES)
         enabled = set()
         for line in services.decode().splitlines():
             name = line.rsplit('/', 1)[-1]
@@ -468,8 +489,7 @@ def main():
                                      'audit': archive_audit})
         # Now that the exact configuration size is known, also budget its
         # copies before any payload upload, without weakening the first gate.
-        wait_resources(transport.resources, image_kib, reserve_kib(baseline, migrated.stat().st_size),
-                       emit, 'pre_payload_upload')
+        wait_resources(transport.resources, image_kib, profile, emit, 'PRE_PAYLOAD_UPLOAD_GATE', migrated.stat().st_size)
         if not reused:
             transport.copy(image, remote_image)
         transport.copy(migrated, remote + '/config.tgz')
@@ -480,8 +500,7 @@ def main():
 [ "$(sha256sum {remote_image} | cut -d' ' -f1)" = {expected['files'][expected['image']]} ]
 [ "$(sha256sum {remote}/config.tgz | cut -d' ' -f1)" = {sha(migrated)} ]
 [ "$(sha256sum {remote}/mi_layout.sh | cut -d' ' -f1)" = {detector_hash} ]
-. {remote}/mi_layout.sh
-[ "$(mi_layout_detect)" = rainwrt-single-slot ]
+{detector_check(remote + '/mi_layout.sh')}
 sysupgrade -T {remote_image}
 fwtool -i {remote}/metadata.json {remote_image}
 [ "$(jsonfilter -i {remote}/metadata.json -e '@.supported_devices[0]')" = redmi,ax3000 ]
@@ -495,15 +514,18 @@ for h in mi_layout.sh mi_dualboot.sh platform.sh nand.sh common.sh do_stage2; do
                                             'metadata_board': 'redmi,ax3000', 'metadata_target': 'qualcommax/ipq50xx',
                                             'stage2_helpers': True})
         post_upload = transport.probe()
-        reserve = reserve_kib(post_upload, migrated.stat().st_size)
-        emit('post_upload_resources', {'mem_kib': post_upload['mem_kib'], 'tmp_kib': post_upload['tmp_kib'], 'reserve_kib': reserve})
-        wait_resources(transport.resources, 0, reserve, emit, 'post_upload')
+        wait_resources(transport.resources, 0, profile, emit, 'POST_UPLOAD_VALIDATION_GATE', migrated.stat().st_size, staged=True)
         if baseline['boot_id'] != post_upload['boot_id'] or baseline['mtd'] != post_upload['mtd']:
             raise Stop('PRECHECK_FAILED: device changed during preflight')
         endpoints = args.endpoint or ['https://www.cloudflare.com/cdn-cgi/trace', 'https://www.wikipedia.org/']
         baseline_net = {family: network_check(transport, endpoints, family == 'ipv6') for family in ('ipv4', 'ipv6') if baseline[family]}
         private_write(run / 'network-baseline.json', json.dumps(baseline_net))
         emit('NETWORK_BASELINE_COLLECTED', baseline_net)
+        wait_resources(transport.resources, 0, profile, emit, 'PRE_HANDOFF_GATE', migrated.stat().st_size, staged=True)
+        final_memory_check = ((ROOT / MEMORY_TOOL).read_text() + '\nmemory_pre_handoff ' +
+                              str(profile['stage2'][1]) + ' ' + str(profile['handoff'][1]) + ' ' +
+                              str((migrated.stat().st_size + 4095) // 4096 * 4) + '\n')
+        transport.checked(final_memory_check)
         emit('PREFLIGHT_PASS')
         if not args.execute:
             emit('DRY_RUN_COMPLETE')
@@ -511,9 +533,7 @@ for h in mi_layout.sh mi_dualboot.sh platform.sh nand.sh common.sh do_stage2; do
         consumed = state / (expected['identity']['RAINWRT_BUILD_ID'] + '.execute-started')
         private_write(consumed, str(run) + '\n')
         controller = Controller(transport, expected, baseline, emit)
-        command = verify + f'''[ "$(cat /proc/sys/kernel/random/boot_id)" = {baseline['boot_id']} ]
-[ "$(awk '/^MemAvailable:/ {{print $2}}' /proc/meminfo)" -ge {reserve} ]
-[ "$(df -Pk /tmp | awk 'NR==2 {{print $4}}')" -ge {reserve} ]
+        command = verify + final_memory_check + f'''[ "$(cat /proc/sys/kernel/random/boot_id)" = {baseline['boot_id']} ]
 echo RAINWRT_SYSUPGRADE_INVOKED
 exec /sbin/sysupgrade -f {remote}/config.tgz {remote_image}
 '''

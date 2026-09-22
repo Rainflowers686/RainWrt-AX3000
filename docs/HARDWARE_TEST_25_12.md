@@ -50,11 +50,13 @@ before that marker does not consume it. Dry-runs never consume it. Retrying a
 consumed build requires explicit human investigation and a separately reviewed
 marker reset; the runner never removes it or automatically permits a retry.
 
-Resource gates retain the measured reserve without reclaiming memory or stopping
-services. Each gate requires two passing samples five seconds apart within a
+Resource gates distinguish running-system validation/handoff, subsequent ramfs
+construction, and tmpfs capacity (see SYSUPGRADE_MEMORY_MODEL.md). They retain
+the 8 MiB operational margin without reclaiming memory or stopping services.
+Each gate requires two passing samples five seconds apart within a
 120-second monotonic deadline, including sampling time. This applies before
 archive collection, before payload upload with the exact archive budget, and
-after upload. Only lightweight MemAvailable/tmpfs probes repeat. A fresh final
+after upload and immediately before handoff. Only numeric memory probes repeat. A fresh final
 resource check remains immediately before an explicitly authorized sysupgrade.
 
 ## Required checks
