@@ -3,6 +3,7 @@
 import argparse
 import datetime
 import fcntl
+import gzip
 import hashlib
 import io
 import ipaddress
@@ -69,6 +70,35 @@ def reserve_kib(probe, archive_bytes=0):
     if not isinstance(measured, int) or measured < 512:
         raise Stop('PRECHECK_FAILED: invalid stage2 measurement')
     return 2 * measured + 8192 + (2 * archive_bytes + 1023) // 1024
+
+
+def wait_resources(sample, image_kib, reserve, emit, phase,
+                   clock=time.monotonic, sleep=time.sleep):
+    """Unchanged budget; two fresh samples five seconds apart within 120 s.
+
+    Only the light resource probe is repeated, not the stage2 library scan.
+    The monotonic deadline includes SSH sampling time. No reclaim or writes.
+    """
+    start = clock()
+    end = start + 120
+    consecutive = 0
+    required = image_kib + reserve
+    while clock() < end:
+        p = sample(timeout=min(10, end - clock()))
+        if any(type(p.get(k)) is not int or p[k] < 0 for k in ('mem_kib', 'tmp_kib')):
+            raise Stop('PRECHECK_FAILED: invalid resource sample')
+        consecutive = consecutive + 1 if p['mem_kib'] >= required and p['tmp_kib'] >= required else 0
+        emit('RESOURCE_SAMPLE', {'phase': phase, 'elapsed_seconds': round(clock() - start, 3),
+                                'mem_kib': p['mem_kib'], 'tmp_kib': p['tmp_kib'],
+                                'image_upload_kib': image_kib, 'reserve_kib': reserve,
+                                'required_kib': required, 'consecutive': consecutive})
+        if clock() >= end:
+            break
+        if consecutive >= 2:
+            emit('RESOURCE_PASS', {'phase': phase, 'required_kib': required})
+            return p
+        sleep(min(5, end - clock()))
+    raise Stop('PRECHECK_FAILED: resource stability timeout (120 seconds; thresholds unchanged)')
 
 
 def required_checks(p, expected, baseline):
@@ -182,6 +212,32 @@ def migrate_archive(source, destination, enabled):
     return {'removed_members': removed, 'enabled_custom_services': preserved, 'disabled_services': sorted(disabled)}
 
 
+def audit_archive(original, migrated):
+    """Report only booleans/counts; validate gzip CRC and preserved core bytes."""
+    with gzip.open(migrated, 'rb') as stream:
+        while stream.read(65536):
+            pass  # Read through the trailer, not just the first tar end marker.
+    with tarfile.open(original) as old, tarfile.open(migrated) as new:
+        old_members = {m.name.removeprefix('./').lstrip('/'): m for m in old.getmembers()}
+        members = {m.name: m for m in new.getmembers()}
+        core = {'etc/config/' + n for n in ('network', 'wireless', 'dhcp', 'firewall', 'system')}
+        keys = {n for n in old_members if n.startswith('etc/dropbear/') and n.endswith('_host_key')}
+        def same_bytes(names):
+            return all(n in members and n in old_members and members[n].isfile() and old_members[n].isfile()
+                       and new.extractfile(members[n]).read() == old.extractfile(old_members[n]).read() for n in names)
+        checks = {'core_config_preserved': same_bytes(core),
+                  'SSH_host_keys_preserved': bool(keys) and same_bytes(keys),
+                  'archive_integrity': True}
+        for label, prefixes in {'old_opkg_removed': ('etc/opkg', 'usr/lib/opkg'),
+                                'old_apk_removed': ('etc/apk', 'lib/apk'),
+                                'old_upgrade_removed': ('lib/upgrade',),
+                                'old_rc_d_removed': ('etc/rc.d',)}.items():
+            checks[label] = not any(n == p or n.startswith(p + '/') for n in members for p in prefixes)
+        if not all(checks.values()):
+            raise Stop('PRECHECK_FAILED: config preservation/integrity audit')
+        return dict(checks, core_config_count=len(core), SSH_host_key_count=len(keys), member_count=len(members))
+
+
 class Transport:
     def __init__(self, host, state):
         ipaddress.IPv4Address(host)
@@ -221,6 +277,13 @@ class Transport:
 
     def probe(self):
         return json.loads(self.checked((ROOT / 'scripts/lib/cr8808-probe.sh').read_text()))
+
+    def resources(self, timeout):
+        return json.loads(self.checked('''set -eu
+mem=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+tmp=$(df -Pk /tmp | awk 'NR==2 {print $4}')
+printf '{"mem_kib":%s,"tmp_kib":%s}\\n' "$mem" "$tmp"
+''', timeout=timeout))
 
 
 class Controller:
@@ -379,13 +442,14 @@ def main():
         reserve = reserve_kib(baseline)
         emit('resources', {'mem_kib': baseline['mem_kib'], 'tmp_kib': baseline['tmp_kib'],
                            'image_upload_kib': image_kib, 'stage2_kib': baseline['stage2_kib'], 'reserve_kib': reserve})
-        if baseline['mem_kib'] < image_kib + reserve or baseline['tmp_kib'] < image_kib + reserve:
-            raise Stop('PRECHECK_FAILED: insufficient RAM/tmp for image plus measured stage2 budget')
+        wait_resources(transport.resources, image_kib, reserve, emit, 'pre_upload')
         transport.checked(reference_verify)
+        emit('EXISTING_HELPER_HASH_PASS', {'count': len(helpers)})
         transport.checked('set -eu\numask 077\n[ ! -L ' + remote + ' ]\nmkdir -p ' + remote + '\nchmod 700 ' + remote +
                           '\nfor f in candidate.bin config.tgz mi_layout.sh metadata.json; do [ ! -L ' + remote + '/$f ]; done\n')
         listing = transport.checked('sysupgrade -l\n')
         private_write(run / 'sysupgrade-list.txt', listing)
+        emit('SYSUPGRADE_LIST_COLLECTED', {'count': len(listing.splitlines())})
         services = transport.checked('for p in /etc/rc.d/S*; do [ -L "$p" ] || continue; readlink "$p"; done\n')
         enabled = set()
         for line in services.decode().splitlines():
@@ -398,13 +462,14 @@ def main():
         private_write(run / 'config-original.tgz', original)
         migrated = run / 'config-migrated.tgz'
         migration = migrate_archive(run / 'config-original.tgz', migrated, enabled)
-        with tarfile.open(migrated) as archive:
-            archive_names = set(archive.getnames())
-            required_config = {'etc/config/' + n for n in ('network', 'wireless', 'dhcp', 'firewall', 'system')}
-            if not required_config <= archive_names or not any(n.startswith('etc/dropbear/') and n.endswith('_host_key') for n in archive_names):
-                raise Stop('PRECHECK_FAILED: missing core configuration or SSH host-key preservation')
+        archive_audit = audit_archive(run / 'config-original.tgz', migrated)
         emit('CONFIG_MIGRATION_PASS', {'removed_members': migration['removed_members'], 'preserved_enabled_custom_services': len(migration['enabled_custom_services']),
-                                     'archive_size': migrated.stat().st_size, 'archive_sha256': sha(migrated)})
+                                     'archive_size': migrated.stat().st_size, 'archive_sha256': sha(migrated),
+                                     'audit': archive_audit})
+        # Now that the exact configuration size is known, also budget its
+        # copies before any payload upload, without weakening the first gate.
+        wait_resources(transport.resources, image_kib, reserve_kib(baseline, migrated.stat().st_size),
+                       emit, 'pre_payload_upload')
         if not reused:
             transport.copy(image, remote_image)
         transport.copy(migrated, remote + '/config.tgz')
@@ -425,16 +490,20 @@ grep -Fq '/lib/upgrade/*.sh' /lib/upgrade/stage2
 for h in mi_layout.sh mi_dualboot.sh platform.sh nand.sh common.sh do_stage2; do [ -s /lib/upgrade/$h ]; done
 '''
         transport.checked(verify)
+        emit('REMOTE_IMAGE_VALIDATION_PASS', {'candidate_sha256': expected['files'][expected['image']],
+                                            'detector': 'rainwrt-single-slot', 'sysupgrade_T': True,
+                                            'metadata_board': 'redmi,ax3000', 'metadata_target': 'qualcommax/ipq50xx',
+                                            'stage2_helpers': True})
         post_upload = transport.probe()
         reserve = reserve_kib(post_upload, migrated.stat().st_size)
         emit('post_upload_resources', {'mem_kib': post_upload['mem_kib'], 'tmp_kib': post_upload['tmp_kib'], 'reserve_kib': reserve})
-        if post_upload['mem_kib'] < reserve or post_upload['tmp_kib'] < reserve:
-            raise Stop('PRECHECK_FAILED: insufficient post-upload memory')
+        wait_resources(transport.resources, 0, reserve, emit, 'post_upload')
         if baseline['boot_id'] != post_upload['boot_id'] or baseline['mtd'] != post_upload['mtd']:
             raise Stop('PRECHECK_FAILED: device changed during preflight')
         endpoints = args.endpoint or ['https://www.cloudflare.com/cdn-cgi/trace', 'https://www.wikipedia.org/']
         baseline_net = {family: network_check(transport, endpoints, family == 'ipv6') for family in ('ipv4', 'ipv6') if baseline[family]}
         private_write(run / 'network-baseline.json', json.dumps(baseline_net))
+        emit('NETWORK_BASELINE_COLLECTED', baseline_net)
         emit('PREFLIGHT_PASS')
         if not args.execute:
             emit('DRY_RUN_COMPLETE')

@@ -43,6 +43,20 @@ normal `sync; reboot`, followed by the same checks. No successful second boot
 means no HARDWARE_VALIDATED verdict. A persistent local attempt marker prevents
 restarting the command from silently repeating a possibly completed flash.
 
+The persistent marker is created **before the first remote execution attempt**,
+including its last checks. It remains consumed even on `PRE_HANDOFF_FAILURE`:
+missing output cannot prove that a write never started. A preflight failure
+before that marker does not consume it. Dry-runs never consume it. Retrying a
+consumed build requires explicit human investigation and a separately reviewed
+marker reset; the runner never removes it or automatically permits a retry.
+
+Resource gates retain the measured reserve without reclaiming memory or stopping
+services. Each gate requires two passing samples five seconds apart within a
+120-second monotonic deadline, including sampling time. This applies before
+archive collection, before payload upload with the exact archive budget, and
+after upload. Only lightweight MemAvailable/tmpfs probes repeat. A fresh final
+resource check remains immediately before an explicitly authorized sysupgrade.
+
 ## Required checks
 
 - Board, MTD18 character device/name/size/offset, no rootfs_1, cmdline,

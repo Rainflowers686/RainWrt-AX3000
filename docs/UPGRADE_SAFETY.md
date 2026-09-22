@@ -30,3 +30,12 @@ RAM budget is measured, not inferred from tmpfs capacity: twice the stage2
 binary/library/script closure plus 8 MiB transient headroom plus two config
 archive copies. Before upload, add image size. Both MemAvailable and tmpfs
 free space must pass. This is a conservative lower bound, not an OOM guarantee.
+Each preflight resource gate requires two consecutive passing samples at least
+five seconds apart, with a 120-second deadline; a low sample resets the streak.
+Sampling waits do not change the reserve, reclaim caches, or stop services.
+The image is counted only before upload (and only if its exact bytes are not
+already staged); after upload its memory is already reflected in MemAvailable.
+The streamed original configuration archive remains only on the local host;
+only the migrated archive goes to `/tmp`. Two archive-copy allowances cover
+the staged input and sysupgrade's configuration copy. Stage2's second closure
+allowance is intentional allocation/copy margin, not a second image charge.

@@ -94,9 +94,20 @@ class RunnerTests(unittest.TestCase):
 
     def test_before_handoff_failure(self):
         fake = Fake([GOOD], 1, 'Image check failed')
+        controller = fake.controller()
         with self.assertRaisesRegex(r.Stop, 'PRE_HANDOFF_FAILURE'):
-            fake.controller().execute('sysupgrade')
+            controller.execute('sysupgrade')
+        with self.assertRaisesRegex(r.Stop, 'REFUSING_SECOND_SYSUPGRADE'):
+            controller.execute('sysupgrade')
         self.assertEqual(len(fake.commands), 1)
+
+    def test_persistent_attempt_marker_is_exclusive_and_not_reset(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            marker = pathlib.Path(tmp) / 'fixture.execute-started'
+            r.private_write(marker, 'first-attempt\n')
+            with self.assertRaises(FileExistsError):
+                r.private_write(marker, 'second-attempt\n')
+            self.assertEqual(marker.read_text(), 'first-attempt\n')
 
     def test_246_disconnect_new_system(self):
         fake = Fake([OLD, r.Stop('offline'), GOOD])
@@ -154,6 +165,68 @@ class RunnerTests(unittest.TestCase):
             self.assertFalse(mem >= reserve and tmp >= reserve)
         with self.assertRaises(r.Stop):
             r.reserve_kib(dict(GOOD, stage2_kib=0))
+
+    def resource_wait(self, values, passes, expected_time):
+        now, samples, events = [0], iter(values), []
+        def sample(timeout):
+            self.assertLessEqual(timeout, 10)
+            mem, tmp = next(samples)
+            return {'mem_kib': mem, 'tmp_kib': tmp}
+        def sleep(seconds):
+            now[0] += seconds
+        args = (sample, 18000, 16000, lambda *event: events.append(event), 'fixture')
+        kwargs = {'clock': lambda: now[0], 'sleep': sleep}
+        if passes:
+            result = r.wait_resources(*args, **kwargs)
+            self.assertGreaterEqual(result['mem_kib'], 34000)
+            self.assertGreaterEqual(result['tmp_kib'], 34000)
+            self.assertEqual(events[-1][0], 'RESOURCE_PASS')
+        else:
+            with self.assertRaisesRegex(r.Stop, 'PRECHECK_FAILED: resource stability timeout'):
+                r.wait_resources(*args, **kwargs)
+        self.assertEqual(now[0], expected_time)
+
+    def test_resource_immediate_pass_still_needs_second_sample(self):
+        self.resource_wait([(34000, 34000)] * 2, True, 5)
+
+    def test_resource_transient_low_then_stable_pass(self):
+        self.resource_wait([(10000, 50000), (50000, 10000), (34000, 34000), (35000, 35000)], True, 15)
+
+    def test_resource_oscillating_never_two_consecutive(self):
+        self.resource_wait([(35000, 35000), (33999, 50000)] * 12, False, 120)
+
+    def test_resource_timeout_low_memory(self):
+        self.resource_wait([(14000, 90000)] * 24, False, 120)
+
+    def test_resource_sampler_time_counts_towards_deadline(self):
+        now = [0]
+        def sample(timeout):
+            now[0] += 120
+            return {'mem_kib': 50000, 'tmp_kib': 50000}
+        with self.assertRaisesRegex(r.Stop, 'resource stability timeout'):
+            r.wait_resources(sample, 18000, 16000, lambda *a: None, 'fixture',
+                             clock=lambda: now[0], sleep=lambda _: self.fail('past deadline'))
+
+    def test_archive_integrity_core_keys_and_stale_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            src, dst = pathlib.Path(tmp) / 'in.tgz', pathlib.Path(tmp) / 'out.tgz'
+            with tarfile.open(src, 'w:gz') as archive:
+                for name in [*['etc/config/' + n for n in ('network', 'wireless', 'dhcp', 'firewall', 'system')],
+                             'etc/dropbear/dropbear_test_host_key', 'etc/rc.d/S01fixture', 'etc/apk/repositories',
+                             'etc/opkg/distfeeds.conf', 'lib/upgrade/platform.sh']:
+                    info = tarfile.TarInfo(name)
+                    info.size = 7
+                    archive.addfile(info, io.BytesIO(b'fixture'))
+            r.migrate_archive(src, dst, set())
+            audit = r.audit_archive(src, dst)
+            self.assertTrue(all(audit.values()))
+            self.assertEqual(audit['core_config_count'], 5)
+            self.assertEqual(audit['SSH_host_key_count'], 1)
+            data = bytearray(dst.read_bytes())
+            data[-8] ^= 1
+            dst.write_bytes(data)
+            with self.assertRaises(OSError):
+                r.audit_archive(src, dst)
 
     def test_opaque_archive_filters_and_services(self):
         with tempfile.TemporaryDirectory() as tmp:

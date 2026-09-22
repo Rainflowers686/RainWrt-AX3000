@@ -3,6 +3,59 @@
 Status: `BUILD_READY`, `STATIC_STRUCTURE_PASS`, `NOT_READY_FOR_ONE_COMMAND_HARDWARE_TEST`.
 No router flash/reboot/recovery was performed by this audit.
 
+## Resource follow-up (2026-09-22, 11:44–11:51 UTC)
+
+This follow-up supersedes the earlier no-cleanup authorization and resource
+snapshot below; it does not replace the firmware or erase the prior evidence.
+Only the expressly authorized old attended staging was removed after checking
+its known-good image SHA256, non-symlink/canonical path, tmpfs mount and two
+process cwd/root/fd scans (zero references). Its 18,088 KiB can be restaged from
+the untouched local known-good assets. No other temporary directory was deleted.
+
+Tmpfs used/free changed from 18,540/73,936 KiB to 452/92,024 KiB. Immediately
+after deletion MemAvailable was 27,160 KiB, not enough for 34,287 KiB. The new
+runner waited the full 120 seconds with 24 fresh samples: 23,972–26,784 KiB,
+zero passing samples. It exited PRECHECK_FAILED before configuration collection,
+candidate upload, sysupgrade -T, or any execute attempt. Fingerprint checks and
+LOCAL_PREFLIGHT_PASS passed. CONFIG_MIGRATION_LIVE, SYSUPGRADE_T_LIVE and
+POST_UPLOAD_MEMORY remain BLOCKED, not PASS. No execute marker was created.
+
+Read-only follow-up: stage2 closure 3,972 KiB; unchanged reserve 16,136 KiB;
+upload 18,151 KiB. Tmpfs later used only 460 KiB. The remaining old installer
+temporary directory is 128 KiB, too small to close the gap and was left alone.
+Slab was 32,996 KiB (5,992 reclaimable / 27,004 unreclaimable), page cache
+20,524 KiB, AnonPages 8,260 KiB; largest process RSS 7,304 KiB. Summed process
+RSS 44,036 KiB double-counts shared mappings and is not physical memory use.
+No private process names, command lines or configuration contents were logged.
+
+The live min_free_kbytes is 16,384, consistent with the upstream init script.
+MemFree therefore must not substitute for MemAvailable; kernel watermarks are
+not spare upgrade headroom. Ath11k page/DMA allocations cannot be attributed
+exactly from these counters (zero ath11k-labeled vmalloc entries is not zero
+Wi-Fi memory use). No services, caches, VM settings or radios were changed.
+No avoidable runner image double-copy exists: no candidate is staged yet;
+the original config streams to WSL, and only the migrated archive is uploaded.
+The two stage2/config allowances remain intentional margins/copies, not a
+second image charge. There is no evidence-based lifecycle saving sufficient
+to clear this gate under the present authorization.
+
+The final full probe still showed the original boot ID, increasing uptime,
+unchanged MTD/MIBIB/APPSBL/bootcmd, stage2 3,972 KiB, and MemAvailable 31,696 KiB
+(still below the requirement). Stage2 helper copy-chain source checks passed.
+Both Windows-native known-good recovery images still match their frozen hashes;
+the historical recovery listener validation is not a new recovery-write test.
+
+Tests: 25 runner unit cases PASS, including all four resource-stability cases,
+deadline accounting, archive CRC/core/key preservation and exclusive execution
+marker; layout/dualboot/handoff/write-scope shell suites PASS; shell syntax and
+tooling ShellCheck PASS; candidate static audit PASS (112 modules, four signed
+indexes, 87-package dependency closure); refreshed delivery checksums PASS.
+Public-branch pattern scan PASS with existing policy-text classifications only.
+No DTS/BDF/kernel/package changes or rebuild. Status remains
+`NOT_READY_FOR_ONE_COMMAND_HARDWARE_TEST`: physical RAM gate unmet.
+
+## Earlier build and pre-cleanup evidence
+
 Firmware source: `ff21ae557201e2def1ca4770275abca2fdae477f`.
 Upstream: ImmortalWrt v25.12.2 `4fc16f2985a358bd43bb522e43f05395fcbd6ed5`.
 Build ID: `25.12.2-hwtest1-ff21ae557201-45d16c23d08e`.
