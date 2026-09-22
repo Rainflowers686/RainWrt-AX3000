@@ -1,5 +1,27 @@
 <img src="https://avatars.githubusercontent.com/u/53193414?s=200&v=4" alt="logo" width="200" height="200" align="right">
 
+# RainWrt-AX3000
+
+RainWrt is a public downstream that keeps Redmi AX3000 / Xiaomi CR880X
+(especially CR8808) support moving with stable ImmortalWrt releases. Its
+verified kmiit-based 24.10 build is a reference, not the permanent source base.
+
+Development currently uses ImmortalWrt v25.12.2, Linux 6.12 and
+`qualcommax/ipq50xx`. These 25.12 images require attended hardware validation.
+RainWrt includes WireGuard capability but no private VPN, campus-network,
+Wi-Fi, DNS or routing configuration.
+
+Build with `./scripts/build-rainwrt.sh`. Read
+[architecture](docs/ARCHITECTURE.md), [upgrade safety](docs/UPGRADE_SAFETY.md)
+and [recovery](docs/RECOVERY.md) before installing. Modified firmware is used
+at your own risk and comes without warranty.
+
+RainWrt retains OpenWrt/ImmortalWrt licensing and attributes device work to
+kmiit/Redmi_AX3000_immortalwrt, hzyitc/openwrt-redmi-ax3000 and
+ByteArray0/immortalwrt-device-expand where used.
+
+---
+
 # Project ImmortalWrt
 
 ImmortalWrt is a fork of [OpenWrt](https://openwrt.org), with more packages ported, more devices supported, default optimized profiles and localization modifications for mainland China users.<br/>
