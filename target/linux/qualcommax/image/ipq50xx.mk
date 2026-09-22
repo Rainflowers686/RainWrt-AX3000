@@ -220,12 +220,13 @@ define Device/redmi_ax3000
 	PAGESIZE := 2048
 	DEVICE_PACKAGES := kmod-ath11k \
 		ath11k-firmware-ipq5018-qcn6122 \
-		ipq-wifi-xiaomi_cr880x
+		ipq-wifi-redmi_ax3000
 endef
 TARGET_DEVICES += redmi_ax3000
 
 define Device/xiaomi_cr880x-m79-v1
 	$(call Device/redmi_ax3000)
+	DEVICE_PACKAGES := kmod-ath11k ath11k-firmware-ipq5018-qcn6122 ipq-wifi-xiaomi_cr880x
 	DEVICE_VENDOR := Xiaomi
 	DEVICE_MODEL := CR880X
 	DEVICE_VARIANT := M79 V1

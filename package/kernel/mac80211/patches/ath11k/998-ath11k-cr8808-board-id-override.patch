@@ -1,0 +1,56 @@
+From: hzy <hzyitc@outlook.com>
+Subject: [PATCH] ath11k: retain CR8808 board-id firmware and DT overrides
+
+Forward-port hzyitc commits 1b4a1cc8a00a and e99fe9e7929e from
+kmiit 9a11bb83d22e to backports 6.18.39. RainWrt changes: limit the
+filesystem lookup to devices declaring qcom,board_id and use min_t for
+size-safe firmware parsing. The PA-type hotplug supplies 0x10 or 0x24;
+the QCN6122 DT fallback remains 0x60. Unrelated boards use upstream QMI.
+
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2213,6 +2213,26 @@ out:
+ 	return ret;
+ }
+ 
++static int ath11k_qmi_fetch_board_id_from_fs(struct ath11k_base *ab, u32 *id)
++{
++	const struct firmware *fw;
++	char buf[64];
++	size_t len;
++	int ret;
++
++	snprintf(buf, sizeof(buf), "board_id-%s-%s",
++		 ath11k_bus_str(ab->hif.bus), dev_name(ab->dev));
++	fw = ath11k_core_firmware_request(ab, buf);
++	if (IS_ERR(fw))
++		return PTR_ERR(fw);
++	len = min_t(size_t, fw->size, sizeof(buf) - 1);
++	memcpy(buf, fw->data, len);
++	buf[len] = 0;
++	ret = kstrtouint(buf, 0, id);
++	release_firmware(fw);
++	return ret;
++}
++
+ static int ath11k_qmi_request_target_cap(struct ath11k_base *ab)
+ {
+ 	struct qmi_wlanfw_cap_req_msg_v01 req;
+@@ -2221,5 +2241,6 @@ static int ath11k_qmi_request_target_cap(struct ath11k_base *ab)
+ 	int ret = 0;
+ 	int r;
++	u32 board_id, file_id;
+ 	char *fw_build_id;
+ 	int fw_build_id_mask_len;
+ 
+@@ -2265,4 +2286,9 @@ static int ath11k_qmi_request_target_cap(struct ath11k_base *ab)
+-	if (resp.board_info_valid)
++	if (!of_property_read_u32(ab->dev->of_node, "qcom,board_id", &board_id) &&
++	    board_id != 0xff) {
++		if (!ath11k_qmi_fetch_board_id_from_fs(ab, &file_id) && file_id != 0xff)
++			board_id = file_id;
++		ab->qmi.target.board_id = board_id;
++	} else if (resp.board_info_valid)
+ 		ab->qmi.target.board_id = resp.board_info.board_id;
+ 	else
+ 		ab->qmi.target.board_id = 0xFF;

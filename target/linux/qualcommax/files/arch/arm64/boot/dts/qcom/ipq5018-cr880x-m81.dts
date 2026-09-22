@@ -10,5 +10,11 @@
 };
 
 &wifi {
-	qcom,ath11k-calibration-variant = "Xiaomi-CR880X-M81";
+	/delete-property/ qcom,ath11k-calibration-variant;
+	qcom,board_id = <0x10>;
+};
+
+&wifi1 {
+	/delete-property/ qcom,ath11k-calibration-variant;
+	qcom,board_id = <0x60>;
 };
