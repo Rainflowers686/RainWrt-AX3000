@@ -218,7 +218,9 @@ define Device/redmi_ax3000
 	SOC := ipq5018
 	BLOCKSIZE := 128k
 	PAGESIZE := 2048
-	DEVICE_PACKAGES := kmod-ath11k-smallbuffers ath11k-firmware-ipq5018-qcn6122 ipq-wifi-xiaomi_cr880x
+	DEVICE_PACKAGES := kmod-ath11k \
+		ath11k-firmware-ipq5018-qcn6122 \
+		ipq-wifi-xiaomi_cr880x
 endef
 TARGET_DEVICES += redmi_ax3000
 
