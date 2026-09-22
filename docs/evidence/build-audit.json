@@ -1,0 +1,19 @@
+{
+  "base": "ImmortalWrt v25.12.2",
+  "base_commit": "4fc16f2985a358bd43bb522e43f05395fcbd6ed5",
+  "kernel": "6.12.103",
+  "target": "qualcommax/ipq50xx",
+  "profile": "redmi_ax3000",
+  "full_build": "PASS",
+  "source_privacy_scan": "PASS",
+  "sysupgrade_rootfs_privacy_scan": "PASS",
+  "factory_ubi_privacy_scan": "PASS",
+  "image_metadata": "PASS",
+  "ubi_volumes": ["kernel", "rootfs", "rootfs_data"],
+  "wireguard": {
+    "kernel_module": "PASS",
+    "tools": "PASS",
+    "luci_protocol": "PASS"
+  },
+  "hardware_validation": "REQUIRED"
+}

@@ -41,7 +41,11 @@ jobs:
           grep -q '^luci-proto-wireguard ' "$target"/*.manifest
           grep -q '^wpad-openssl ' "$target"/*.manifest
           cp config.buildinfo.rainwrt "$target/"
-          (cd "$target" && sha256sum -- * > SHA256SUMS)
+          checksum_tmp="$(mktemp)"
+          (cd "$target" && \
+            find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | \
+            LC_ALL=C sort -z | xargs -0 sha256sum) > "$checksum_tmp"
+          mv "$checksum_tmp" "$target/SHA256SUMS"
       - name: Upload firmware and ABI-matched package feed
         uses: actions/upload-artifact@v4
         with:
