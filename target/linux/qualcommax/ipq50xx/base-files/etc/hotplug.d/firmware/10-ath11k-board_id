@@ -1,0 +1,16 @@
+#!/bin/sh
+# shellcheck disable=SC1091
+
+[ -e "/lib/firmware/$FIRMWARE" ] && exit 0
+. /lib/functions.sh
+
+case "$FIRMWARE:$(board_name)" in
+	ath11k/IPQ5018/hw1.0/board_id-ahb-c000000.wifi:redmi,ax3000|\
+	ath11k/IPQ5018/hw1.0/board_id-ahb-c000000.wifi:xiaomi,cr880x-m81)
+		case "$(strings /dev/mtdblock15 | sed -n 's/^wl_pa_type=//p' | head -n 1)" in
+			epa) echo 0x24 > "/lib/firmware/$FIRMWARE" ;;
+			xpa|ipa|*) echo 0x10 > "/lib/firmware/$FIRMWARE" ;;
+		esac
+		;;
+	*) exit 1 ;;
+esac

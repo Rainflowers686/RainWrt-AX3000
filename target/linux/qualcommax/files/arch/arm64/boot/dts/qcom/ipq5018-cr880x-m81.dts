@@ -6,7 +6,7 @@
 
 / {
 	model = "Redmi AX3000 / Xiaomi CR880X (M81)";
-	compatible = "xiaomi,cr880x-m81", "redmi,ax3000", "qcom,ipq5018";
+	compatible = "redmi,ax3000", "xiaomi,cr880x-m81", "qcom,ipq5018";
 };
 
 &wifi {

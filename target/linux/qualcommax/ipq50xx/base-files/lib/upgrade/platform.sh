@@ -1,10 +1,12 @@
 . /lib/functions/bootconfig.sh
+. /lib/upgrade/mi_dualboot.sh
+. /lib/upgrade/mi_layout.sh
 
 PART_NAME=firmware
 REQUIRE_IMAGE_METADATA=1
 
-RAMFS_COPY_BIN='dumpimage fw_printenv fw_setenv head seq'
-RAMFS_COPY_DATA='/etc/fw_env.config /var/lock/fw_printenv.lock'
+RAMFS_COPY_BIN='dumpimage fw_printenv fw_setenv head seq sha256sum'
+RAMFS_COPY_DATA='/etc/fw_env.config /var/lock/fw_printenv.lock /lib/upgrade/mi_layout.sh /lib/upgrade/mi_dualboot.sh'
 
 xiaomi_initramfs_prepare() {
 	# Wipe UBI if running initramfs
@@ -166,7 +168,18 @@ linksys_mx_pre_upgrade() {
 }
 
 platform_check_image() {
-	return 0;
+	local board="$(board_name)"
+	case "$board" in
+	redmi,ax3000|xiaomi,cr880x-m81)
+		mi_layout_board_supported "$board" || return 1
+		case "$(mi_layout_detect)" in
+			legacy-dual-slot) mi_dualboot_check_image "$1" ;;
+			rainwrt-single-slot) mi_single_check_image "$board" "$1" ;;
+			*) v "Refusing upgrade: unrecognized CR8808/AX3000 NAND layout"; return 1 ;;
+		esac
+		;;
+	*) return 0 ;;
+	esac
 }
 
 platform_pre_upgrade() {
@@ -196,9 +209,17 @@ platform_do_upgrade() {
 		remove_oem_ubi_volume wifi_fw
 		nand_do_upgrade "$1"
 		;;
-	xiaomi,cr880x-m79-v1|\
+	redmi,ax3000|\
 	xiaomi,cr880x-m81)
-		nand_do_upgrade "$1"
+		case "$(mi_layout_detect)" in
+			legacy-dual-slot) mi_dualboot_do_upgrade "$1" ;;
+			rainwrt-single-slot) mi_single_do_upgrade "$1" ;;
+			*) v "Refusing upgrade: layout fingerprint changed before write"; return 1 ;;
+		esac
+		;;
+	xiaomi,cr880x-m79-v1)
+		v "Sysupgrade is disabled pending an independently verified M79 layout"
+		return 1
 		;;
 	glinet,gl-b3000)
 		glinet_do_upgrade "$1"
