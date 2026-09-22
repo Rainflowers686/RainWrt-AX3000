@@ -38,3 +38,4 @@ git-src
 /files/
 /rainwrt-build-identity.json
 /hardware-test-candidate/
+__pycache__/

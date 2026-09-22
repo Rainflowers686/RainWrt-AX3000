@@ -9,8 +9,8 @@ fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture" /tmp/mi-layout-subject.$$ /tmp/mi-dual-subject.$$' EXIT
 
 v() { :; }
-board_name() { echo redmi,ax3000; }
-fw_printenv() { [ "$1" = -n ] && [ "$2" = bootcmd ] && echo bootmiwifi; }
+board_name() { echo "${test_board:-redmi,ax3000}"; }
+fw_printenv() { [ "$1" = -n ] && [ "$2" = bootcmd ] && echo "${test_bootcmd:-bootmiwifi}"; }
 find_mtd_index() { mi_layout_mtd_index "$1"; }
 
 sed '/^\. \/lib\/functions\.sh$/d' "$source_dir/mi_dualboot.sh" > /tmp/mi-dual-subject.$$
@@ -52,6 +52,25 @@ MI_MIBIB_TABLE_SHA256="$(dd if="$fixture/mtd1" bs=1 skip=2048 count=632 2>/dev/n
 MI_SINGLE_APPSBL_SHA256="$(sha256sum "$fixture/mtd12" | awk '{print $1}')"
 
 assert_mode rainwrt-single-slot "known merged layout selects single-slot path"
+test_board=unknown
+assert_rejected "wrong board fails closed"
+test_board=redmi,ax3000
+test_bootcmd=unknown
+assert_rejected "wrong bootcmd fails closed"
+test_bootcmd=bootmiwifi
+MI_TEST_ALLOW_REGULAR_MTD=0
+assert_rejected "non-character device fails closed in production"
+MI_TEST_ALLOW_REGULAR_MTD=1
+printf 'ubi.mtd=rootfs_1\n' > "$MI_PROC_CMDLINE"
+assert_rejected "wrong cmdline fails closed"
+printf 'ubi.mtd=rootfs\n' > "$MI_PROC_CMDLINE"
+saved_mibib="$MI_MIBIB_TABLE_SHA256"
+MI_MIBIB_TABLE_SHA256=wrong
+assert_rejected "MIBIB mismatch fails closed"
+MI_MIBIB_TABLE_SHA256="$saved_mibib"
+sed -i 's/^mtd12:/mtd11:/' "$MI_PROC_MTD"
+assert_rejected "active APPSBL index mismatch fails closed"
+sed -i 's/^mtd11:/mtd12:/' "$MI_PROC_MTD"
 sed -i 's/07480000/07460000/' "$MI_PROC_MTD"
 assert_rejected "single-slot size mismatch fails closed"
 sed -i 's/07460000/07480000/' "$MI_PROC_MTD"
