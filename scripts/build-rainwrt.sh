@@ -13,6 +13,7 @@ cd "$root"
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
+python3 scripts/prepare-rainwrt-build.py
 cp configs/redmi_ax3000_baseline-wg.config .config
 make defconfig
 make -j"$jobs" download

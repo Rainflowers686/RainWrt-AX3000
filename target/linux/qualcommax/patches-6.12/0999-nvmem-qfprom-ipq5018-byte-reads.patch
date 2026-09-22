@@ -1,0 +1,25 @@
+From: RainWrt maintainers
+Subject: [PATCH] nvmem: qfprom: keep IPQ5018 MMIO byte reads
+
+Forward-port the hardware-verified kmiit fix by ByteArray0,
+4299001bcfebba0d5d295818937a92b436f3f9ed. 32-bit MMIO reads on this
+SoC caused reboot loops. Keep upstream cell alignment and other SoCs'
+access width; use byte accesses only on IPQ5018. No thermal trip bypass.
+
+--- a/drivers/nvmem/qfprom.c
++++ b/drivers/nvmem/qfprom.c
+@@ -329,6 +329,14 @@ static int qfprom_reg_read(void *context,
+ 	if (read_raw_data && priv->qfpraw)
+ 		base = priv->qfpraw;
+ 
++	if (of_device_is_compatible(priv->dev->of_node, "qcom,ipq5018-qfprom")) {
++		u8 *byte_val = _val;
++
++		for (i = 0; i < bytes; i++)
++			byte_val[i] = readb(base + reg + i);
++		return 0;
++	}
++
+ 	for (i = 0; i < words; i++)
+ 		*val++ = readl(base + reg + i * sizeof(u32));
+ 

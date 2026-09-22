@@ -50,6 +50,8 @@ mi_layout_board_supported() {
 }
 
 mi_layout_is_single() {
+	mi_layout_board_supported "$(board_name)" || return 1
+	[ "$(mi_layout_mtd_index '0:MIBIB')" = 1 ] || return 1
 	[ "$(mi_layout_mtd_index rootfs)" = 18 ] || return 1
 	[ "$(mi_layout_mtd_size rootfs)" = 07480000 ] || return 1
 	mi_layout_mtd_device_ok 18 || return 1
@@ -74,9 +76,9 @@ mi_layout_is_legacy_dual() {
 mi_layout_detect() {
 	if mi_layout_is_single; then
 		echo rainwrt-single-slot
-	elif mi_layout_is_legacy_dual; then
-		echo legacy-dual-slot
 	else
+		# The current DTS has a fixed merged layout. A stock dual-slot image
+		# needs a separate verified DTS/profile before writes can be enabled.
 		return 1
 	fi
 }

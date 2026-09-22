@@ -9,6 +9,7 @@ fixture="$(mktemp -d)"
 trap 'rm -rf "$fixture" /tmp/mi-layout-subject.$$ /tmp/mi-dual-subject.$$' EXIT
 
 v() { :; }
+board_name() { echo redmi,ax3000; }
 fw_printenv() { [ "$1" = -n ] && [ "$2" = bootcmd ] && echo bootmiwifi; }
 find_mtd_index() { mi_layout_mtd_index "$1"; }
 

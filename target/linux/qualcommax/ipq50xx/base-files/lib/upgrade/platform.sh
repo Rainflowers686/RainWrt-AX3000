@@ -170,6 +170,10 @@ linksys_mx_pre_upgrade() {
 platform_check_image() {
 	local board="$(board_name)"
 	case "$board" in
+	xiaomi,cr880x-m79-v1)
+		v "M79 has no hardware-verified upgrade profile"
+		return 1
+		;;
 	redmi,ax3000|xiaomi,cr880x-m81)
 		mi_layout_board_supported "$board" || return 1
 		case "$(mi_layout_detect)" in
