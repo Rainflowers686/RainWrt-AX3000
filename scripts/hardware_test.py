@@ -30,6 +30,9 @@ BASELINE_HELPERS = {'/sbin/sysupgrade', '/lib/upgrade/stage2', '/lib/upgrade/do_
 SERVICE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z')
 HANDOFF = re.compile(r'Commencing upgrade|Closing all shell sessions|RAINWRT_SYSUPGRADE_INVOKED')
 ENABLED_SERVICES = 'for p in /etc/rc.d/S*; do [ -L "$p" ] && [ -x "$p" ] || continue; readlink "$p"; done\n'
+OLD_WIFI_PATH = b'platform/soc@0/soc@0:wifi1@c000000'
+NEW_WIFI_PATH = b'platform/soc@0/b00a040.wifi'
+RADIO_PATHS = {'2g': 'platform/soc@0/c000000.wifi', '5g': NEW_WIFI_PATH.decode()}
 
 
 class Stop(Exception):
@@ -49,6 +52,79 @@ def private_write(path, data):
         f.write(data if isinstance(data, bytes) else data.encode())
         f.flush()
         os.fsync(f.fileno())
+
+
+def migrate_wireless(data):
+    """CR8808 24.10 -> 25.12 device ABI only; all other bytes stay opaque.
+
+    Validate a deliberately narrow single-line UCI grammar. Private option
+    values are never decoded, interpreted or logged. Unsupported quoting,
+    multiline input, duplicate sections/path options and ambiguous radios fail.
+    This function is called only by the fingerprint-gated CR8808 runner.
+    """
+    token = rb"(?:'[^'\r\n]*'|\"[^\"\\\r\n]*\"|[A-Za-z0-9_./:@+\-]+)"
+    header = re.compile(rb'\s*config\s+(' + token + rb')(?:\s+(' + token + rb'))?\s*(?:#[^\r\n]*)?\s*')
+    option = re.compile(rb'\s*(option|list)\s+(' + token + rb')\s+(' + token + rb')\s*(?:#[^\r\n]*)?\s*')
+    def unquote(value):
+        return value[1:-1] if value[:1] in (b"'", b'"') else value
+    kind, path_seen, offset, names, matches = None, False, 0, set(), []
+    for line in data.splitlines(keepends=True):
+        if not line.strip() or line.lstrip().startswith(b'#'):
+            offset += len(line)
+            continue
+        match = header.fullmatch(line)
+        if match:
+            kind, path_seen = unquote(match[1]), False
+            if match[2]:
+                name = unquote(match[2])
+                if name in names:
+                    raise Stop('PRECHECK_FAILED: ambiguous wireless sections')
+                names.add(name)
+        else:
+            match = option.fullmatch(line)
+            if not match or kind is None:
+                raise Stop('PRECHECK_FAILED: unsupported wireless grammar (values withheld)')
+            if kind == b'wifi-device' and unquote(match[2]) == b'path':
+                if path_seen or match[1] != b'option':
+                    raise Stop('PRECHECK_FAILED: ambiguous wireless path option')
+                path_seen = True
+                value = unquote(match[3])
+                if value in (OLD_WIFI_PATH, NEW_WIFI_PATH):
+                    start = offset + match.start(3) + (match[3][:1] in (b"'", b'"'))
+                    matches.append((value, start, start + len(value)))
+        offset += len(line)
+    if len(matches) > 1:
+        raise Stop('PRECHECK_FAILED: ambiguous QCN6122 wireless paths')
+    if matches and matches[0][0] == OLD_WIFI_PATH:
+        _, start, end = matches[0]
+        return data[:start] + NEW_WIFI_PATH + data[end:]
+    return data
+
+
+def wireless_check(p):
+    paths = ['/sys/devices/' + v for v in RADIO_PATHS.values()]
+    if sorted(p['phy'].split()) != sorted(paths) or p['bands'] != '1 1':
+        return False
+    radios, configured = p['wifi'], p.get('wifi_devices', [])
+    if len(radios) != 2 or len(configured) != 2:
+        return False
+    if {r['name'] for r in radios} != {r['name'] for r in configured}:
+        return False
+    for band, path in RADIO_PATHS.items():
+        found = [r for r in radios if r.get('band') == band and r.get('path') == path]
+        conf = [r for r in configured if r.get('band') == band and r.get('path') == path]
+        if len(found) != 1 or len(conf) != 1 or found[0]['name'] != conf[0]['name']:
+            return False
+        radio = found[0]
+        if radio.get('pending') or radio.get('retry_setup_failed'):
+            return False
+        if radio['disabled'] != conf[0]['disabled']:
+            return False
+        if not radio['disabled']:
+            aps = [a for a in p.get('aps', []) if a['path'] == path]
+            if not radio['up'] or not aps or not all(a['up'] and a['hostapd_enabled'] for a in aps):
+                return False
+    return True
 
 
 def layout_checks(p):
@@ -135,7 +211,7 @@ def required_checks(p, expected, baseline):
         'no_fatal_errors': p['fatal'] is False,
         'IPQ5018': 'c000000.wifi' in p['phy'] and '0x10' in p['bdf'].split(),
         'QCN6122': len(p['phy'].split()) == 2 and '0x60' in p['bdf'].split() and p['rproc'].split().count('running') >= 3,
-        'wireless': p['bands'] == '1 1' and len(p['wifi']) == 2 and all(r['disabled'] or (r['up'] and not r['pending']) for r in p['wifi']),
+        'wireless': wireless_check(p),
         'ethernet': set('lan1 lan2 lan3 wan br-lan'.split()) <= set(p['ports'].split()) and p['carrier'],
         'WireGuard': p['wg'] and p['wg_abi'] == expected['kernel'],
         'APK_packages': p['apk'] is True,
@@ -158,6 +234,20 @@ def handoff_state(code, output):
     if HANDOFF.search(output):
         return 'EXPECTED_HANDOFF' if 'Commencing upgrade' in output or 'Closing all shell sessions' in output else 'INDETERMINATE_HANDOFF'
     return 'INDETERMINATE_HANDOFF' if code in (0, 246, 255, 124) else 'PRE_HANDOFF_FAILURE'
+
+
+def service_restore_script(preserved, disabled):
+    lines = ['#!/bin/sh', 'set -eu']
+    for name in sorted(disabled):
+        path = '/etc/init.d/' + name
+        lines += [f'if [ -f {path} ] && [ ! -L {path} ]; then',
+                  f'  /bin/sh /etc/rc.common {path} disable', 'fi']
+    for name, digest in sorted(preserved.items()):
+        path = '/etc/init.d/' + name
+        lines += [f'[ -f {path} ] && [ ! -L {path} ]',
+                  f'[ "$(sha256sum {path} | cut -d\' \' -f1)" = {digest} ]',
+                  f'/bin/sh /etc/rc.common {path} enable']
+    return ('\n'.join(lines + ['exit 0', ''])).encode()
 
 
 def migrate_archive(source, destination, enabled):
@@ -196,6 +286,11 @@ def migrate_archive(source, destination, enabled):
                 continue
             member.name = name
             stream = src.extractfile(member) if member.isfile() else None
+            if name == 'etc/config/wireless':
+                if not member.isfile():
+                    raise Stop('PRECHECK_FAILED: wireless configuration is not a regular file')
+                data = migrate_wireless(stream.read())
+                member.size, stream = len(data), io.BytesIO(data)
             if name.startswith('etc/init.d/'):
                 service = name[len('etc/init.d/'):]
                 if not SERVICE.fullmatch(service) or not member.isfile():
@@ -210,18 +305,7 @@ def migrate_archive(source, destination, enabled):
         if enabled & disabled:
             raise Stop('PRECHECK_FAILED: inconsistent original service state')
         if preserved or disabled:
-            lines = ['#!/bin/sh', 'set -eu']
-            for name in sorted(disabled):
-                path = '/etc/init.d/' + name
-                lines += [f'if [ -f {path} ] && [ ! -L {path} ]; then',
-                          f'  /bin/sh /etc/rc.common {path} disable', 'fi']
-            for name, digest in sorted(preserved.items()):
-                path = '/etc/init.d/' + name
-                lines += [f'[ -f {path} ] && [ ! -L {path} ]',
-                          f'[ "$(sha256sum {path} | cut -d\' \' -f1)" = {digest} ]',
-                          f'/bin/sh /etc/rc.common {path} enable']
-            lines += ['exit 0', '']
-            data = '\n'.join(lines).encode()
+            data = service_restore_script(preserved, disabled)
             info = tarfile.TarInfo('etc/uci-defaults/91-rainwrt-preserved-services')
             info.size, info.mode, info.uid, info.gid = len(data), 0o700, 0, 0
             dst.addfile(info, io.BytesIO(data))
@@ -246,7 +330,12 @@ def audit_archive(original, migrated):
         def same_bytes(names):
             return all(n in members and n in old_members and members[n].isfile() and old_members[n].isfile()
                        and new.extractfile(members[n]).read() == old.extractfile(old_members[n]).read() for n in names)
-        checks = {'core_config_preserved': same_bytes(core),
+        wireless = 'etc/config/wireless'
+        wireless_ok = (wireless in old_members and wireless in members and
+                       old_members[wireless].isfile() and members[wireless].isfile() and
+                       migrate_wireless(old.extractfile(old_members[wireless]).read()) == new.extractfile(members[wireless]).read())
+        checks = {'core_config_preserved': same_bytes(core - {wireless}) and wireless_ok,
+                  'wireless_device_ABI_migration': wireless_ok,
                   'SSH_host_keys_preserved': bool(keys) and same_bytes(keys),
                   'archive_integrity': True}
         for label, prefixes in {'old_opkg_removed': ('etc/opkg', 'usr/lib/opkg'),
@@ -373,9 +462,115 @@ def network_check(transport, endpoints, ipv6=False):
     return False
 
 
+def finish_checks(transport, p, expected, baseline, baseline_net, endpoints, migration, run, emit, phase):
+    checks = required_checks(p, expected, baseline)
+    for family, was_up in baseline_net.items():
+        checks['HTTPS_DNS_' + family] = not was_up or network_check(transport, endpoints, family == 'ipv6')
+    checks['preserved_service_bytes_enabled'] = True
+    checks['preserved_service_disabled'] = True
+    for service, digest in migration['enabled_custom_services'].items():
+        script = f'[ "$(sha256sum /etc/init.d/{service} | cut -d\' \' -f1)" = {digest} ] && [ -x /etc/init.d/{service} ] && find /etc/rc.d -name "S??{service}" | grep -q .\n'
+        if transport.run(script).returncode:
+            checks['preserved_service_bytes_enabled'] = False
+    for service in migration['disabled_services']:
+        if transport.run(f'! find /etc/rc.d -name "S??{service}" | grep -q .\n').returncode:
+            checks['preserved_service_disabled'] = False
+    if 'wireless_sha256' in migration:
+        # Opaque equality also proves that a disabled/enabled user preference
+        # was not changed to make the radio health checks pass.
+        checks['wireless_preserved_ABI_bytes'] = transport.run(
+            '[ "$(sha256sum /etc/config/wireless | cut -d\' \' -f1)" = ' + migration['wireless_sha256'] + ' ]\n').returncode == 0
+    emit(phase, checks)
+    private_write(run / (phase + '.json'), json.dumps(p, indent=2))
+    if not all(checks.values()):
+        raise Stop('POSTCHECK_FAILED' if phase == 'first_boot' else 'REBOOT_VALIDATION_FAILED')
+
+
+def resume_context(state, expected):
+    """Recover *that execution's* evidence, not the most recent dry-run.
+
+    The preexisting exclusive execution marker is never removed or changed.
+    Generated service instructions are reconstituted byte-for-byte, not eval'd.
+    """
+    marker = state / (expected['identity']['RAINWRT_BUILD_ID'] + '.execute-started')
+    if marker.is_symlink() or not marker.is_file():
+        raise Stop('RESUME_REQUIRES_EXISTING_EXECUTE_MARKER')
+    prior = pathlib.Path(marker.read_text().strip())
+    if prior.is_symlink() or prior.resolve().parent != state.resolve() or not prior.name.startswith('test-'):
+        raise Stop('RESUME_INVALID_EXECUTION_EVIDENCE')
+    events = [json.loads(line) for line in (prior / 'events.jsonl').read_text().splitlines()]
+    image_hash = expected['files'][expected['image']]
+    image_events = [e['detail'] for e in events if e['event'] == 'REMOTE_IMAGE_VALIDATION_PASS']
+    config_events = [e['detail'] for e in events if e['event'] == 'CONFIG_MIGRATION_PASS']
+    archive = prior / 'config-migrated.tgz'
+    if (len(image_events) != 1 or image_events[0]['candidate_sha256'] != image_hash or
+            len(config_events) != 1 or config_events[0]['archive_sha256'] != sha(archive) or
+            not any(e['event'] in ('EXPECTED_HANDOFF', 'INDETERMINATE_HANDOFF') for e in events)):
+        raise Stop('RESUME_UNBOUND_EXECUTION_EVIDENCE')
+    baseline = json.loads((prior / 'baseline.json').read_text())
+    if baseline['kernel'] != '6.6.137' or not all(layout_checks(baseline).values()):
+        raise Stop('RESUME_INVALID_ORIGINAL_BASELINE')
+    preserved, disabled = {}, []
+    with tarfile.open(archive) as src:
+        script_name = 'etc/uci-defaults/91-rainwrt-preserved-services'
+        if script_name in src.getnames():
+            script = src.extractfile(script_name).read()
+            name_pattern = rb'([A-Za-z0-9][A-Za-z0-9_.-]{0,63})'
+            enabled = re.findall(rb'^/bin/sh /etc/rc.common /etc/init.d/' + name_pattern + rb' enable$', script, re.M)
+            disabled = [n.decode() for n in re.findall(rb'^  /bin/sh /etc/rc.common /etc/init.d/' + name_pattern + rb' disable$', script, re.M)]
+            for raw_name in enabled:
+                name = raw_name.decode()
+                member = src.getmember('etc/init.d/' + name)
+                if not member.isfile():
+                    raise Stop('RESUME_INVALID_SERVICE_MEMBER')
+                preserved[name] = hashlib.sha256(src.extractfile(member).read()).hexdigest()
+            if script != service_restore_script(preserved, disabled) or set(preserved) & set(disabled):
+                raise Stop('RESUME_UNRECOGNIZED_SERVICE_STATE')
+        wireless = migrate_wireless(src.extractfile('etc/config/wireless').read())
+    if len(preserved) != config_events[0]['preserved_enabled_custom_services']:
+        raise Stop('RESUME_SERVICE_EVIDENCE_MISMATCH')
+    migration = {'enabled_custom_services': preserved, 'disabled_services': disabled,
+                 'wireless_sha256': hashlib.sha256(wireless).hexdigest()}
+    return baseline, json.loads((prior / 'network-baseline.json').read_text()), migration, events
+
+
+def reserve_validation_reboot(state, expected, run, prior_events):
+    if any(e['event'] == 'NORMAL_REBOOT_VALIDATION' for e in prior_events):
+        raise Stop('REFUSING_SECOND_VALIDATION_REBOOT')
+    marker = state / (expected['identity']['RAINWRT_BUILD_ID'] + '.validation-reboot-started')
+    try:
+        private_write(marker, str(run) + '\n')
+    except FileExistsError as exc:
+        raise Stop('REFUSING_SECOND_VALIDATION_REBOOT') from exc
+    # Persist the directory entry too, before any remote reboot request.
+    fd = os.open(state, os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def resume_validation(transport, state, expected, run, emit, endpoints, validate_reboot):
+    baseline, baseline_net, migration, prior_events = resume_context(state, expected)
+    first = transport.probe()
+    if (first['identity'] != expected['identity'] or first['kernel'] != '6.12.103' or
+            expected['kernel'] != '6.12.103' or first['boot_id'] == baseline['boot_id']):
+        raise Stop('RESUME_REQUIRES_EXACT_NEW_RUNNING_BUILD')
+    finish_checks(transport, first, expected, baseline, baseline_net, endpoints, migration, run, emit, 'first_boot')
+    emit('FIRST_BOOT_VALIDATED')
+    if validate_reboot:
+        reserve_validation_reboot(state, expected, run, prior_events)
+        controller = Controller(transport, expected, baseline, emit)
+        second = controller.reboot(first)
+        finish_checks(transport, second, expected, baseline, baseline_net, endpoints, migration, run, emit, 'second_boot')
+        emit('HARDWARE_VALIDATED')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--execute', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--execute', action='store_true')
+    mode.add_argument('--resume-validation', action='store_true', help='post-install checks only; never uploads or flashes')
     parser.add_argument('--validate-reboot', action='store_true')
     parser.add_argument('--candidate-dir', type=pathlib.Path)
     parser.add_argument('--recovery-dir', type=pathlib.Path)
@@ -445,6 +640,11 @@ def main():
             raise Stop('PRECHECK_FAILED: source commit is unavailable')
         emit('LOCAL_PREFLIGHT_PASS')
         transport = Transport(args.host, state)
+        endpoints = args.endpoint or ['https://www.cloudflare.com/cdn-cgi/trace', 'https://www.wikipedia.org/']
+        if args.resume_validation:
+            attempted = True
+            resume_validation(transport, state, expected, run, emit, endpoints, args.validate_reboot)
+            return 0
         baseline = transport.probe()
         private_write(run / 'baseline.json', json.dumps(baseline, indent=2))
         checks = layout_checks(baseline)
@@ -517,7 +717,6 @@ for h in mi_layout.sh mi_dualboot.sh platform.sh nand.sh common.sh do_stage2; do
         wait_resources(transport.resources, 0, profile, emit, 'POST_UPLOAD_VALIDATION_GATE', migrated.stat().st_size, staged=True)
         if baseline['boot_id'] != post_upload['boot_id'] or baseline['mtd'] != post_upload['mtd']:
             raise Stop('PRECHECK_FAILED: device changed during preflight')
-        endpoints = args.endpoint or ['https://www.cloudflare.com/cdn-cgi/trace', 'https://www.wikipedia.org/']
         baseline_net = {family: network_check(transport, endpoints, family == 'ipv6') for family in ('ipv4', 'ipv6') if baseline[family]}
         private_write(run / 'network-baseline.json', json.dumps(baseline_net))
         emit('NETWORK_BASELINE_COLLECTED', baseline_net)
@@ -539,29 +738,14 @@ exec /sbin/sysupgrade -f {remote}/config.tgz {remote_image}
 '''
         attempted = True
         first = controller.execute(command)
-        def finish_checks(p, phase):
-            checks = required_checks(p, expected, baseline)
-            for family, was_up in baseline_net.items():
-                checks['HTTPS_DNS_' + family] = not was_up or network_check(transport, endpoints, family == 'ipv6')
-            for service, digest in migration['enabled_custom_services'].items():
-                # No service contents or names in public output.
-                script = f'[ "$(sha256sum /etc/init.d/{service} | cut -d\' \' -f1)" = {digest} ] && find /etc/rc.d -name "S??{service}" | grep -q .\n'
-                if transport.run(script).returncode:
-                    checks['SERVICE_ENABLE_STATE_DRIFT'] = False
-            for service in migration['disabled_services']:
-                script = f'! find /etc/rc.d -name "S??{service}" | grep -q .\n'
-                if transport.run(script).returncode:
-                    checks['SERVICE_DISABLE_STATE_DRIFT'] = False
-            emit(phase, checks)
-            private_write(run / (phase + '.json'), json.dumps(p, indent=2))
-            if not all(checks.values()):
-                raise Stop('POSTCHECK_FAILED' if phase == 'first_boot' else 'REBOOT_VALIDATION_FAILED')
-        finish_checks(first, 'first_boot')
+        finish_checks(transport, first, expected, baseline, baseline_net, endpoints, migration, run, emit, 'first_boot')
+        emit('FIRST_BOOT_VALIDATED')
         performance = transport.checked((ROOT / 'scripts/performance-audit.sh').read_text())
         private_write(run / 'performance.txt', performance)
         if args.validate_reboot:
+            reserve_validation_reboot(state, expected, run, [])
             second = controller.reboot(first)
-            finish_checks(second, 'second_boot')
+            finish_checks(transport, second, expected, baseline, baseline_net, endpoints, migration, run, emit, 'second_boot')
         emit('HARDWARE_VALIDATED' if args.validate_reboot else 'FIRST_BOOT_VALIDATED')
         return 0
     except (Stop, OSError, ValueError, KeyError, subprocess.SubprocessError, tarfile.TarError) as e:
@@ -570,6 +754,8 @@ exec /sbin/sysupgrade -f {remote}/config.tgz {remote_image}
         if message == 'FAILED_TO_RETURN':
             emit('USE_VERIFIED_WEB_RECOVERY')
         emit('NO_FLASH_RETRY_NO_AUTOMATIC_RECOVERY')
+        if args.resume_validation:
+            emit('HARDWARE_VALIDATION_FAILED')
         return 1
     finally:
         lock.close()

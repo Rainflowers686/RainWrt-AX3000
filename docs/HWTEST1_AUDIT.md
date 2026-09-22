@@ -1,7 +1,79 @@
 # hwtest1 checkpoint — 2026-09-22
 
-Current status: `BUILD_READY`, `STATIC_STRUCTURE_PASS`, `READY_FOR_ONE_COMMAND_HARDWARE_TEST`.
-No router flash/reboot/recovery was performed by this audit.
+Current status: `HARDWARE_VALIDATED` for the exact hwtest1 image and
+fingerprinted CR8808. This supersedes the pre-install statuses below;
+historical evidence is retained, not rewritten.
+
+## Wireless migration and resume validation (2026-09-22)
+
+The user completed the installation before this follow-up. No sysupgrade,
+factory flash, Web Recovery, raw MTD/NAND operation or U-Boot write was performed
+in this follow-up. The only persistent repair was the specifically authorized
+wireless configuration update, followed by one wifi reload. One separately
+authorized normal sync/reboot was performed after every first-boot check passed.
+
+Independent evidence confirmed two physical radios and two already-working APs.
+The executed configuration archive contained four preserved sections, identical
+byte-for-byte to the prefix of the running wireless file. The appended radio2
+and default_radio2 matched the pinned wifi-scripts generator's default fields;
+there were no additional user ifaces attached to the duplicate. The old
+QCN6122 path had no matching PHY and netifd reported retry_setup_failed.
+The new path bound to the only QCN6122 PHY, which had an ENABLED hostapd AP.
+
+Management ingress was proven on lan1 using a bounded header-only capture of
+the current SSH connection tuple. The route was direct via br-lan. The legacy
+sysfs FDB did not contain a usable client entry and no bridge utility existed;
+neither was misrepresented as positive evidence. No private packet values or
+configuration contents were published.
+
+Current wireless was backed up mode 0600 outside the repository before repair.
+Only the exact old QCN6122 path was replaced; the two proven generated sections
+were removed. The remaining file equals the executed archive plus the one path
+replacement, with all other bytes unchanged. Reload validation passed within
+the 90-second deadline with the same boot ID; rollback was not needed.
+
+The public migrator now applies this exact device-ABI correction before archive
+upload, independent of section names. It rejects duplicate/ambiguous old/new
+paths and unsupported syntax, preserving private option values as opaque bytes.
+The radio check verifies physical paths, band mappings, both UCI/netifd section
+sets and AP/hostapd health; it does not hide a stale third radio.
+
+The new resume-validation branch verifies the consumed execution marker and
+its exact image/configuration evidence, current identity/kernel and a boot ID
+different from the original 24.10 baseline. It cannot upload or install an
+image. A separate exclusive persistent reboot marker prevents another normal
+reboot on repeated invocation, including an uncertain first request.
+
+Actual first-boot and second-boot results: all **31** checks PASS each. These
+include exact build/kernel, MTD/MIBIB/APPSBL/bootcmd, UBI/root/overlay, IPQ5018,
+QCN6122, wireless, Ethernet, WireGuard ABI, APK package presence, IPv4/IPv6
+routes and DNS+HTTPS, opaque wireless bytes and preserved enabled/disabled
+service state. One enabled custom script retained its bytes and enable state;
+one preserved disabled-state rule remained disabled. No private names are
+included here. Exactly one normal reboot request was issued, a new boot ID
+was observed, and the second boot retained only radio0/radio1 with the correct
+paths. Both APs were UP/hostapd ENABLED, BDF IDs 0x10/0x60, no fatal error.
+
+Tests: 45 runner unit tests PASS (including six migration cases, strict radio
+mapping, missing/bad resume evidence, wrong build/kernel/boot, first-check
+failure without reboot, validation-only mode, and persistent single reboot);
+layout/dualboot/handoff/write-scope suites PASS; modified shell syntax and
+ShellCheck PASS; git diff whitespace check PASS. No firmware/package/device
+source was changed or rebuilt. Candidate SHA remains
+`98099b26672fdb0931a30673792402f42194dbac66a559520596d4b86e58121c`.
+
+Offline regression against the actual original configuration archive also
+passed: five core configuration files, two SSH host keys, 73 final members,
+the exact wireless path correction, unchanged service-state result and removal
+of stale opkg/APK/upgrade/rc.d state. Public-branch pattern scan passed with
+policy-definition matches only. The unchanged candidate's static re-audit
+passed: 112 kernel modules, four signed APK indexes and an 87-package offline
+dependency closure. Tool snapshots and the local manifest review anchor were
+refreshed without rebuilding or replacing any firmware image.
+
+This does not prove client RF throughput/range, sustained load stability,
+private-peer WireGuard handshake or a complete factory recovery write. Public
+release remains separately blocked by the existing provenance/history gates.
 
 ## Phase-aware follow-up (2026-09-22)
 

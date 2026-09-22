@@ -1,10 +1,56 @@
 # Attended 24.10 → 25.12 hardware test
 
-This is an unverified hardware candidate, not a stable firmware announcement.
+hwtest1 passed the scoped CR8808 first/second-boot checks on 2026-09-22 after
+the wireless configuration ABI correction below. This is not a stable firmware
+announcement or a claim of long-duration/RF/recovery-write testing.
 Do not use this runner on stock dual-slot, M79, another bootloader, or another
 current software revision. It is deliberately restricted to the known-good
 6.6.137 / r0-2b3c0919 CR8808 transition. Ethernet cable and physical access to
 power/Reset are required; UART is not a normal prerequisite.
+
+## Resume an already installed candidate (no installation)
+
+`--resume-validation` is mutually exclusive with `--execute`. It verifies the
+existing exact-build execution marker and that execution's image/configuration
+hash evidence, original baseline and network/service state. The currently
+running build must exactly match the candidate identity, kernel 6.12.103, and
+have a different boot ID from the 24.10 baseline. Missing or ambiguous evidence
+fails closed. This branch never collects another sysupgrade archive, uploads an
+image, calls the image validator or invokes sysupgrade. The execution marker
+remains permanently consumed.
+
+Without `--validate-reboot`, this mode only performs current-system checks and
+can report FIRST_BOOT_VALIDATED, never HARDWARE_VALIDATED. With that explicit
+flag, **all** first-boot checks including DNS/HTTPS, preserved service state and
+wireless configuration bytes must pass before one normal reboot is allowed.
+A separate persistent, exclusive, fsync'd validation-reboot marker is created
+before the remote request. An uncertain result consumes the reboot attempt;
+restarting the runner cannot silently reboot again. A prior reboot recorded by
+the original runner also blocks another request. Second-boot checks must pass
+before HARDWARE_VALIDATED. There is no automatic recovery or installation retry.
+
+## CR8808 wireless configuration ABI
+
+24.10's QCN6122 path `platform/soc@0/soc@0:wifi1@c000000` changed to
+`platform/soc@0/b00a040.wifi` in this 25.12 device layer. Leaving the old path in
+the preserved archive causes wifi detection to add a new default radio while
+the restored user radio remains unmatched. This is a configuration migration
+issue, not evidence of an absent PHY or a failed QCN6122 driver.
+
+The fingerprint-gated archive migrator now changes only that exact wifi-device
+path token. It does not depend on section names. Every other byte, including
+SSID, key, channel, country, encryption and iface associations, is preserved.
+An already-new path is idempotent; simultaneous old/new paths, duplicate old
+paths, duplicate section/path definitions or unsupported UCI grammar fail
+closed. Private option values are not interpreted or logged. Unrelated valid
+wireless configuration is unchanged. This is not a general-purpose UCI editor.
+
+Validation checks the two exact physical paths, one 2g/IPQ5018 mapping and one
+5g/QCN6122 mapping, the matching UCI and netifd section sets, no stale third
+radio, no pending/retry failure, and AP/hostapd health for enabled radios.
+Intentionally disabled radios may remain disabled. Resume also compares the
+entire wireless file against the executed archive plus only the ABI correction,
+so disabling a user's enabled radio cannot mask a validation failure.
 
 ## Before authorization
 

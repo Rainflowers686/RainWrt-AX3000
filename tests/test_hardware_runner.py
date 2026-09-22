@@ -25,8 +25,12 @@ GOOD = {
     'mibib': r.MIBIB, 'appsbl': r.APPSBL, 'char': True, 'cmdline': True, 'offset': 0xa80000,
     'bootcmd': 'bootmiwifi', 'boot_id': 'new', 'uptime': 150, 'mem_kib': 40000, 'tmp_kib': 50000, 'stage2_kib': 4000,
     'ubi': 'kernel rootfs rootfs_data', 'ubi_mtd': 18, 'mounts': '/ overlay overlayfs:/overlay\n/overlay ubifs /dev/ubi0_2',
-    'fatal': False, 'phy': '/soc/c000000.wifi /soc/wifi1', 'bdf': '0x10 0x60',
-    'rproc': 'running running running', 'bands': '1 1', 'wifi': [{'disabled': False, 'up': True, 'pending': False}] * 2,
+    'fatal': False, 'phy': ' '.join('/sys/devices/' + v for v in r.RADIO_PATHS.values()), 'bdf': '0x10 0x60',
+    'rproc': 'running running running', 'bands': '1 1',
+    'wifi': [{'name': band, 'band': band, 'path': path, 'disabled': False, 'up': True, 'pending': False,
+              'retry_setup_failed': False} for band, path in r.RADIO_PATHS.items()],
+    'wifi_devices': [{'name': band, 'band': band, 'path': path, 'disabled': False} for band, path in r.RADIO_PATHS.items()],
+    'aps': [{'path': path, 'up': True, 'hostapd_enabled': True} for path in r.RADIO_PATHS.values()],
     'ports': 'wan lan1 lan2 lan3 br-lan', 'carrier': True, 'wg': True, 'wg_abi': '6.12.103', 'apk': True,
     'ipv4': True, 'ipv6': True, 'resolver': True,
 }
@@ -62,6 +66,41 @@ class Fake:
 
 
 class RunnerTests(unittest.TestCase):
+    def test_wireless_exact_path_migration_and_private_bytes(self):
+        data = (b"config wifi-device 'custom5g'\r\n\toption path '" + r.OLD_WIFI_PATH +
+                b"' # hardware ABI\r\n\toption channel 'auto'\r\n"
+                b"config wifi-iface 'custom_ap'\r\n\toption device 'custom5g'\r\n"
+                b"\toption ssid 'opaque fixture !'\r\n\toption key 'opaque-test-key'\r\n")
+        # Boolean assertion avoids printing private fixture bytes on failure.
+        self.assertTrue(r.migrate_wireless(data) == data.replace(r.OLD_WIFI_PATH, r.NEW_WIFI_PATH))
+
+    def test_wireless_already_new_idempotent(self):
+        data = b"config wifi-device 'other_name'\n option path '" + r.NEW_WIFI_PATH + b"'\n"
+        self.assertTrue(r.migrate_wireless(data) == data)
+
+    def test_wireless_old_plus_new_fails(self):
+        data = b"config wifi-device 'a'\n option path '" + r.OLD_WIFI_PATH + b"'\n"
+        data += b"config wifi-device 'b'\n option path '" + r.NEW_WIFI_PATH + b"'\n"
+        with self.assertRaises(r.Stop):
+            r.migrate_wireless(data)
+
+    def test_wireless_multiple_old_fails(self):
+        data = b"config wifi-device 'a'\n option path '" + r.OLD_WIFI_PATH + b"'\n"
+        with self.assertRaises(r.Stop):
+            r.migrate_wireless(data + data.replace(b"'a'", b"'b'"))
+
+    def test_wireless_unrelated_unchanged(self):
+        data = b"config wifi-device 'a'\n option path 'platform/other'\n"
+        data += b"config wifi-iface 'b'\n option ssid '" + r.OLD_WIFI_PATH + b"'\n"
+        self.assertTrue(r.migrate_wireless(data) == data)
+
+    def test_wireless_ambiguous_grammar_fails(self):
+        for data in (b"config wifi-device 'a'\n option path 'broken\n",
+                     b"config wifi-device 'a'\n option path 'x'\n option path 'y'\n",
+                     b"config wifi-device 'a'\n list path 'x'\n"):
+            with self.assertRaises(r.Stop):
+                r.migrate_wireless(data)
+
     def test_all_required_pass(self):
         self.assertTrue(all(r.required_checks(GOOD, EXPECTED, OLD).values()))
 
@@ -85,8 +124,124 @@ class RunnerTests(unittest.TestCase):
 
     def test_user_disabled_wifi_is_allowed(self):
         p = copy.deepcopy(GOOD)
-        p['wifi'] = [{'disabled': True, 'up': False, 'pending': False}] * 2
+        for radio in p['wifi']:
+            radio.update(disabled=True, up=False)
+        for radio in p['wifi_devices']:
+            radio['disabled'] = True
+        p['aps'] = []
         self.assertTrue(r.required_checks(p, EXPECTED, OLD)['wireless'])
+
+    def test_wireless_physical_mapping_and_stale_devices(self):
+        for mutation in ('third', 'old_path', 'wrong_band', 'retry', 'pending', 'ap_down', 'hostapd_down', 'third_phy', 'uci_only_third'):
+            p = copy.deepcopy(GOOD)
+            if mutation == 'third':
+                p['wifi'].append(dict(p['wifi'][1], name='stale'))
+            elif mutation == 'old_path':
+                p['wifi'][1]['path'] = r.OLD_WIFI_PATH.decode()
+            elif mutation == 'wrong_band':
+                p['wifi'][1]['band'] = '2g'
+            elif mutation == 'retry':
+                p['wifi'][1]['retry_setup_failed'] = True
+            elif mutation == 'pending':
+                p['wifi'][1]['pending'] = True
+            elif mutation == 'ap_down':
+                p['aps'][1]['up'] = False
+            elif mutation == 'hostapd_down':
+                p['aps'][1]['hostapd_enabled'] = False
+            elif mutation == 'third_phy':
+                p['phy'] += ' /sys/devices/third'
+            else:
+                p['wifi_devices'].append(dict(p['wifi_devices'][1], name='stale'))
+            with self.subTest(mutation=mutation):
+                self.assertFalse(r.wireless_check(p))
+
+    def resume_fixture(self, state):
+        expected = dict(EXPECTED, files={'image.bin': 'bound-image'}, image='image.bin')
+        prior = state / 'test-execution'
+        prior.mkdir()
+        r.private_write(state / 'fixture.execute-started', str(prior))
+        (prior / 'baseline.json').write_text(json.dumps(OLD))
+        (prior / 'network-baseline.json').write_text(json.dumps({'ipv4': True, 'ipv6': True}))
+        archive = prior / 'config-migrated.tgz'
+        with tarfile.open(archive, 'w:gz') as out:
+            data = b"config wifi-device 'five'\n option path '" + r.OLD_WIFI_PATH + b"'\n"
+            info = tarfile.TarInfo('etc/config/wireless')
+            info.size = len(data)
+            out.addfile(info, io.BytesIO(data))
+        events = [{'event': 'REMOTE_IMAGE_VALIDATION_PASS', 'detail': {'candidate_sha256': 'bound-image'}},
+                  {'event': 'CONFIG_MIGRATION_PASS', 'detail': {'archive_sha256': r.sha(archive), 'preserved_enabled_custom_services': 0}},
+                  {'event': 'EXPECTED_HANDOFF'}]
+        (prior / 'events.jsonl').write_text(''.join(json.dumps(e) + '\n' for e in events))
+        return expected, prior
+
+    def test_resume_requires_bound_existing_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = pathlib.Path(tmp)
+            with self.assertRaisesRegex(r.Stop, 'EXISTING_EXECUTE_MARKER'):
+                r.resume_context(state, EXPECTED)
+            expected, prior = self.resume_fixture(state)
+            self.assertEqual(r.resume_context(state, expected)[0]['boot_id'], 'old')
+            with (prior / 'config-migrated.tgz').open('ab') as stream:
+                stream.write(b'changed')
+            with self.assertRaisesRegex(r.Stop, 'UNBOUND_EXECUTION'):
+                r.resume_context(state, expected)
+
+    def test_resume_wrong_kernel_build_or_original_boot_never_reboots(self):
+        for p in (dict(GOOD, kernel='other'), dict(GOOD, identity={}), dict(GOOD, boot_id='old')):
+            with tempfile.TemporaryDirectory() as tmp:
+                state = pathlib.Path(tmp)
+                expected, _ = self.resume_fixture(state)
+                fake = Fake([p], 0, '')
+                with self.assertRaisesRegex(r.Stop, 'EXACT_NEW_RUNNING_BUILD'):
+                    r.resume_validation(fake, state, expected, state, lambda *a: None, [], True)
+                self.assertEqual(fake.commands, [])
+
+    def test_resume_first_failure_never_reboots(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = pathlib.Path(tmp)
+            expected, _ = self.resume_fixture(state)
+            fake = Fake([dict(GOOD, apk=False)], 0, '')
+            with mock.patch.object(r, 'network_check', return_value=True), self.assertRaisesRegex(r.Stop, 'POSTCHECK_FAILED'):
+                r.resume_validation(fake, state, expected, state, lambda *a: None, [], True)
+            self.assertFalse(any('reboot' in c or 'sysupgrade' in c for c in fake.commands))
+            self.assertFalse((state / 'fixture.validation-reboot-started').exists())
+
+    def test_resume_only_validation_never_uploads_or_installs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = pathlib.Path(tmp)
+            expected, _ = self.resume_fixture(state)
+            fake, events = Fake([GOOD], 0, ''), []
+            with mock.patch.object(r, 'network_check', return_value=True):
+                r.resume_validation(fake, state, expected, state, lambda *a: events.append(a[0]), [], False)
+            self.assertIn('FIRST_BOOT_VALIDATED', events)
+            self.assertNotIn('HARDWARE_VALIDATED', events)
+            self.assertFalse(any('reboot' in c or 'sysupgrade' in c for c in fake.commands))
+
+    def test_resume_one_persistent_reboot_and_second_boot(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = pathlib.Path(tmp)
+            expected, _ = self.resume_fixture(state)
+            fake, events = Fake([GOOD, dict(GOOD, boot_id='second')], 0, ''), []
+            real_controller = r.Controller
+            def factory(*args):
+                return real_controller(*args, clock=lambda: fake.now, sleep=fake.sleep)
+            with mock.patch.object(r, 'network_check', return_value=True), mock.patch.object(r, 'Controller', side_effect=factory):
+                r.resume_validation(fake, state, expected, state, lambda *a: events.append(a[0]), [], True)
+            self.assertEqual(fake.commands.count('sync\nreboot\n'), 1)
+            self.assertFalse(any('sysupgrade' in c for c in fake.commands))
+            self.assertEqual(events[-1], 'HARDWARE_VALIDATED')
+            with self.assertRaisesRegex(r.Stop, 'SECOND_VALIDATION_REBOOT'):
+                r.reserve_validation_reboot(state, expected, state, [])
+
+    def test_resume_reboot_history_is_not_reset(self):
+        with tempfile.TemporaryDirectory() as tmp, self.assertRaisesRegex(r.Stop, 'SECOND_VALIDATION_REBOOT'):
+            r.reserve_validation_reboot(pathlib.Path(tmp), EXPECTED, pathlib.Path(tmp), [{'event': 'NORMAL_REBOOT_VALIDATION'}])
+
+    def test_resume_and_execute_are_mutually_exclusive(self):
+        with mock.patch('sys.argv', ['runner', '--execute', '--resume-validation']), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit) as exc:
+                r.main()
+            self.assertEqual(exc.exception.code, 2)
 
     def test_preflight_failure_never_writes(self):
         fake = Fake([GOOD])
@@ -278,8 +433,9 @@ class RunnerTests(unittest.TestCase):
                              'etc/dropbear/dropbear_test_host_key', 'etc/rc.d/S01fixture', 'etc/apk/repositories',
                              'etc/opkg/distfeeds.conf', 'lib/upgrade/platform.sh']:
                     info = tarfile.TarInfo(name)
-                    info.size = 7
-                    archive.addfile(info, io.BytesIO(b'fixture'))
+                    data = b'# fixture\n' if name == 'etc/config/wireless' else b'fixture'
+                    info.size = len(data)
+                    archive.addfile(info, io.BytesIO(data))
             r.migrate_archive(src, dst, set())
             audit = r.audit_archive(src, dst)
             self.assertTrue(all(audit.values()))

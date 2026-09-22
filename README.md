@@ -7,6 +7,9 @@ Redmi AX3000 / Xiaomi CR8808 support after kmiit's 24.10 reference line.
 
 The 24.10 / Linux 6.6.137 reference is hardware-verified. The 25.12.2 /
 Linux 6.12.103 line is a **hardware-test candidate**, not a stable release.
+hwtest1 passed first-boot and one normal-reboot validation on the fingerprinted
+CR8808 after correcting the preserved QCN6122 wireless path. See the
+[hwtest1 checkpoint](docs/HWTEST1_AUDIT.md) for the exact evidence and limits.
 It targets IPQ5018 + QCN6122, M81/CR8808 with the explicitly fingerprinted
 Web-Recovery bootloader and merged NAND layout. Other CR880X variants,
 stock dual-slot layouts and unknown bootloaders are not authorized to upgrade.
