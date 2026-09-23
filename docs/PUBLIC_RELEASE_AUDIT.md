@@ -1,63 +1,83 @@
-# Public release audit — hwtest1 independent review
+# Public-release audit
 
-Verdict: **PUBLIC_RELEASE_BLOCKED**. This supersedes the earlier blanket READY
-claim. A passing pattern scan is not proof of arbitrary secret absence or a
-license clearance.
+**Verdict: PUBLIC_RELEASE_BLOCKED_BY_BDF_LICENSE.**
 
-## Rechecked scope
+The GitHub source repository must remain PRIVATE until the device-specific
+wireless board-data redistribution question is resolved. No binary Release is
+authorized by this audit.
 
-The public branch starts at official v25.12.2, not the private legacy fork.
-The scanner checks tracked bytes and Git blob history, reports only paths,
-object IDs and finding types, and fails closed on subprocess/read errors.
-Secret-pattern rules have no file exemptions. Context terms in the scanner
-and this policy are classified as policy text, not silently excluded.
+## Scope and privacy
 
-Public branch-delta and extracted hwtest1 rootfs scans: no private-context,
-private-key block, credential-token, WireGuard-key or dump-name finding outside
-policy definitions. Factory rootfs matches the sysupgrade SquashFS payload.
-Opaque user archives are not in the candidate. No ImageBuilder/SDK was built.
-The preserved legacy first-install bundle's small text members also have no
-private-context match. These scans cannot recognize every possible password.
+The current tracked source contains generic device support and generic
+configuration migration only. It contains no private router configuration,
+VPN peer, credentials, Wi-Fi profile or deployment backup. The hardware and
+performance records in HARDWARE_VALIDATION.md and PERFORMANCE.md contain
+device/test facts only.
 
-Generic hostapd RADIUS support and its unconfigured init script are upstream
-features, not user-specific authentication, and are retained. No private
-service name, address, credential, VPN configuration or institution-specific
-behavior is added to the public firmware/runner.
+The privacy scanner checks tracked files and Git object history without
+printing matched values. Its pattern set is not a proof that arbitrary secrets
+are absent. The exact locally produced image, configuration archives, raw
+flash dumps, build signing key, performance logs and package caches are not
+tracked or release assets.
 
-## Reachable history risks
+The earlier all-local-ref audit found historical private-context path/service
+references in commits on non-release refs; it did not report a credential
+value. The current downstream line was based on official ImmortalWrt v25.12.2,
+and legacy/private refs must not be pushed. Do not push all refs or mirror
+this repository. If the project is later made public, repeat the branch and
+history audit on the exact proposed public refs; do not rewrite existing
+provenance history without a separate reviewed plan.
 
-All-local-ref scan reviewed 47868 files/blobs before the final tooling commit.
-It found private-context references, not a demonstrated credential value:
+## Board-data provenance and redistribution
 
-| Path | Blob | Relevant commits | Type |
-|---|---|---|---|
-| scripts/attended-first-install.sh | 59e802892f5f607ce1d85327d418d2a1f11ec033 | dec2111ab, 444a3ee6c | historical user-environment checks |
-| .gitignore | 2ef70a34be436390456ff9a5578213f84cf6c459 | 2b3c09192 | private backup path reference |
-| .gitignore | 0ec4cf2f19948799c7331495d5dd0a1587ce9ac4 | f1bdf4900, 2b3c09192 | private backup path reference |
+The two CR8808-specific binary containers are:
 
-Do not push `--all`, mirror this repository, or publish legacy refs. No history
-was rewritten and no known-good objects were removed. A future release should
-use an explicitly reviewed public-branch-only clone; do not blindly sanitize
-or overwrite the hardware reference history.
+- package/firmware/ipq-wifi/src/board-redmi_ax3000.ipq5018
+  SHA256 a1d03029566e469ceee4d570324dfa015f3d01e351bc87c81329ffdd7a7c4186
+- package/firmware/ipq-wifi/src/board-redmi_ax3000.qcn6122
+  SHA256 91c689226aa5a3af853063452393055c5e764866fec707ccd504738314e75134
 
-## License/provenance gate
+They were restored in RainWrt commit fdad22dbf from the byte-identical files
+present in the kmiit 24.10 branch. ByteArray0's port has separate
+xiaomi_cr880x-named data, with its own provenance; it is not interchangeable
+or a licensing substitute. No explicit vendor-origin grant for the two
+CR8808 containers was found in the reviewed provenance.
 
-Imported source retains author/commit provenance and upstream licenses. The
-Qualcomm firmware's binary redistribution notice is copied into the candidate;
-it permits unmodified use on Qualcomm chipsets subject to its conditions, not
-GPL relicensing. Exact kmiit BDF bytes were restored and verified against the
-image, but an explicit vendor-origin redistribution grant for those two BDF
-containers has not been established by this review. A repository-wide GPL
-notice alone does not settle vendor board-data rights. This is a public-release
-blocker; no publication occurred. Resolve provenance/terms or obtain an
-upstream properly licensed equivalent before distributing a public release.
+The inspected OpenWrt firmware_qca-wireless repository does not list these
+exact Redmi files. The OpenWrt ipq-wifi package describes local board-data
+overrides as interim until device-specific data is upstream and documents
+submitting board data upstream:
 
-## Feed trust
+- https://github.com/openwrt/firmware_qca-wireless
+- https://github.com/openwrt/openwrt/blob/main/package/firmware/ipq-wifi/Makefile
 
-Four APK indexes verify against the candidate's public key. A fully offline
-recursive fetch of 87 packages for the audited feature set succeeds without
-trust bypass. Individual APKs are unsigned by upstream design and are bound
-by the signed index; standalone package verification is not the feed trust
-test. Signing private keys, user archives, raw logs and router dumps must never
-be included in CI/Release artifacts. No mismatched official core feed is
-enabled; the full matching local feed is retained.
+The Qualcomm firmware package includes a binary redistribution notice for its
+firmware payloads. That notice has not been established as a grant covering
+these separate CR8808 board-data containers. A whole-repository GPL notice,
+public availability in a downstream tree, or kmiit/ByteArray0 provenance does
+not by itself resolve the vendor rights question. No exact, equivalent,
+properly licensed upstream container was found. These board-specific files are
+also not safely replaceable with a different model's BDF by name similarity.
+
+Until written terms or an upstream properly licensed equivalent covers the
+exact data, keep the source repository private and do not distribute images
+containing the files.
+
+## Feed and artifact handling
+
+The hwtest1 audit verified release-matched signed APK indexes and an offline
+dependency closure for the audited feature set. Build keys, opaque user
+archives and router dumps must never be included in hosted CI or release
+artifacts. This audit does not authorize publishing those local artifacts.
+
+## Re-audit before public visibility
+
+Before any visibility change:
+
+1. Resolve and document board-data rights.
+2. Scan the exact branch and tags proposed for publication, not all local refs.
+3. Confirm private runtime configuration and all build/private-key artifacts
+   are absent from tracked files, reachable history and CI outputs.
+4. Confirm README links, provenance notices, image metadata and feed matching.
+
+Until then the required status is PUBLIC_RELEASE_BLOCKED_BY_BDF_LICENSE.

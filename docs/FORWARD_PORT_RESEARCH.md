@@ -1,31 +1,38 @@
 # Forward-port research
 
-Checked 2026-09-22: ImmortalWrt v25.12.2 is the selected stable base. Its
-official `qualcommax/ipq50xx` tree has no Redmi AX3000/CR880X profile. OpenWrt
-25.12.5 is reference-only and likewise has no matching profile. kmiit 24.10 is
-the functional reference. ByteArray0 `immortalwrt-25.12` supplies a current
-CR880X Linux 6.12 port.
+Research checked 2026-09-22 selected ImmortalWrt 25.12.2 as the maintained
+stable base. Its official qualcommax/ipq50xx tree did not list a Redmi AX3000 /
+CR880X device profile. OpenWrt 25.12.5 was reference-only and likewise had no
+matching profile. kmiit 24.10 is the functional reference. ByteArray0's
+ImmortalWrt 25.12 port supplied the modern Linux 6.12 DTS/API starting point.
 
-That third-party port was not accepted blindly: it hardcodes the Web-Recovery
-merged `0x07480000` rootfs and renamed M81. RainWrt restores the verified
-`redmi,ax3000` identity, rejects unknown layouts and disables M79 sysupgrade
-until proven. NSS, overclocking, proxy stacks and private configuration remain
-out of scope.
+The third-party port was not accepted blindly: it hardcodes a Web-Recovery
+merged rootfs and changes the M81 identity. RainWrt restores the verified
+redmi_ax3000 identity, rejects unknown layouts and disables M79 sysupgrade
+until independently verified. NSS, overclocking and private runtime
+configuration remain outside the public feature set.
 
-Independent download-index recheck (2026-09-22): stable ImmortalWrt 25.12.2
-listed 14 profiles; its snapshot 17; OpenWrt 25.12.5 listed 13; its snapshot
-17. None matched redmi_ax3000, redmi,ax3000, CR8808 or CR880X in names/metadata.
-Sources: each project's official `targets/qualcommax/ipq50xx/profiles.json`
-under the selected release and snapshot. This is device-level evidence, not
-an inference from the existence of the subtarget.
+Official download-index recheck on 2026-09-22 found no matching device profile
+in ImmortalWrt 25.12.2 stable or snapshot, or OpenWrt 25.12.5 stable or
+snapshot. The check compared device names and metadata; it did not infer
+support from the existence of the qualcommax subtarget.
 
-- [ImmortalWrt stable index](https://downloads.immortalwrt.org/releases/25.12.2/targets/qualcommax/ipq50xx/profiles.json)
-- [ImmortalWrt snapshot index](https://downloads.immortalwrt.org/snapshots/targets/qualcommax/ipq50xx/profiles.json)
-- [OpenWrt stable index](https://downloads.openwrt.org/releases/25.12.5/targets/qualcommax/ipq50xx/profiles.json)
-- [OpenWrt snapshot index](https://downloads.openwrt.org/snapshots/targets/qualcommax/ipq50xx/profiles.json)
+- ImmortalWrt stable:
+  https://downloads.immortalwrt.org/releases/25.12.2/targets/qualcommax/ipq50xx/profiles.json
+- ImmortalWrt snapshot:
+  https://downloads.immortalwrt.org/snapshots/targets/qualcommax/ipq50xx/profiles.json
+- OpenWrt stable:
+  https://downloads.openwrt.org/releases/25.12.5/targets/qualcommax/ipq50xx/profiles.json
+- OpenWrt snapshot:
+  https://downloads.openwrt.org/snapshots/targets/qualcommax/ipq50xx/profiles.json
 
-The hwtest1 re-audit found incomplete board-case propagation, BDF override
-consumer removal, changed memory budgets and the missing conditional qfprom
-fix. See KMIIT_DEVICE_DELTA.md; the earlier candidate's successful compilation
-did not establish hardware correctness. New 6.12 remoteproc/DSA integration
-still requires attended testing even after those static defects are repaired.
+The hwtest1 re-audit corrected board-case propagation, BDF override consumer
+removal, changed memory budgets and a missing conditional qfprom fix. The
+resulting build passed scoped hardware validation on one CR8808 M81; this does
+not validate other variants. See KMIIT_DEVICE_DELTA.md and
+HARDWARE_VALIDATION.md.
+
+The exact CR8808-specific board-data containers are not present in the
+inspected upstream BDF repository. Their vendor-origin redistribution grant is
+unresolved, so this source repository must remain private pending licensing
+clearance. See PUBLIC_RELEASE_AUDIT.md.
