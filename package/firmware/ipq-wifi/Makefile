@@ -11,7 +11,17 @@ PKG_SOURCE_VERSION:=e20f4c6ff197823762319e4b7e31af01816503cf
 PKG_MIRROR_HASH:=a0109d830c474aeca2716496cb2eab05319c4d6671ae2d02c43449a94da183fa
 PKG_FLAGS:=nonshared
 
+LOCAL_BDF_DIR:=$(TOPDIR)/vendor-local/board-data
+LOCAL_BDF_FILES:=$(LOCAL_BDF_DIR)/board-redmi_ax3000.ipq5018 \
+	$(LOCAL_BDF_DIR)/board-redmi_ax3000.qcn6122
+PKG_FILE_DEPENDS+=$(LOCAL_BDF_FILES)
+
 include $(INCLUDE_DIR)/package.mk
+
+define Build/Prepare
+	$(call Build/Prepare/Default,)
+	python3 $(TOPDIR)/scripts/local_bdf.py stage --source-dir "$(LOCAL_BDF_DIR)" --dest-dir "$(PKG_BUILD_DIR)"
+endef
 
 define Build/Compile
 endef

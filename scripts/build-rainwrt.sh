@@ -11,6 +11,10 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 export PATH
 cd "$root"
 
+# Board-data is intentionally supplied by the local builder, not this public
+# repository. Fail before feed updates or downloads when it is absent/invalid.
+python3 scripts/local_bdf.py check
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 python3 scripts/prepare-rainwrt-build.py

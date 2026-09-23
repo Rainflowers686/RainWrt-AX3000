@@ -32,7 +32,9 @@ resulting build passed scoped hardware validation on one CR8808 M81; this does
 not validate other variants. See KMIIT_DEVICE_DELTA.md and
 HARDWARE_VALIDATION.md.
 
-The exact CR8808-specific board-data containers are not present in the
-inspected upstream BDF repository. Their vendor-origin redistribution grant is
-unresolved, so this source repository must remain private pending licensing
-clearance. See PUBLIC_RELEASE_AUDIT.md.
+The exact CR8808-specific board-data containers were not present in the
+inspected upstream BDF repository and no vendor-origin redistribution grant
+was established. They are therefore excluded from public source history and
+must be supplied locally for a CR8808 build. This permits public source
+distribution while keeping prebuilt firmware publication blocked. See
+BOARD_DATA.md and PUBLIC_RELEASE_AUDIT.md.

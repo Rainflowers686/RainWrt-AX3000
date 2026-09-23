@@ -16,9 +16,14 @@
 The artifact checksum was re-read from the retained hwtest1 build/evidence
 copies during project closeout. Later tooling and documentation commits are not
 the firmware source revision and do not imply that the firmware was rebuilt.
-The annotated tag
-validated/cr8808-25.12.2-hwtest1-2026-09-22 anchors the firmware source
-revision and this one-device result.
+The original annotated tag pointed to the tested source history, which
+contained the board-data inputs. That tag is not part of the sanitized public
+refs. The public-safe tag
+`validated/cr8808-25.12.2-hwtest1-public-source-2026-09-22` records this
+provenance without retaining those blobs: its target is a sanitized source and
+documentation commit, not the source commit used for the tested image. The
+public source requires users to supply the exact local board-data hashes; the
+sanitized commit has not itself been flashed or hardware revalidated.
 
 ## Result matrix
 

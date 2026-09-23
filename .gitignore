@@ -39,3 +39,8 @@ git-src
 /rainwrt-build-identity.json
 /hardware-test-candidate/
 __pycache__/
+/vendor-local/board-data/
+/package/firmware/ipq-wifi/src/board-redmi_ax3000.ipq5018
+/package/firmware/ipq-wifi/src/board-redmi_ax3000.qcn6122
+/package/firmware/ipq-wifi/src/board-xiaomi_cr880x.ipq5018
+/package/firmware/ipq-wifi/src/board-xiaomi_cr880x.qcn6122

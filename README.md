@@ -14,10 +14,11 @@ not a claim that every CR880X variant or bootloader is compatible, and RainWrt
 does not yet claim a long-term stable release. See
 [hardware validation](docs/HARDWARE_VALIDATION.md).
 
-Public release is blocked while redistribution rights for the device-specific
-wireless board data are unresolved. Any GitHub repository containing this
-source must remain private until that question is resolved. No binary GitHub
-Release is published.
+The source tree is prepared for public distribution without the device-specific
+board-data binaries. Redistribution permission for those binaries has not been
+established, so public prebuilt firmware remains blocked. See
+[board-data handling](docs/BOARD_DATA.md) and the
+[release audit](docs/PUBLIC_RELEASE_AUDIT.md).
 
 ## Why RainWrt
 
@@ -94,6 +95,16 @@ The build script pins upstream/feed revisions and writes build identity data.
 Images and their matching APK indexes/packages must be retained together; do
 not mix kernel packages from another release. See
 [build identity](docs/BUILD_IDENTITY.md).
+
+The CR8808 build also requires two locally obtained board-data files. RainWrt
+does not redistribute them because permission has not been established. The
+build wrapper checks their exact SHA256 values before doing network/build work,
+then injects them only into the ignored local package build staging directory.
+See [docs/BOARD_DATA.md](docs/BOARD_DATA.md). A clean checkout intentionally
+fails until those local inputs are provided.
+
+GitHub Actions runs source/privacy audits and tests only. It does not build or
+publish firmware binaries or package feeds.
 
 ## WireGuard
 

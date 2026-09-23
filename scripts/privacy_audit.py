@@ -31,8 +31,12 @@ def git(*args):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--all-history', action='store_true')
+    p.add_argument('--ref', action='append', default=[],
+                   help='scan all objects reachable from this exact ref; repeat as needed')
     p.add_argument('--rootfs', type=pathlib.Path)
     args = p.parse_args()
+    if args.all_history and args.ref:
+        p.error('--all-history and --ref cannot be combined')
     findings, scanned, seen = [], 0, set()
 
     def scan(data, path, scope, obj=''):
@@ -56,7 +60,14 @@ def main():
             scan(path.read_bytes(), name, 'tracked')
         else:
             raise RuntimeError('tracked path missing')
-    objects = git('rev-list', '--objects', *(['--all'] if args.all_history else [BASE + '..HEAD'])).splitlines()
+    if args.all_history:
+        objects = git('rev-list', '--objects', '--all').splitlines()
+    elif args.ref:
+        # The pinned upstream base is an audited external dependency; scan all
+        # downstream objects reachable from each proposed public ref.
+        objects = git('rev-list', '--objects', *args.ref, '--not', BASE).splitlines()
+    else:
+        objects = git('rev-list', '--objects', BASE + '..HEAD').splitlines()
     proc = subprocess.Popen(['git', '-C', str(ROOT), 'cat-file', '--batch'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     try:
         for line in objects:
@@ -91,8 +102,11 @@ def main():
             if path.is_file() and not path.is_symlink():
                 scan(path.read_bytes(), path.relative_to(args.rootfs).as_posix(), 'rootfs')
     blocked = any(x['classification'] == 'REVIEW_REQUIRED' for x in findings)
+    scope = ('all_local_refs' if args.all_history else
+             ('explicit_refs' if args.ref else 'public_branch_delta'))
     print(json.dumps({'status': 'REVIEW_REQUIRED' if blocked else 'PATTERN_SCAN_PASS',
-                      'scope': 'all_local_refs' if args.all_history else 'public_branch_delta',
+                      'scope': scope,
+                      'refs': args.ref,
                       'files_blobs_scanned': scanned, 'findings': findings,
                       'limitations': 'Pattern scan is not a secret absence guarantee; opaque archives must never be released.'}, indent=2))
     return 1 if blocked else 0
