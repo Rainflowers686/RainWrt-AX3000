@@ -6,10 +6,20 @@ import pathlib
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+PINNED_VERSION_FALLBACK = 'VERSION_NUMBER:=$(if $(VERSION_NUMBER),$(VERSION_NUMBER),25.12.2)'
 
 
 def git(*args):
     return subprocess.check_output(['git', '-C', str(ROOT), *args], text=True).strip()
+
+
+def matches_pinned_version(version_text):
+    # OpenWrt/ImmortalWrt first reads CONFIG_VERSION_NUMBER, then has a
+    # fallback assignment. There are therefore normally two assignments;
+    # verify the final fallback rather than requiring a single assignment.
+    version_lines = [line for line in version_text.splitlines()
+                     if line.startswith('VERSION_NUMBER:=')]
+    return bool(version_lines) and version_lines[-1] == PINNED_VERSION_FALLBACK
 
 
 def main():
@@ -21,9 +31,7 @@ def main():
     # upstream release commit as a Git ancestor. Pin and verify the source
     # release identity through the core version file instead of asserting a
     # graph relationship that sanitized/imported trees may not preserve.
-    version_lines = [line for line in (ROOT / 'include/version.mk').read_text().splitlines()
-                     if line.startswith('VERSION_NUMBER:=')]
-    if len(version_lines) != 1 or '25.12.2' not in version_lines[0]:
+    if not matches_pinned_version((ROOT / 'include/version.mk').read_text()):
         raise SystemExit('Source tree does not match the pinned ImmortalWrt 25.12.2 base')
     feeds = (ROOT / 'feeds.conf.default').read_text()
     for line in feeds.splitlines():
