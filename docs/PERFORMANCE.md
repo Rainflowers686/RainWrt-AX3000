@@ -28,6 +28,28 @@ HTTPS through WireGuard returning successfully. The receive saturation test
 reached a minimum MemAvailable of about 7.4 MiB; no OOM event was observed.
 That is a measured stress condition, not a safe-memory guarantee.
 
+After the sanitized public-source build was hardware validated, a separate
+10-minute, four-stream regression ran for five minutes in each direction:
+
+| Direction | Duration | Sender average | Receiver average | Sender retransmits | Router CPU reported by iperf3 |
+|---|---:|---:|---:|---:|---:|
+| WSL host → router | 300 s | 749.42 Mbps | 736.38 Mbps | 45,302 | 121.32% aggregate |
+| Router → WSL host | 306.7 s | 631.14 Mbps | 645.26 Mbps | 891 | 145.24% aggregate |
+
+The high retransmit count in the first direction is retained as an observation;
+these are direct host-to-router TCP tests, not routed traffic. During this
+regression the lowest sampled MemAvailable was about 9.5 MiB and the maximum
+sampled thermal-zone temperature was 65 C. No OOM, ath11k fatal or remoteproc
+error was observed. The two AP radios stayed enabled; no controlled Wi-Fi
+throughput endpoint was available.
+
+Periodic HTTPS probes through the uncontrolled external path to one public site
+completed 9 of 15 requests during the local load. After the load, three
+independent public HTTPS sites each returned successfully on three of three
+checks. The WG route and handshake remained present throughout. This variability
+is not a controlled WireGuard capacity result and is not attributed to a router
+throughput limit.
+
 ## Runtime and thermal observations
 
 - Two Cortex-A53 CPUs; one exposed stock OPP at 1.008 GHz.

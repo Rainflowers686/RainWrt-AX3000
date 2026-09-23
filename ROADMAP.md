@@ -13,7 +13,8 @@ Near-term priorities:
   complete acceleration.
 - Keep any overclock work experimental and separate; current hardware tests
   validate only the stock 1.008 GHz operating point.
-- Resolve vendor-origin redistribution terms for device-specific board data
-  and the public-history hygiene gate before any public repository release.
+- Keep prebuilt firmware and package-feed distribution blocked until
+  vendor-origin redistribution terms for device-specific board data are
+  established; continue auditing public refs as source evolves.
 
 No roadmap item implies a current firmware feature or test result.

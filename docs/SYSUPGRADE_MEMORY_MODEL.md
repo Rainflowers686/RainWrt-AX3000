@@ -1,10 +1,12 @@
 # Sysupgrade memory model — hwtest1, 2026-09-22
 
-Scope: known-good 24.10 CR8808 to the frozen 25.12.2-hwtest1 candidate. This is
-a phase-aware admission policy, not an upstream minimum-RAM specification or
-an OOM guarantee. No live handoff, service stop, cache drop, flash or reboot was
-used to develop it. Kernel/slab/ath11k/DMA allocations remain resident in every
-phase; no savings from them are assumed.
+Scope: CR8808 sysupgrade into the 25.12.2-hwtest1 candidate. This is a
+phase-aware admission policy, not an upstream minimum-RAM specification or an
+OOM guarantee. The model was derived from source inspection and read-only
+measurements. A later explicitly authorized run used a temporary preflight
+quiescent state and then performed one ordinary sysupgrade and one normal
+reboot; the gate formula was not reduced. Kernel/slab/ath11k/DMA allocations
+remain resident in every phase; no savings from them are assumed.
 
 ## Source authority and two different executing systems
 
@@ -120,7 +122,27 @@ POST_UPLOAD_VALIDATION_GATE, PRE_HANDOFF_GATE. Each uses two passing samples
 five seconds apart within 120 seconds. A fresh equivalent shell check executes
 immediately before a separately authorized sysupgrade. All probes are read-only.
 
-## Why no stage2 abort hook or service quiesce
+## 2026-09-23 live quiescent-state validation
+
+The candidate image was 18,585,872 bytes and the measured migrated archive was
+25,815 bytes. The unchanged pre-upload gate was 27,192 KiB physical and 24,376
+KiB tmpfs capacity; the post-upload physical gate was 9,012 KiB. After two
+120-second windows had peaked at only 26,192 KiB, a live process/RSS review
+identified `uhttpd` as the largest nonessential userspace process (7,008 KiB
+RSS, 1,400 KiB anonymous). Only `uhttpd` was temporarily stopped; SSH/dropbear,
+ubus/rpcd, netifd, the wired management path, Wi-Fi and preserved user services
+were left running. `sync` and the normal kernel `drop_caches` interface were
+used to reclaim eligible cache pages. The service was restored after the
+upgrade/reboot sequence.
+
+With the original threshold unchanged, pre-upload samples were 43,144 and
+41,096 KiB; post-upload samples were 17,684 and 21,420 KiB; pre-handoff samples
+were 20,192 and 22,348 KiB. Both physical and tmpfs checks passed at every
+stage. This is evidence for this device and this run, not a universal minimum
+or guarantee. It also demonstrates why safe quiescence is preferable to
+weakening the phase-aware admission rule when the live system is close to it.
+
+## Why no stage2 abort hook or permanent service-quiesce feature
 
 platform_pre_upgrade runs after TERM/KILL/cache reclamation, before
 switch_to_ramfs. stage2 has no set -e and does not test the hook's status, so
@@ -129,9 +151,11 @@ and SSH are gone; upgraded's callback finishes its loop and main calls reboot.
 An abort is not a safely resumable shell session. We add no hook or new failure
 mode there. Existing NAND/layout checks remain unchanged.
 
-No transient service quiesce was needed to implement this model. It remains
-unimplemented: no private service names, Wi-Fi/FDB assumptions or recovery of
-service states are introduced. No manual drop_caches is issued.
+The one-off preflight quiesce is not a permanent service-quiesce feature and is
+not part of the phase model. It introduced no private service names,
+Wi-Fi/FDB assumptions or custom stage2 behavior. The normal sysupgrade stage2
+still performs its upstream cleanup and cache drop after handoff; the separate
+preflight cache reclamation was used only in the explicitly authorized run.
 
 ## Package footprint decision
 

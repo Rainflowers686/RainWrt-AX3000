@@ -9,9 +9,10 @@ support.
 **Hardware-validated development release:** ImmortalWrt 25.12.2, Linux
 6.12.103, target `qualcommax/ipq50xx`, profile `redmi_ax3000`.
 
-Hardware validation is based on one Xiaomi CR8808 / Redmi AX3000 M81. This is
-not a claim that every CR880X variant or bootloader is compatible, and RainWrt
-does not yet claim a long-term stable release. See
+The current sanitized public source was clean-built with local-only board data
+and hardware validated on one Xiaomi CR8808 / Redmi AX3000 M81 on 2026-09-23.
+This is not a claim that every CR880X variant or bootloader is compatible, and
+RainWrt does not yet claim a long-term stable release. See
 [hardware validation](docs/HARDWARE_VALIDATION.md).
 
 The source tree is prepared for public distribution without the device-specific
@@ -65,7 +66,8 @@ stream, 748/617 Mbps with four streams and 736/642 Mbps with eight streams
 (host-to-router / router-to-host). A controlled Wi-Fi forwarding endpoint was
 not available, and the external WireGuard path was not controlled. These are
 not NAT, Wi-Fi or WireGuard device-throughput limits. A/B results and resource
-limits are in [performance notes](docs/PERFORMANCE.md).
+limits, including the later bounded 10-minute regression, are in
+[performance notes](docs/PERFORMANCE.md).
 
 ## Installation and upgrade safety
 

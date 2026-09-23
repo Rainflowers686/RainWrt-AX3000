@@ -14,9 +14,11 @@ that embed them.
 | `board-redmi_ax3000.ipq5018` | IPQ5018 / 2.4 GHz | `0x10` | `a1d03029566e469ceee4d570324dfa015f3d01e351bc87c81329ffdd7a7c4186` |
 | `board-redmi_ax3000.qcn6122` | QCN6122 / 5 GHz | `0x60` | `91c689226aa5a3af853063452393055c5e764866fec707ccd504738314e75134` |
 
-These hashes identify the inputs used for the hardware-tested CR8808 build;
-they do not assert ownership or grant rights. They are recorded so a builder
-can verify that their own inputs match the tested bytes.
+These hashes identify the inputs used for the historical and current
+public-source hardware-tested CR8808 builds; they do not assert ownership or
+grant rights. They are recorded so a builder can verify that their own inputs
+match the tested bytes. The files remain local-only and are not in public Git,
+CI artifacts, or public firmware downloads.
 
 ## Local preparation
 

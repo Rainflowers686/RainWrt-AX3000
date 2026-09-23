@@ -1,35 +1,46 @@
 # Hardware validation — CR8808 M81
 
-## Exact tested build
+## Current public-source tested build
 
-- Device tested: one Xiaomi CR8808 / Redmi AX3000 M81
+- Device: one Xiaomi CR8808 / Redmi AX3000 M81
 - Runtime identity: RainWrt 25.12.2-hwtest1
 - Base: ImmortalWrt 25.12.2, upstream revision
-  4fc16f2985a358bd43bb522e43f05395fcbd6ed5
+  `4fc16f2985a358bd43bb522e43f05395fcbd6ed5`
 - Kernel: Linux 6.12.103
-- Target/profile: qualcommax/ipq50xx / redmi_ax3000
-- Firmware source revision: ff21ae557201e2def1ca4770275abca2fdae477f
-- Tested sysupgrade image: 18,585,872 bytes
-- SHA256 of the retained exact tested artifact:
-  98099b26672fdb0931a30673792402f42194dbac66a559520596d4b86e58121c
+- Target/profile: `qualcommax/ipq50xx` / `redmi_ax3000`
+- Firmware source revision: `21c77ebdeeb8e04b5192e100b074a8edaf6f32d3`
+- Sysupgrade image: 18,585,872 bytes; SHA256
+  `a2de8fe525b3d217c0c2c4fea0757e74c84c0a34c603292b9594f6ed1eb46441`
+- Factory UBI: 19,529,728 bytes; SHA256
+  `9592802d6b3bf842a9815b923c16a00203cfac02f9ffb3eebd727c6cf75bfd46`
+- Initramfs ITB: 18,487,084 bytes; SHA256
+  `ada091c6df6a7620384e7296943f11148151a79121db4794543d90aab0d6f622`
+- Board data was supplied locally, not from the public repository. The exact
+  hashes and board IDs are documented in [BOARD_DATA.md](BOARD_DATA.md).
 
-The artifact checksum was re-read from the retained hwtest1 build/evidence
-copies during project closeout. Later tooling and documentation commits are not
-the firmware source revision and do not imply that the firmware was rebuilt.
-The original annotated tag pointed to the tested source history, which
-contained the board-data inputs. That tag is not part of the sanitized public
-refs. The public-safe tag
-`validated/cr8808-25.12.2-hwtest1-public-source-2026-09-22` records this
-provenance without retaining those blobs: its target is a sanitized source and
-documentation commit, not the source commit used for the tested image. The
-public source requires users to supply the exact local board-data hashes; the
-sanitized commit has not itself been flashed or hardware revalidated.
+The source was clean-built, statically audited, accepted by `sysupgrade -T`,
+installed using standard NAND sysupgrade, and passed first-boot plus one normal
+reboot validation. The public source does not contain or redistribute the
+board-data files. This validates one tested unit only; it does not authorize a
+binary release or generalize to other CR880X devices.
+
+## Historical initial 25.12 validation
+
+The earlier hwtest1 image was built from source revision
+`ff21ae557201e2def1ca4770275abca2fdae477f`; its tested sysupgrade SHA256 was
+`98099b26672fdb0931a30673792402f42194dbac66a559520596d4b86e58121c`. This
+historical source revision is distinct from the current sanitized
+public-source build. The old restricted-BDF tree is not reachable from public
+refs. The earlier public-safe provenance tag remains distinct from the new
+hardware-validation tag.
 
 ## Result matrix
 
 | Area | Result | Evidence boundary |
 |---|---|---|
 | NAND sysupgrade | PASS | Standard sysupgrade completed on the tested merged-rootfs device |
+| Clean public-source build | PASS | Source revision above built from clean package/image outputs with local-only board data |
+| Static artifact audit | PASS | Metadata, image structure, package manifest and matching build identity checked |
 | First boot | PASS | Exact RainWrt build identity and kernel verified |
 | Normal reboot | PASS | Second boot returned and passed the scoped validation |
 | Runtime partition map | PASS | Single runtime mtd18=rootfs geometry and UBI layout matched the tested M81 |
@@ -43,6 +54,9 @@ sanitized commit has not itself been flashed or hardware revalidated.
 | APK | PASS | Release-matched signed package indexes and package operations were verified |
 | Configuration migration | PASS | 24.10 user configuration migrated through the reviewed opaque-preservation path |
 | Custom service state | PASS | The generic preserved-service enable/disable migration path passed |
+| Private runtime preservation | PASS | Current private snapshot comparison was 22 same, 0 different, 0 missing; sysupgrade backup/list checks passed |
+| WG/WAN fallback | PASS | A bounded interface-down test moved IPv4 to WAN, preserved WAN6, then the health manager restored WG and the WG IPv4 route |
+| Bounded stability regression | PASS | Ten minutes of bidirectional local TCP load completed; no OOM, ath11k fatal or remoteproc error was observed |
 
 The wireless migration changes only the exact known old QCN6122 device path in
 the configuration archive. The user's other wireless settings are preserved
@@ -66,6 +80,7 @@ factory image through Web Recovery has not been hardware validated.
   authorized or hardware validated for sysupgrade.
 - No controlled Wi-Fi forwarding endpoint was available.
 - No controlled WireGuard iperf endpoint was available.
+- No 25.12 factory-image write/boot through Web Recovery has been tested.
 - The external WireGuard measurements are path experience, not device limits.
 - Multi-week stability and a 25.12 factory Web-Recovery restore remain untested.
 - A successful hash or static image audit is not a substitute for device testing.

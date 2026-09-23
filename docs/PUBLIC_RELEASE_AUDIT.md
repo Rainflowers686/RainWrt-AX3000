@@ -77,13 +77,14 @@ permission). No equivalent upstream BDF was selected or substituted.
 - GitHub Actions performs source/privacy tests only. It does not build or upload
   firmware binaries or package feeds.
 
-The public source tree is a redistribution-sanitized representation. The
-hardware-tested firmware was built from source revision
-`ff21ae557201e2def1ca4770275abca2fdae477f` using the exact board-data hashes
-above. The sanitized public-source commit is not itself the source revision
-that produced that firmware and has not been reflashed or independently
-hardware-tested. The public-safe annotated validation tag preserves this
-distinction.
+The historical initial 25.12 hardware-tested firmware was built from source
+revision `ff21ae557201e2def1ca4770275abca2fdae477f`. Subsequently, sanitized
+public source revision `21c77ebdeeb8e04b5192e100b074a8edaf6f32d3` was clean-built
+using the same exact board-data hashes supplied locally, then installed and
+validated on one CR8808 M81. This closes the source-build and one-device
+hardware-validation gap; it does not change the binary redistribution gate.
+The new validation tag records the tested public source revision and artifact
+hash without containing the board-data blobs.
 
 ## Privacy and history gate
 

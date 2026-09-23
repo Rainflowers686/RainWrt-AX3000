@@ -13,8 +13,11 @@
 - Validated generic configuration and custom-service-state migration.
 - Completed bounded local TCP, WireGuard line-experience, thermal and memory
   observations; no unproven performance tweak was retained.
-- Public source and binary releases remain blocked while board-data
-  redistribution terms are unresolved. This is not a stable-release
+- Clean-built the sanitized public source with local-only board data, then
+  completed CR8808 NAND sysupgrade, first-boot, reboot, preservation and bounded
+  stability validation on the same tested unit.
+- Public source is ready; public binary distribution remains blocked while
+  board-data redistribution terms are unresolved. This is not a stable-release
   announcement.
 
 ## 24.10 known-good reference — 2026-09-22
