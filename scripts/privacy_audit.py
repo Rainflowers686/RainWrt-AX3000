@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Fail-closed pattern inventory. Emits paths/types/object IDs, never values.
 
-A zero result is not proof that arbitrary credentials cannot exist.
---all-history includes every local ref, including quarantined legacy.
+A zero result is not proof that arbitrary credentials cannot exist. Exact-ref
+and default scans inspect the complete reachable history, including upstream
+ancestors; --all-history includes every local ref, including local archives.
 """
 import argparse
 import json
@@ -63,11 +64,12 @@ def main():
     if args.all_history:
         objects = git('rev-list', '--objects', '--all').splitlines()
     elif args.ref:
-        # The pinned upstream base is an audited external dependency; scan all
-        # downstream objects reachable from each proposed public ref.
-        objects = git('rev-list', '--objects', *args.ref, '--not', BASE).splitlines()
+        # Public refs expose their complete ancestry. Do not assume the pinned
+        # upstream commit is an ancestor: sanitized/rebased histories may have
+        # a different graph, and every reachable blob is part of publication.
+        objects = git('rev-list', '--objects', *args.ref).splitlines()
     else:
-        objects = git('rev-list', '--objects', BASE + '..HEAD').splitlines()
+        objects = git('rev-list', '--objects', 'HEAD').splitlines()
     proc = subprocess.Popen(['git', '-C', str(ROOT), 'cat-file', '--batch'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     try:
         for line in objects:
@@ -103,7 +105,7 @@ def main():
                 scan(path.read_bytes(), path.relative_to(args.rootfs).as_posix(), 'rootfs')
     blocked = any(x['classification'] == 'REVIEW_REQUIRED' for x in findings)
     scope = ('all_local_refs' if args.all_history else
-             ('explicit_refs' if args.ref else 'public_branch_delta'))
+             ('explicit_refs_full_history' if args.ref else 'HEAD_full_history'))
     print(json.dumps({'status': 'REVIEW_REQUIRED' if blocked else 'PATTERN_SCAN_PASS',
                       'scope': scope,
                       'refs': args.ref,

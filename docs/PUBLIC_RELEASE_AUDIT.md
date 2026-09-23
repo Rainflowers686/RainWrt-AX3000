@@ -64,6 +64,9 @@ permission). No equivalent upstream BDF was selected or substituted.
 - All four device-specific containers (CR8808 pair and M79 reference pair) are
   removed from the public source tree and from the history reachable from the
   exact public branch/tag refs.
+- Historical key-like payload blobs found during the release scan were also
+  removed from the candidate public history; payload contents were not copied
+  into reports or documentation.
 - CR8808 builds require the user's two locally supplied files under the
   Git-ignored `vendor-local/board-data/` directory.
 - `scripts/local_bdf.py` checks exact filenames and SHA256, rejects symlinks,
@@ -94,11 +97,10 @@ python3 scripts/audit_public_source.py \
 
 The audit checks every object reachable from the named refs for the known
 board-data blobs and paths, verifies that local inputs are ignored, and invokes
-the secret/personal-context scanner over the downstream history unique to those
-refs after the pinned ImmortalWrt upstream base, plus the current checked-out
-tree. The upstream base is not rewritten by RainWrt. The scanner is a pattern
-audit, not proof that arbitrary secrets are absent. Legacy/private branches
-remain local and must not be pushed.
+the secret/personal-context scanner over the complete reachable history of
+those refs, including upstream ancestors, plus the current checked-out tree.
+The scanner is a pattern audit, not proof that arbitrary secrets are absent.
+Legacy/private branches remain local and must not be pushed.
 
 The pre-rewrite repository is preserved in a permission-restricted local Git
 bundle outside the project. Do not push it or any legacy ref. No public binary
