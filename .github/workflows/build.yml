@@ -25,6 +25,7 @@ jobs:
       - name: Source safety tests
         run: |
           python3 tests/test_local_bdf.py
+          python3 tests/test_prepare_rainwrt_build.py
           python3 tests/test_hardware_runner.py
           sh tests/mi_layout_test.sh
           sh tests/mi_dualboot_test.sh

@@ -2,6 +2,7 @@
 """Offline artifact/ABI/feed audit; never connects to or modifies a router."""
 import argparse
 import hashlib
+import importlib.util
 import json
 import pathlib
 import subprocess
@@ -52,8 +53,14 @@ def main():
         fetched = len(list(pathlib.Path(directory).glob('*.apk')))
         require(fetched >= len(packages), 'incomplete dependency closure')
     board_hashes = {}
+    local_bdf_path = build / 'scripts/local_bdf.py'
+    spec = importlib.util.spec_from_file_location('candidate_local_bdf', local_bdf_path)
+    require(spec is not None and spec.loader is not None, 'local BDF verifier missing')
+    local_bdf = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(local_bdf)
+    inputs = local_bdf.validate(build / 'vendor-local/board-data')
     for chip, suffix in [('IPQ5018', 'ipq5018'), ('QCN6122', 'qcn6122')]:
-        original = build / ('package/firmware/ipq-wifi/src/board-redmi_ax3000.' + suffix)
+        original = inputs['board-redmi_ax3000.' + suffix]
         actual = root / ('lib/firmware/ath11k/' + chip + '/hw1.0/board-2.bin')
         require(original.read_bytes() == actual.read_bytes(), 'installed BDF mismatch')
         board_hashes[chip] = hashlib.sha256(actual.read_bytes()).hexdigest()

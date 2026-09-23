@@ -518,6 +518,24 @@ class RunnerTests(unittest.TestCase):
                     self.assertEqual(r.main(), 1)
                     transport.assert_not_called()
 
+    def test_known_good_baseline_accepts_exact_25_12_hardware_test_build(self):
+        baseline = copy.deepcopy(GOOD)
+        baseline.update(kernel='6.12.103', identity=r.KNOWN_GOOD_25_12_IDENTITY,
+                        release=r.KNOWN_GOOD_25_12_RELEASE)
+        self.assertTrue(r.known_good_source(baseline))
+
+    def test_known_good_baseline_rejects_near_match_25_12_builds(self):
+        baseline = copy.deepcopy(GOOD)
+        baseline.update(kernel='6.12.103', identity=r.KNOWN_GOOD_25_12_IDENTITY,
+                        release=r.KNOWN_GOOD_25_12_RELEASE)
+        for field, value in (('kernel', '6.12.104'),
+                             ('release', {**r.KNOWN_GOOD_25_12_RELEASE, 'revision': 'other'}),
+                             ('identity', {**r.KNOWN_GOOD_25_12_IDENTITY, 'RAINWRT_SOURCE_REVISION': 'other'})):
+            candidate = copy.deepcopy(baseline)
+            candidate[field] = value
+            with self.subTest(field=field):
+                self.assertFalse(r.known_good_source(candidate))
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

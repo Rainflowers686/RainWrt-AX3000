@@ -18,6 +18,10 @@ import zlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 PREFIX = 'immortalwrt-qualcommax-ipq50xx-redmi_ax3000'
+KNOWN_REFERENCE_IMAGES = {
+    'bd552ead7a42f1355195c9dc72eb7bcf798886f4886fba86d5c29d3aa0e7e7d1',
+    '98099b26672fdb0931a30673792402f42194dbac66a559520596d4b86e58121c',
+}
 
 
 def sha(path):
@@ -84,7 +88,7 @@ def main():
     p.add_argument('--build-root', required=True, type=pathlib.Path)
     p.add_argument('--output', required=True, type=pathlib.Path)
     p.add_argument('--reference-image', type=pathlib.Path,
-                   help='Known-good 24.10 image; required to authorize the attended transition, not CI static checks')
+                   help='Exact known-good 24.10 or 25.12 reference image; used to bind installed upgrade-helper hashes')
     args = p.parse_args()
     build, out = args.build_root.resolve(), args.output.resolve()
     require(not out.exists(), 'output must be a new directory')
@@ -160,7 +164,7 @@ def main():
         shutil.copyfile(ROOT / name, destination)
     baseline_helpers = {}
     if args.reference_image:
-        require(sha(args.reference_image) == 'bd552ead7a42f1355195c9dc72eb7bcf798886f4886fba86d5c29d3aa0e7e7d1', 'wrong reference image')
+        require(sha(args.reference_image) in KNOWN_REFERENCE_IMAGES, 'reference image is not an approved known-good artifact')
         with tarfile.open(args.reference_image) as archive:
             roots = [m for m in archive.getmembers() if m.isfile() and m.name.endswith('/root')]
             require(len(roots) == 1, 'reference rootfs missing')

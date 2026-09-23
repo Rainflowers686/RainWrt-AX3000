@@ -27,6 +27,21 @@ MEMORY_TOOL = 'scripts/lib/upgrade-memory.sh'
 BASELINE_HELPERS = {'/sbin/sysupgrade', '/lib/upgrade/stage2', '/lib/upgrade/do_stage2',
                     '/lib/upgrade/platform.sh', '/lib/upgrade/mi_layout.sh', '/lib/upgrade/mi_dualboot.sh',
                     '/lib/upgrade/nand.sh', '/lib/upgrade/common.sh'}
+KNOWN_GOOD_25_12_IDENTITY = {
+    'RAINWRT_VERSION': '25.12.2-hwtest1',
+    'RAINWRT_BUILD_ID': '25.12.2-hwtest1-ff21ae557201-45d16c23d08e',
+    'RAINWRT_SOURCE_REVISION': 'ff21ae557201e2def1ca4770275abca2fdae477f',
+    'RAINWRT_UPSTREAM_VERSION': '25.12.2',
+    'RAINWRT_UPSTREAM_REVISION': '4fc16f2985a358bd43bb522e43f05395fcbd6ed5',
+    'RAINWRT_TARGET': 'qualcommax/ipq50xx',
+    'RAINWRT_PROFILE': 'redmi_ax3000',
+    'RAINWRT_BUILD_STATUS': 'hardware-test-candidate',
+}
+KNOWN_GOOD_25_12_RELEASE = {
+    'release': '25.12.2',
+    'revision': 'r38135-0c4cd0f9920a',
+    'target': 'qualcommax/ipq50xx',
+}
 SERVICE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z')
 HANDOFF = re.compile(r'Commencing upgrade|Closing all shell sessions|RAINWRT_SYSUPGRADE_INVOKED')
 ENABLED_SERVICES = 'for p in /etc/rc.d/S*; do [ -L "$p" ] && [ -x "$p" ] || continue; readlink "$p"; done\n'
@@ -139,6 +154,15 @@ def layout_checks(p):
         'appsbl': p['appsbl'] == APPSBL and bool(re.search(r'^mtd12: .* "0:APPSBL"$', p['mtd'], re.M)),
         'bootcmd': p['bootcmd'] == 'bootmiwifi',
     }
+
+
+def known_good_source(p):
+    """Accept only the established 24.10 baseline or exact tested 25.12 image."""
+    legacy = p.get('kernel') == '6.6.137' and p.get('release', {}).get('revision') == 'r0-2b3c0919'
+    current = (p.get('kernel') == '6.12.103' and
+               p.get('identity') == KNOWN_GOOD_25_12_IDENTITY and
+               p.get('release') == KNOWN_GOOD_25_12_RELEASE)
+    return legacy or current
 
 
 def detector_check(path):
@@ -508,7 +532,7 @@ def resume_context(state, expected):
             not any(e['event'] in ('EXPECTED_HANDOFF', 'INDETERMINATE_HANDOFF') for e in events)):
         raise Stop('RESUME_UNBOUND_EXECUTION_EVIDENCE')
     baseline = json.loads((prior / 'baseline.json').read_text())
-    if baseline['kernel'] != '6.6.137' or not all(layout_checks(baseline).values()):
+    if not known_good_source(baseline) or not all(layout_checks(baseline).values()):
         raise Stop('RESUME_INVALID_ORIGINAL_BASELINE')
     preserved, disabled = {}, []
     with tarfile.open(archive) as src:
@@ -648,7 +672,7 @@ def main():
         baseline = transport.probe()
         private_write(run / 'baseline.json', json.dumps(baseline, indent=2))
         checks = layout_checks(baseline)
-        checks['known_good_source'] = baseline['kernel'] == '6.6.137' and baseline['release']['revision'] == 'r0-2b3c0919'
+        checks['known_good_source'] = known_good_source(baseline)
         emit('fingerprint', checks)
         if not all(checks.values()):
             raise Stop('PRECHECK_FAILED: fingerprint')
