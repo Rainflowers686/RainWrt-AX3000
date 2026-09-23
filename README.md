@@ -1,5 +1,7 @@
 # RainWrt-AX3000
 
+English | [简体中文](README.zh-CN.md)
+
 A maintained ImmortalWrt downstream for Redmi AX3000 / Xiaomi CR880X, focused
 on current kernels, careful NAND upgrade handling and maintainable device
 support.
