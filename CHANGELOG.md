@@ -13,8 +13,9 @@
 - Validated generic configuration and custom-service-state migration.
 - Completed bounded local TCP, WireGuard line-experience, thermal and memory
   observations; no unproven performance tweak was retained.
-- Public binary release remains blocked while board-data redistribution terms
-  are unresolved. This is not a stable-release announcement.
+- Public source and binary releases remain blocked while board-data
+  redistribution terms are unresolved. This is not a stable-release
+  announcement.
 
 ## 24.10 known-good reference — 2026-09-22
 

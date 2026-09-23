@@ -14,9 +14,10 @@ not a claim that every CR880X variant or bootloader is compatible, and RainWrt
 does not yet claim a long-term stable release. See
 [hardware validation](docs/HARDWARE_VALIDATION.md).
 
-The source repository is currently private while redistribution rights for the
-device-specific wireless board data are unresolved. No binary GitHub Release
-is published.
+Public release is blocked while redistribution rights for the device-specific
+wireless board data are unresolved. Any GitHub repository containing this
+source must remain private until that question is resolved. No binary GitHub
+Release is published.
 
 ## Why RainWrt
 
