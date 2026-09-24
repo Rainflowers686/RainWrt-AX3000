@@ -2,11 +2,13 @@
 
 *A maintained ImmortalWrt downstream for Redmi AX3000 and Xiaomi CR880X.*
 
+![ImmortalWrt](https://img.shields.io/badge/ImmortalWrt-downstream-2B579A) ![OpenWrt](https://img.shields.io/badge/OpenWrt-router-00A3E0) ![CR880X](https://img.shields.io/badge/Hardware-CR880X-6A737D)
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+
 
 **Guide:** [Status](#status) · [Supported hardware](#supported-hardware) · [Upgrade safety](#installation-and-upgrade-safety) · [Building](#building)
 
+[English](README.md) | [简体中文](README.zh-CN.md)
 
 A maintained ImmortalWrt downstream for Redmi AX3000 / Xiaomi CR880X, focused
 on current kernels, careful NAND upgrade handling and maintainable device
