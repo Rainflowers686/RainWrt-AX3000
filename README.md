@@ -1,28 +1,30 @@
-# RainWrt-AX3000
+<div align="center">
 
-*A maintained ImmortalWrt downstream for Redmi AX3000 and Xiaomi CR880X.*
+# **RainWrt-AX3000**
 
-![ImmortalWrt](https://img.shields.io/badge/ImmortalWrt-downstream-2B579A) ![OpenWrt](https://img.shields.io/badge/OpenWrt-router-00A3E0) ![CR880X](https://img.shields.io/badge/Hardware-CR880X-6A737D)
+A maintained ImmortalWrt downstream for Redmi AX3000 and Xiaomi CR880X routers.
 
+Follow current upstream releases with device-specific support, checked NAND upgrade paths and recorded CR8808 hardware validation.
 
+![ImmortalWrt](https://img.shields.io/badge/ImmortalWrt-downstream-2B579A)
+![CR880X](https://img.shields.io/badge/Hardware-CR880X-6A737D)
+[![Source license](https://img.shields.io/badge/License-GPL--2.0%20%2B%20component%20terms-blue)](COPYING)
 
-**Guide:** [Status](#status) · [Supported hardware](#supported-hardware) · [Upgrade safety](#installation-and-upgrade-safety) · [Building](#building)
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+[Status](#status) · [Hardware](#supported-hardware) · [Upgrade safety](#installation-and-upgrade-safety) · [Build](#building) · [Contributing](CONTRIBUTING.md)
 
-A maintained ImmortalWrt downstream for Redmi AX3000 / Xiaomi CR880X, focused
-on current kernels, careful NAND upgrade handling and maintainable device
-support.
+</div>
 
 ## Status
 
-**Hardware-validated development release:** ImmortalWrt 25.12.2, Linux
+Hardware-validated development release: ImmortalWrt 25.12.2, Linux
 6.12.103, target `qualcommax/ipq50xx`, profile `redmi_ax3000`.
 
 The current sanitized public source was clean-built with local-only board data
 and hardware validated on one Xiaomi CR8808 / Redmi AX3000 M81 on 2026-09-23.
-This is not a claim that every CR880X variant or bootloader is compatible, and
-RainWrt does not yet claim a long-term stable release. See
+Compatibility with other CR880X variants or bootloaders remains unverified;
+this development release is not yet considered long-term stable. See
 [hardware validation](docs/HARDWARE_VALIDATION.md).
 
 The source tree is prepared for public distribution without the device-specific
@@ -35,7 +37,7 @@ established, so public prebuilt firmware remains blocked. See
 
 RainWrt continues Redmi AX3000 / CR880X support after the kmiit 24.10 line
 stopped being maintained. The kmiit build is preserved as a known-good hardware
-reference, not used as the permanent base. The maintained line follows
+reference. The maintained line follows
 ImmortalWrt stable and carries only the device, compatibility and upgrade-safety
 deltas that remain necessary.
 
@@ -149,8 +151,12 @@ downstream changes.
 ## License
 
 The OpenWrt/ImmortalWrt source and inherited components retain their original
-licenses and notices; see `COPYING`, `LICENSES/` and individual package
+licenses and notices; see [COPYING](COPYING), [LICENSES/](LICENSES/) and individual package
 metadata. Vendor firmware and board-data files have separate terms and are not
 relicensed as GPL. Redistribution of the two CR8808-specific board-data
 containers is not yet cleared; see
 [the public-release audit](docs/PUBLIC_RELEASE_AUDIT.md).
+
+## Contributing and security
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for source checks and the evidence needed for a hardware claim. Report sensitive issues as described in [SECURITY.md](SECURITY.md), without publishing board data, private router configuration or credentials.
